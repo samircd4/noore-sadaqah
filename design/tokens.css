@@ -1,0 +1,73 @@
+/*
+ * Noore Sadaqah Foundation — design tokens (single source of truth)
+ *
+ * Tailwind CSS v4: paste this file's contents into src/app/globals.css
+ * right after `@import "tailwindcss";` (or `@import "./tokens.css";`).
+ * Every token below becomes a utility automatically:
+ *   --color-em-700   ->  bg-em-700, text-em-700, border-em-700 ...
+ *   --font-head      ->  font-head
+ *
+ * Plain CSS can use the same values: var(--color-gold-500).
+ * Taken from design/reference/home.html. Change colors HERE only.
+ */
+
+@theme {
+  /* Emerald — brand primary (header, footer, buttons, headings) */
+  --color-em-50: #eaf6f0;
+  --color-em-100: #cde9dc;
+  --color-em-500: #1f8a63;
+  --color-em-600: #16704f;
+  --color-em-700: #0f5a3f;
+  --color-em-800: #0b4631;
+  --color-em-900: #072e20;
+  --color-em-950: #041c13; /* body text, darkest overlay */
+
+  /* Sand — warm neutral backgrounds and borders */
+  --color-sand-50: #fbf8f2; /* page background */
+  --color-sand-100: #f5eedf; /* alternate section background */
+  --color-sand-200: #eadfc8; /* card borders */
+  --color-sand-300: #dccba6;
+
+  /* Gold — accent / call to action (donate) */
+  --color-gold-400: #f4d27a; /* hover, highlight text on dark */
+  --color-gold-500: #d6a83f; /* primary CTA background */
+  --color-gold-600: #b88725; /* eyebrow labels on light backgrounds */
+
+  /* Typography */
+  --font-sans: "Noto Sans Bengali", system-ui, sans-serif;
+  --font-head: "Noto Serif Bengali", serif;
+
+  /* Shape */
+  --radius-card: 0.5rem; /* the design uses rounded-lg everywhere */
+
+  /* Elevation */
+  --shadow-card: 0 18px 45px rgba(4, 28, 19, 0.12);
+  --shadow-card-hover: 0 26px 55px rgba(4, 28, 19, 0.22);
+}
+
+/* Image overlays — dark emerald washes used over photos */
+:root {
+  --overlay-hero: linear-gradient(
+    180deg,
+    rgba(4, 28, 19, 0.75) 0%,
+    rgba(4, 28, 19, 0.45) 45%,
+    rgba(4, 28, 19, 0.92) 100%
+  );
+  --overlay-banner: linear-gradient(rgba(7, 46, 32, 0.78), rgba(7, 46, 32, 0.78));
+  --overlay-card: linear-gradient(180deg, rgba(4, 28, 19, 0.05) 30%, rgba(4, 28, 19, 0.92));
+  --overlay-footer: linear-gradient(135deg, rgba(15, 90, 63, 0.92), rgba(7, 46, 32, 0.95));
+  --overlay-gold: linear-gradient(rgba(214, 168, 63, 0.5), rgba(184, 135, 37, 0.5));
+}
+
+/* Global behaviour from the design */
+html {
+  scroll-behavior: smooth;
+}
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 3px solid var(--color-gold-500);
+  outline-offset: 3px;
+}
+::selection {
+  background: var(--color-gold-500);
+  color: var(--color-em-950);
+}

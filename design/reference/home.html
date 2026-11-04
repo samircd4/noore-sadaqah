@@ -1,0 +1,1285 @@
+<!doctype html>
+<html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Noore Sadaqah Foundation | নূরে সাদাকাহ ফাউন্ডেশন</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              em: {
+                50: "#EAF6F0",
+                100: "#CDE9DC",
+                500: "#1F8A63",
+                600: "#16704F",
+                700: "#0F5A3F",
+                800: "#0B4631",
+                900: "#072E20",
+                950: "#041C13",
+              },
+              sand: {
+                50: "#FBF8F2",
+                100: "#F5EEDF",
+                200: "#EADFC8",
+                300: "#DCCBA6",
+              },
+              gold: { 400: "#F4D27A", 500: "#D6A83F", 600: "#B88725" },
+            },
+            fontFamily: {
+              sans: ['"Noto Sans Bengali"', "system-ui", "sans-serif"],
+              head: ['"Noto Serif Bengali"', "serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      .bg-hero {
+        background-image:
+          linear-gradient(
+            180deg,
+            rgba(4, 28, 19, 0.75) 0%,
+            rgba(4, 28, 19, 0.45) 45%,
+            rgba(4, 28, 19, 0.92) 100%
+          ),
+          url("https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=2000&q=70"),
+          linear-gradient(135deg, #0b4631, #072e20);
+        background-size: cover;
+        background-position: center;
+      }
+      .bg-parallax {
+        background-image:
+          linear-gradient(rgba(7, 46, 32, 0.78), rgba(7, 46, 32, 0.78)),
+          url("https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=2000&q=70"),
+          linear-gradient(135deg, #16704f, #0b4631);
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+      }
+      .bg-volunteer {
+        background-image:
+          linear-gradient(
+            90deg,
+            rgba(2, 108, 69, 0.3) 20%,
+            rgba(27, 93, 69, 0.45) 100%
+          ),
+          url("https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=2000&q=70"),
+          linear-gradient(135deg, #0f5a3f, #041c13);
+        background-size: cover;
+        background-position: center;
+      }
+      .bg-quote {
+        background-image:
+          linear-gradient(rgba(214, 168, 63, 0.5), rgba(184, 135, 37, 0.5)),
+          url("https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=2000&q=70"),
+          linear-gradient(135deg, #d6a83f, #b88725);
+        background-size: cover;
+        background-position: center;
+      }
+
+      .photo-card {
+        background-size: cover;
+        background-position: center;
+      }
+      .pc-food {
+        background-image:
+          linear-gradient(
+            180deg,
+            rgba(4, 28, 19, 0.05) 30%,
+            rgba(4, 28, 19, 0.92)
+          ),
+          url("https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=900&q=70"),
+          linear-gradient(135deg, #d6a83f, #0b4631);
+      }
+      .pc-edu {
+        background-image:
+          linear-gradient(
+            180deg,
+            rgba(4, 28, 19, 0.05) 30%,
+            rgba(4, 28, 19, 0.92)
+          ),
+          url("https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=900&q=70"),
+          linear-gradient(135deg, #1f8a63, #072e20);
+      }
+      .pc-water {
+        background-image:
+          linear-gradient(
+            180deg,
+            rgba(4, 28, 19, 0.05) 30%,
+            rgba(4, 28, 19, 0.92)
+          ),
+          url("https://images.unsplash.com/photo-1541544537156-7627a7a4aa1c?auto=format&fit=crop&w=900&q=70"),
+          linear-gradient(135deg, #2b7fa8, #072e20);
+      }
+      .pc-health {
+        background-image:
+          linear-gradient(
+            180deg,
+            rgba(4, 28, 19, 0.05) 30%,
+            rgba(4, 28, 19, 0.92)
+          ),
+          url("https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=70"),
+          linear-gradient(135deg, #1f8a63, #0b4631);
+      }
+      .pc-tree {
+        background-image:
+          linear-gradient(
+            180deg,
+            rgba(4, 28, 19, 0.05) 30%,
+            rgba(4, 28, 19, 0.92)
+          ),
+          url("https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=900&q=70"),
+          linear-gradient(135deg, #16704f, #041c13);
+      }
+      .pc-mosque {
+        background-image:
+          linear-gradient(
+            180deg,
+            rgba(4, 28, 19, 0.05) 30%,
+            rgba(4, 28, 19, 0.92)
+          ),
+          url("https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=900&q=70"),
+          linear-gradient(135deg, #0f5a3f, #072e20);
+      }
+
+      .g1 {
+        background-image:
+          url("https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=900&q=70"),
+          linear-gradient(135deg, #d6a83f, #0b4631);
+      }
+      .g2 {
+        background-image:
+          url("https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=900&q=70"),
+          linear-gradient(135deg, #1f8a63, #072e20);
+      }
+      .g3 {
+        background-image:
+          url("https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=900&q=70"),
+          linear-gradient(135deg, #0f5a3f, #072e20);
+      }
+      .g4 {
+        background-image:
+          url("https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=900&q=70"),
+          linear-gradient(135deg, #b88725, #0b4631);
+      }
+      .g5 {
+        background-image:
+          url("https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=900&q=70"),
+          linear-gradient(135deg, #16704f, #d6a83f);
+      }
+      .g6 {
+        background-image:
+          url("https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=900&q=70"),
+          linear-gradient(135deg, #1f8a63, #041c13);
+      }
+      .g1,
+      .g2,
+      .g3,
+      .g4,
+      .g5,
+      .g6 {
+        background-size: cover;
+        background-position: center;
+      }
+
+      .photo-card,
+      .g1,
+      .g2,
+      .g3,
+      .g4,
+      .g5,
+      .g6,
+      .n1,
+      .n2,
+      .n3 {
+        background-repeat: no-repeat;
+      }
+      .photo-card {
+        isolation: isolate;
+        box-shadow: 0 18px 45px rgba(4, 28, 19, 0.12);
+        transition:
+          transform 0.35s ease,
+          box-shadow 0.35s ease;
+      }
+      .photo-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 26px 55px rgba(4, 28, 19, 0.22);
+      }
+      .photo-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: linear-gradient(
+          180deg,
+          rgba(4, 28, 19, 0.02) 15%,
+          rgba(4, 28, 19, 0.18) 48%,
+          rgba(4, 28, 19, 0.4) 100%
+        );
+        pointer-events: none;
+      }
+      a,
+      button {
+        -webkit-tap-highlight-color: transparent;
+      }
+      a:focus-visible,
+      button:focus-visible,
+      input:focus-visible,
+      select:focus-visible {
+        outline: 3px solid #d6a83f;
+        outline-offset: 3px;
+      }
+      ::selection {
+        background: #d6a83f;
+        color: #072e20;
+      }
+
+      .n1 {
+        background-image:
+          url("https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=800&q=70"),
+          linear-gradient(135deg, #d6a83f, #0b4631);
+      }
+      .n2 {
+        background-image:
+          url("https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=800&q=70"),
+          linear-gradient(135deg, #1f8a63, #072e20);
+      }
+      .n3 {
+        background-image:
+          url("https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=70"),
+          linear-gradient(135deg, #16704f, #d6a83f);
+      }
+      .n1,
+      .n2,
+      .n3 {
+        background-size: cover;
+        background-position: center;
+      }
+    </style>
+  </head>
+
+  <body
+    class="font-sans bg-sand-50 text-em-950 antialiased selection:bg-gold-500 selection:text-em-950 pt-22"
+  >
+    <!-- ================= HERO ================= -->
+    <section class="bg-hero relative text-white flex flex-col">
+      <header
+        class="fixed top-0 inset-x-0 z-50 w-full bg-em-900/90 backdrop-blur-md"
+      >
+        <div class="px-6 h-20 flex items-center w-full">
+          <!-- Logo -->
+          <a href="#" class="flex items-center gap-3 shrink-0">
+            <span
+              class="w-12 h-12 rounded-lg bg-gold-500 grid place-items-center text-2xl"
+            >
+              ☪
+            </span>
+
+            <span class="leading-tight">
+              <span
+                class="block font-head text-xl font-bold tracking-wider text-white"
+              >
+                Noore Sadaqah
+              </span>
+              <span
+                class="block font-head text-base font-bold tracking-[0.45em] text-sand-200"
+              >
+                Foundation
+              </span>
+            </span>
+          </a>
+
+          <!-- Navigation -->
+          <nav
+            class="hidden lg:flex items-center ml-auto mr-8 text-lg font-semibold"
+          >
+            <a
+              href="#"
+              class="px-4 py-2 text-white hover:bg-white/15 rounded-lg"
+            >
+              হোম
+            </a>
+            <a
+              href="#about"
+              class="px-4 py-2 text-white hover:bg-white/15 rounded-lg"
+            >
+              পরিচিতি
+            </a>
+            <a
+              href="#programs"
+              class="px-4 py-2 text-white hover:bg-white/15 rounded-lg"
+            >
+              কার্যক্রম
+            </a>
+            <a
+              href="#gallery"
+              class="px-4 py-2 text-white hover:bg-white/15 rounded-lg"
+            >
+              গ্যালারি
+            </a>
+            <a
+              href="#news"
+              class="px-4 py-2 text-white hover:bg-white/15 rounded-lg"
+            >
+              সংবাদ
+            </a>
+            <a
+              href="#contact"
+              class="px-4 py-2 text-white hover:bg-white/15 rounded-lg"
+            >
+              যোগাযোগ
+            </a>
+          </nav>
+
+          <!-- Right Side Buttons -->
+          <div class="flex items-center gap-4 shrink-0">
+            <div
+              class="flex items-center overflow-hidden rounded-lg border border-[#d6a83f] bg-white text-sm font-medium"
+            >
+              <button
+                type="button"
+                class="px-5 py-3 bg-[#d6a83f] text-white rounded-lg"
+              >
+                বাং
+              </button>
+              <button
+                type="button"
+                class="px-5 py-3 text-black hover:bg-blue-50 rounded-lg"
+              >
+                EN
+              </button>
+            </div>
+
+            <a
+              href="#donate"
+              class="hidden sm:inline-flex items-center justify-center gap-2 w-[120px] h-12 rounded-lg bg-gold-500 hover:bg-gold-400 text-em-950 font-bold transition"
+            >
+              <i class="fas fa-hand-holding-heart text-black" aria-hidden="true"></i>
+              দান করুন
+            </a>
+
+            <button
+              type="button"
+              aria-label="মেনু খুলুন"
+              class="lg:hidden w-11 h-11 rounded-lg bg-white/15 text-xl text-white"
+            >
+              ☰
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Hero text -->
+      <div class="flex-1 flex items-center">
+        <div class="max-w-5xl mx-auto px-4 pt-32 pb-32 text-center">
+          <p
+            class="inline-block px-5 py-1.5 rounded-lg bg-white/10 backdrop-blur border border-white/25 text-sm tracking-wide"
+          >
+            بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
+          </p>
+          <h1
+            class="mt-6 font-head text-4xl sm:text-5xl lg:text-7xl font-extrabold leading-[1.2]"
+          >
+            সাদাকাহর আলোয় <span class="text-gold-400">আলোকিত</span> হোক<br
+              class="hidden sm:block"
+            />
+            প্রতিটি ঘর
+          </h1>
+          <p
+            class="mt-5 text-lg sm:text-xl text-sand-100/90 max-w-2xl mx-auto leading-relaxed"
+          >
+            এতিম, বিধবা ও অসহায় মানুষের পাশে দাঁড়াতে নূরে সাদাকাহ ফাউন্ডেশন কাজ
+            করছে — আপনার দান আমাদের আমানত।
+          </p>
+          <div class="mt-8 flex flex-wrap justify-center gap-4 mb-8">
+            <a
+              href="#donate"
+              class="px-9 py-4 rounded-lg bg-gold-500 hover:bg-gold-400 text-em-950 text-lg font-bold transition shadow-xl shadow-gold-500/25"
+              >এখনই দান করুন</a
+            >
+            <a
+              href="#about"
+              class="px-9 py-4 rounded-lg bg-white/10 backdrop-blur border border-white/30 text-lg font-semibold hover:bg-white/20 transition"
+              >▶ ভিডিও দেখুন</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick-donate bar -->
+      <section id="donate" class="absolute -bottom-[120px] inset-x-0 z-30 px-4">
+        <div
+          class="mx-auto max-w-6xl bg-[#d6a83f] px-5 py-6 sm:px-8 sm:py-5 rounded-lg shadow-xl"
+        >
+          <h2
+            class="mb-5 text-center text-2xl font-bold text-white sm:text-3xl"
+          >
+            Noore Sadaqah Foundation-কে অনুদান দিন
+          </h2>
+
+          <div class="mx-auto max-w-5xl">
+            <div class="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <div>
+                <label class="mb-1 block text-sm text-gray-700">
+                  তহবিল <span class="text-red-500">*</span>
+                </label>
+                <select
+                  class="h-[42px] w-full rounded-lg border border-gray-300 bg-white px-3 text-gray-700 outline-none"
+                >
+                  <option>নির্বাচন করুন</option>
+                  <option>সাদাকাহ</option>
+                  <option>যাকাত</option>
+                  <option>ফিতরা</option>
+                  <option>এতিম সহায়তা</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="mb-1 block text-sm text-gray-700">
+                  নাম <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="আপনার নাম লিখুন"
+                  class="h-[42px] w-full rounded-lg border focus:border-yellow-700 focus:outline-none bg-white text-black px-3"
+                />
+              </div>
+
+              <div>
+                <label class="mb-1 block text-sm text-gray-700">
+                  মোবাইল <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="মোবাইল নম্বর লিখুন"
+                  class="h-[42px] w-full rounded-lg border bg-white text-black px-3 focus:border-yellow-700 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                class="min-w-[80px] flex-1 rounded-lg bg-em-500 px-2 py-2.5 font-bold text-white"
+              >
+                ৳ 100
+              </button>
+              <button
+                type="button"
+                class="min-w-[80px] flex-1 rounded-lg bg-em-500 px-2 py-2.5 font-bold text-white"
+              >
+                ৳ 200
+              </button>
+              <button
+                type="button"
+                class="min-w-[80px] flex-1 rounded-lg bg-em-700 hover:bg-em-500 px-2 py-2.5 font-bold text-white"
+              >
+                ৳ 500
+              </button>
+              <button
+                type="button"
+                class="min-w-[80px] flex-1 rounded-lg bg-em-500 px-2 py-2.5 font-bold text-white"
+              >
+                ৳ 1000
+              </button>
+
+              <span class="px-1 text-lg text-gray-900">Or</span>
+
+              <div class="relative inline-flex items-center">
+                <!-- Non-editable Currency Icon -->
+                <span
+                  class="absolute left-3 select-none text-gray-600 font-semibold pointer-events-none"
+                >
+                  ৳
+                </span>
+                <input
+                  type="text"
+                  placeholder="সংখ্যায় লিখুন"
+                  class="h-[42px] w-32 rounded-lg border border-gray-400 bg-white pl-6 pr-3 text-center text-black focus:border-yellow-700 focus:outline-none"
+                  value="500"
+                />
+              </div>
+
+              <button
+                type="button"
+                class="rounded-lg bg-em-700 hover:bg-em-500 px-6 py-2.5 font-bold text-white transition shadow-md"
+              >
+                দান করুন
+              </button>
+            </div>
+          </div>
+
+          <p class="mt-5 text-center text-sm leading-6 text-gray-900">
+            Noore Sadaqah Foundation-এ দান করে সওয়াবের অংশীদার হোন।
+            <a
+              href="#"
+              class="text-blue-800 font-semibold underline rounded-lg"
+            >
+              বিস্তারিত জানতে ক্লিক করুন।
+            </a>
+          </p>
+        </div>
+      </section>
+    </section>
+
+    <!-- ================= STATS ================= -->
+    <section class="pt-36 pb-12">
+      <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <div
+          class="p-5 rounded-lg bg-white border border-sand-200 text-center shadow-sm"
+        >
+          <p class="font-head text-4xl font-extrabold text-em-700">১২,৫০০+</p>
+          <p class="mt-1 text-sm text-em-900/70">উপকারভোগী পরিবার</p>
+        </div>
+        <div
+          class="p-5 rounded-lg bg-white border border-sand-200 text-center shadow-sm"
+        >
+          <p class="font-head text-4xl font-extrabold text-gold-500">৫০,০০০+</p>
+          <p class="mt-1 text-sm text-em-900/70">খাদ্য প্যাকেট</p>
+        </div>
+        <div
+          class="p-5 rounded-lg bg-white border border-sand-200 text-center shadow-sm"
+        >
+          <p class="font-head text-4xl font-extrabold text-em-700">৩,২০০+</p>
+          <p class="mt-1 text-sm text-em-900/70">এতিম শিশু</p>
+        </div>
+        <div
+          class="p-5 rounded-lg bg-white border border-sand-200 text-center shadow-sm"
+        >
+          <p class="font-head text-4xl font-extrabold text-gold-500">১ লক্ষ+</p>
+          <p class="mt-1 text-sm text-em-900/70">রোপণকৃত গাছ</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ABOUT ================= -->
+    <section id="about" class="py-12 lg:py-16">
+      <div
+        class="max-w-7xl mx-auto px-4 grid lg:grid-cols-12 gap-10 items-center"
+      >
+        <div class="lg:col-span-5 relative">
+          <div
+            class="aspect-[4/5] rounded-lg overflow-hidden bg-cover bg-center g2 shadow-2xl"
+          ></div>
+          <div
+            class="absolute -bottom-6 -right-4 sm:-right-8 w-44 sm:w-56 aspect-square rounded-lg border-8 border-sand-50 bg-cover bg-center g4 shadow-xl"
+          ></div>
+          <div
+            class="absolute top-6 -left-3 sm:-left-6 px-5 py-4 rounded-lg bg-gold-500 text-white shadow-xl"
+          >
+            <p class="font-head text-3xl font-extrabold leading-none">৫+</p>
+            <p class="text-xs mt-1">বছরের সেবা</p>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7">
+          <p class="text-gold-600 font-bold tracking-widest text-sm">
+            — আমাদের পরিচিতি
+          </p>
+          <h2
+            class="mt-2 font-head text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-em-900"
+          >
+            ইখলাস ও আমানতদারিতার সাথে মানবসেবা
+          </h2>
+          <p class="mt-4 text-lg text-em-900/80 leading-relaxed">
+            নূরে সাদাকাহ ফাউন্ডেশন কুরআন-সুন্নাহর আলোকে পরিচালিত একটি অলাভজনক
+            সংস্থা। আমরা বিশ্বাস করি, একটি ছোট দানও কারও জীবনে বড় পরিবর্তন আনতে
+            পারে।
+          </p>
+
+          <div class="mt-6 grid sm:grid-cols-3 gap-4">
+            <div class="p-4 rounded-lg bg-em-50 border border-em-100">
+              <div class="text-3xl">🛡️</div>
+              <p class="mt-2 font-bold">স্বচ্ছতা</p>
+              <p class="text-sm text-em-900/70">প্রতিটি টাকার হিসাব</p>
+            </div>
+            <div class="p-4 rounded-lg bg-em-50 border border-em-100">
+              <div class="text-3xl">🤝</div>
+              <p class="mt-2 font-bold">আমানত</p>
+              <p class="text-sm text-em-900/70">সরাসরি প্রাপকের কাছে</p>
+            </div>
+            <div class="p-4 rounded-lg bg-em-50 border border-em-100">
+              <div class="text-3xl">📖</div>
+              <p class="mt-2 font-bold">শরীয়াহ</p>
+              <p class="text-sm text-em-900/70">আলেমদের নির্দেশনায়</p>
+            </div>
+          </div>
+
+          <a
+            href="#"
+            class="mt-7 inline-flex items-center gap-3 px-7 py-3 rounded-lg bg-em-800 text-white font-semibold hover:bg-em-700 transition"
+            >আমাদের সম্পর্কে জানুন <span>→</span></a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PROGRAMS ================= -->
+    <section id="programs" class="py-14 bg-sand-100">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center max-w-2xl mx-auto">
+          <p class="text-gold-600 font-bold tracking-widest text-sm">
+            — আমাদের কার্যক্রম
+          </p>
+          <h2
+            class="mt-2 font-head text-3xl sm:text-4xl lg:text-5xl font-bold text-em-900"
+          >
+            যেখানে আপনার দান পৌঁছায়
+          </h2>
+        </div>
+
+        <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- 1. খাদ্য সহায়তা -->
+          <a
+            href="#"
+            class="photo-card pc-food group relative h-96 rounded-lg overflow-hidden flex flex-col justify-end text-white border border-sand-200/50 shadow-md transition-all duration-500 hover:shadow-2xl"
+          >
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-em-950/95 via-em-950/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"
+            ></div>
+
+            <div
+              class="relative p-6 w-full z-10 transform transition-transform duration-300 group-hover:-translate-y-1"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="inline-block px-3 py-1 rounded-lg bg-gold-500/90 backdrop-blur-sm text-em-950 text-xs font-bold tracking-wide"
+                >
+                  খাদ্য
+                </span>
+                <span
+                  class="text-xs text-sand-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1"
+                >
+                  বিস্তারিত
+                  <span class="group-hover:translate-x-1 transition-transform"
+                    >→</span
+                  >
+                </span>
+              </div>
+
+              <h3
+                class="mt-3 font-head text-2xl font-bold group-hover:text-gold-400 transition-colors"
+              >
+                খাদ্য সহায়তা
+              </h3>
+
+              <p class="mt-2 text-sm text-sand-100/90 leading-relaxed">
+                রমযান, ঈদ ও প্রাকৃতিক দুর্যোগে বিপন্ন ও অসহায় পরিবারগুলোর মাঝে
+                পুষ্টিকর খাদ্যসামগ্রী বিতরণ।
+              </p>
+            </div>
+          </a>
+
+          <!-- 2. এতিম ও শিক্ষা সেবা -->
+          <a
+            href="#"
+            class="photo-card pc-edu group relative h-96 rounded-lg overflow-hidden flex flex-col justify-end text-white border border-sand-200/50 shadow-md transition-all duration-500 hover:shadow-2xl"
+          >
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-em-950/95 via-em-950/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"
+            ></div>
+
+            <div
+              class="relative p-6 w-full z-10 transform transition-transform duration-300 group-hover:-translate-y-1"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="inline-block px-3 py-1 rounded-lg bg-gold-500/90 backdrop-blur-sm text-em-950 text-xs font-bold tracking-wide"
+                >
+                  শিক্ষা
+                </span>
+                <span
+                  class="text-xs text-sand-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1"
+                >
+                  বিস্তারিত
+                  <span class="group-hover:translate-x-1 transition-transform"
+                    >→</span
+                  >
+                </span>
+              </div>
+
+              <h3
+                class="mt-3 font-head text-2xl font-bold group-hover:text-gold-400 transition-colors"
+              >
+                এতিম ও শিক্ষা সেবা
+              </h3>
+
+              <p class="mt-2 text-sm text-sand-100/90 leading-relaxed">
+                সুবিধাবঞ্চিত শিশু ও এতিমদের শিক্ষাবৃত্তি, বিনামূল্যে বই, পোশাক ও
+                মাসিক ভরণপোষণ প্রদান।
+              </p>
+            </div>
+          </a>
+
+          <!-- 3. বিশুদ্ধ পানি প্রকল্প -->
+          <a
+            href="#"
+            class="photo-card pc-water group relative h-96 rounded-lg overflow-hidden flex flex-col justify-end text-white border border-sand-200/50 shadow-md transition-all duration-500 hover:shadow-2xl"
+          >
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-em-950/95 via-em-950/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"
+            ></div>
+
+            <div
+              class="relative p-6 w-full z-10 transform transition-transform duration-300 group-hover:-translate-y-1"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="inline-block px-3 py-1 rounded-lg bg-gold-500/90 backdrop-blur-sm text-em-950 text-xs font-bold tracking-wide"
+                >
+                  পানি
+                </span>
+                <span
+                  class="text-xs text-sand-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1"
+                >
+                  বিস্তারিত
+                  <span class="group-hover:translate-x-1 transition-transform"
+                    >→</span
+                  >
+                </span>
+              </div>
+
+              <h3
+                class="mt-3 font-head text-2xl font-bold group-hover:text-gold-400 transition-colors"
+              >
+                বিশুদ্ধ পানি প্রকল্প
+              </h3>
+
+              <p class="mt-2 text-sm text-sand-100/90 leading-relaxed">
+                নলকূপ স্থাপন ও গভীর সুপেয় পানির ব্যবস্থা — নিরবচ্ছিন্ন সাদাকায়ে
+                জারিয়ার উত্তম সুযোগ।
+              </p>
+            </div>
+          </a>
+
+          <!-- 4. চিকিৎসা সহায়তা -->
+          <a
+            href="#"
+            class="photo-card pc-health group relative h-96 rounded-lg overflow-hidden flex flex-col justify-end text-white border border-sand-200/50 shadow-md transition-all duration-500 hover:shadow-2xl"
+          >
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-em-950/95 via-em-950/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"
+            ></div>
+
+            <div
+              class="relative p-6 w-full z-10 transform transition-transform duration-300 group-hover:-translate-y-1"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="inline-block px-3 py-1 rounded-lg bg-gold-500/90 backdrop-blur-sm text-em-950 text-xs font-bold tracking-wide"
+                >
+                  স্বাস্থ্য
+                </span>
+                <span
+                  class="text-xs text-sand-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1"
+                >
+                  বিস্তারিত
+                  <span class="group-hover:translate-x-1 transition-transform"
+                    >→</span
+                  >
+                </span>
+              </div>
+
+              <h3
+                class="mt-3 font-head text-2xl font-bold group-hover:text-gold-400 transition-colors"
+              >
+                চিকিৎসা সহায়তা
+              </h3>
+
+              <p class="mt-2 text-sm text-sand-100/90 leading-relaxed">
+                দরিদ্র রোগীর জরুরী চিকিৎসা খরচ বহন ও বিনামূল্যে বিশেষজ্ঞ মেডিকেল
+                ক্যাম্প পরিচালনা।
+              </p>
+            </div>
+          </a>
+
+          <!-- 5. বৃক্ষরোপণ -->
+          <a
+            href="#"
+            class="photo-card pc-tree group relative h-96 rounded-lg overflow-hidden flex flex-col justify-end text-white border border-sand-200/50 shadow-md transition-all duration-500 hover:shadow-2xl"
+          >
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-em-950/95 via-em-950/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"
+            ></div>
+
+            <div
+              class="relative p-6 w-full z-10 transform transition-transform duration-300 group-hover:-translate-y-1"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="inline-block px-3 py-1 rounded-lg bg-gold-500/90 backdrop-blur-sm text-em-950 text-xs font-bold tracking-wide"
+                >
+                  পরিবেশ
+                </span>
+                <span
+                  class="text-xs text-sand-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1"
+                >
+                  বিস্তারিত
+                  <span class="group-hover:translate-x-1 transition-transform"
+                    >→</span
+                  >
+                </span>
+              </div>
+
+              <h3
+                class="mt-3 font-head text-2xl font-bold group-hover:text-gold-400 transition-colors"
+              >
+                বৃক্ষরোপণ কর্মসূচি
+              </h3>
+
+              <p class="mt-2 text-sm text-sand-100/90 leading-relaxed">
+                পরিবেশ রক্ষা ও সওয়াবের আশায় ফলদ ও ঔষধি গাছ লাগিয়ে
+                দীর্ঘমেয়াদী কল্যাণ ত্বরান্বিত করা।
+              </p>
+            </div>
+          </a>
+
+          <!-- 6. মসজিদ ও মাদ্রাসা সহায়তা -->
+          <a
+            href="#"
+            class="photo-card pc-mosque group relative h-96 rounded-lg overflow-hidden flex flex-col justify-end text-white border border-sand-200/50 shadow-md transition-all duration-500 hover:shadow-2xl"
+          >
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-em-950/95 via-em-950/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"
+            ></div>
+
+            <div
+              class="relative p-6 w-full z-10 transform transition-transform duration-300 group-hover:-translate-y-1"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="inline-block px-3 py-1 rounded-lg bg-gold-500/90 backdrop-blur-sm text-em-950 text-xs font-bold tracking-wide"
+                >
+                  দ্বীন
+                </span>
+                <span
+                  class="text-xs text-sand-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1"
+                >
+                  বিস্তারিত
+                  <span class="group-hover:translate-x-1 transition-transform"
+                    >→</span
+                  >
+                </span>
+              </div>
+
+              <h3
+                class="mt-3 font-head text-2xl font-bold group-hover:text-gold-400 transition-colors"
+              >
+                মসজিদ ও মাদ্রাসা সহায়তা
+              </h3>
+
+              <p class="mt-2 text-sm text-sand-100/90 leading-relaxed">
+                দ্বীনি শিক্ষার প্রসার এবং আল্লাহর ঘর মসজিদ ও মাদ্রাসার অবকাঠামো
+                নির্মাণ ও সংস্কার কাজ।
+              </p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PARALLAX CAMPAIGN BANNER ================= -->
+    <section class="bg-parallax text-white py-16 lg:py-20">
+      <div
+        class="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-10 items-center"
+      >
+        <div>
+          <span
+            class="inline-block px-4 py-1.5 rounded-lg bg-gold-500 text-sm font-bold"
+            >🔥 জরুরি ক্যাম্পেইন</span
+          >
+          <h2
+            class="mt-4 font-head text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight"
+          >
+            একজন এতিমের মুখে হাসি ফোটান
+          </h2>
+          <p class="mt-4 text-lg text-sand-100/90 leading-relaxed max-w-xl">
+            মাত্র মাসিক ১,০০০ টাকায় একজন এতিমের খাবার, পড়াশোনা ও চিকিৎসার
+            দায়িত্ব নিন।
+          </p>
+
+          <div class="mt-6 max-w-xl">
+            <div
+              class="h-3 rounded-lg bg-white/20 overflow-hidden border border-white/10"
+            >
+              <div class="h-full w-[64%] rounded-lg bg-gold-500"></div>
+            </div>
+            <div class="mt-2 flex justify-between text-sm text-sand-100/90">
+              <span>৳ ৩,২০,০০০ সংগৃহীত</span><span>লক্ষ্য ৳ ৫,০০,০০০</span>
+            </div>
+          </div>
+
+          <div class="mt-7 flex flex-wrap gap-4">
+            <a
+              href="#"
+              class="px-7 py-3.5 rounded-lg bg-gold-500 hover:bg-gold-400 font-bold transition"
+              >স্পনসর করুন</a
+            >
+            <a
+              href="#"
+              class="px-7 py-3.5 rounded-lg border border-white/40 hover:bg-white/10 font-semibold transition"
+              >বিস্তারিত</a
+            >
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4">
+          <div
+            class="p-4 rounded-lg bg-white/10 backdrop-blur border border-white/20 text-center"
+          >
+            <p class="font-head text-3xl font-bold">৫০০</p>
+            <p class="text-xs mt-1 text-sand-100/80">টাকা / মাস</p>
+          </div>
+          <div class="p-4 rounded-lg bg-gold-500 text-center shadow-xl">
+            <p class="font-head text-3xl font-bold">১০০০</p>
+            <p class="text-xs mt-1">টাকা / মাস</p>
+          </div>
+          <div
+            class="p-4 rounded-lg bg-white/10 backdrop-blur border border-white/20 text-center"
+          >
+            <p class="font-head text-3xl font-bold">২০০০</p>
+            <p class="text-xs mt-1 text-sand-100/80">টাকা / মাস</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= GALLERY ================= -->
+    <section id="gallery" class="py-14 lg:py-20">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-gold-600 font-bold tracking-widest text-sm">
+              — গ্যালারি
+            </p>
+            <h2
+              class="mt-2 font-head text-3xl sm:text-4xl lg:text-5xl font-bold text-em-900"
+            >
+              মুহূর্তের ফ্রেম
+            </h2>
+          </div>
+          <a
+            href="#"
+            class="font-semibold text-em-700 border-b-2 border-gold-500 pb-1 rounded-lg"
+            >সব ছবি দেখুন →</a
+          >
+        </div>
+
+        <div
+          class="mt-10 grid grid-cols-2 md:grid-cols-4 auto-rows-[170px] gap-4"
+        >
+          <div
+            class="g1 col-span-2 row-span-2 rounded-lg hover:scale-[1.015] transition border border-sand-200"
+          ></div>
+          <div
+            class="g2 rounded-lg hover:scale-[1.03] transition border border-sand-200"
+          ></div>
+          <div
+            class="g3 rounded-lg hover:scale-[1.03] transition border border-sand-200"
+          ></div>
+          <div
+            class="g4 row-span-2 rounded-lg hover:scale-[1.02] transition border border-sand-200"
+          ></div>
+          <div
+            class="g5 rounded-lg hover:scale-[1.03] transition border border-sand-200"
+          ></div>
+          <div
+            class="g6 col-span-2 rounded-lg hover:scale-[1.015] transition border border-sand-200"
+          ></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= QUOTE ================= -->
+    <section class="bg-quote text-white py-14">
+      <div class="max-w-4xl mx-auto px-4 text-center">
+        <div class="text-6xl leading-none opacity-80">❝</div>
+        <p
+          class="mt-2 font-head text-2xl sm:text-3xl lg:text-4xl font-bold leading-snug"
+        >
+          সাদাকাহ সম্পদ কমায় না — বরং বরকত বাড়ায়।
+        </p>
+        <p class="mt-4 text-white/85 text-sm">হাদীসের মর্মার্থ · সহীহ মুসলিম</p>
+      </div>
+    </section>
+
+    <!-- ================= NEWS ================= -->
+    <section id="news" class="py-14 lg:py-20">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center max-w-2xl mx-auto">
+          <p class="text-gold-600 font-bold tracking-widest text-sm">— সংবাদ</p>
+          <h2
+            class="mt-2 font-head text-3xl sm:text-4xl lg:text-5xl font-bold text-em-900"
+          >
+            সাম্প্রতিক আপডেট
+          </h2>
+        </div>
+
+        <div class="mt-10 grid md:grid-cols-3 gap-6">
+          <article
+            class="group bg-white rounded-lg overflow-hidden border border-sand-200 hover:shadow-xl transition"
+          >
+            <div
+              class="n1 h-48 group-hover:scale-105 transition duration-700 rounded-t-lg"
+            ></div>
+            <div class="p-5 bg-white relative">
+              <p class="text-xs text-gold-600 font-bold">
+                ২০ অক্টোবর ২০২৬ · ত্রাণ
+              </p>
+              <h3 class="mt-2 font-head text-xl font-bold text-em-900">
+                বন্যাকবলিত এলাকায় ১,০০০ পরিবারে ত্রাণ
+              </h3>
+              <a
+                href="#"
+                class="mt-3 inline-block font-semibold text-em-700 rounded-lg"
+                >পড়ুন →</a
+              >
+            </div>
+          </article>
+          <article
+            class="group bg-white rounded-lg overflow-hidden border border-sand-200 hover:shadow-xl transition"
+          >
+            <div
+              class="n2 h-48 group-hover:scale-105 transition duration-700 rounded-t-lg"
+            ></div>
+            <div class="p-5 bg-white relative">
+              <p class="text-xs text-gold-600 font-bold">
+                ১২ অক্টোবর ২০২৬ · শিক্ষা
+              </p>
+              <h3 class="mt-2 font-head text-xl font-bold text-em-900">
+                ৫০০ শিক্ষার্থীর মাঝে শিক্ষাসামগ্রী প্রদান
+              </h3>
+              <a
+                href="#"
+                class="mt-3 inline-block font-semibold text-em-700 rounded-lg"
+                >পড়ুন →</a
+              >
+            </div>
+          </article>
+          <article
+            class="group bg-white rounded-lg overflow-hidden border border-sand-200 hover:shadow-xl transition"
+          >
+            <div
+              class="n3 h-48 group-hover:scale-105 transition duration-700 rounded-t-lg"
+            ></div>
+            <div class="p-5 bg-white relative">
+              <p class="text-xs text-gold-600 font-bold">
+                ০৪ অক্টোবর ২০২৬ · স্বাস্থ্য
+              </p>
+              <h3 class="mt-2 font-head text-xl font-bold text-em-900">
+                ফ্রি মেডিকেল ক্যাম্পে ৮০০ রোগীকে সেবা
+              </h3>
+              <a
+                href="#"
+                class="mt-3 inline-block font-semibold text-em-700 rounded-lg"
+                >পড়ুন →</a
+              >
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VOLUNTEER CTA ================= -->
+    <section class="px-4 pb-14">
+      <div
+        class="bg-volunteer max-w-7xl mx-auto rounded-lg overflow-hidden text-white px-6 py-12 lg:px-12 lg:py-16 border border-sand-200"
+      >
+        <div class="max-w-xl">
+          <p class="text-gold-400 font-bold tracking-widest text-sm">
+            — যুক্ত হোন
+          </p>
+          <h2
+            class="mt-2 font-head text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight"
+          >
+            আপনিও হোন এই কাফেলার অংশ
+          </h2>
+          <p class="mt-4 text-sand-100/85 text-lg">
+            স্বেচ্ছাসেবক হিসেবে সময় দিন, অথবা নিয়মিত মাসিক ডোনার হয়ে সাদাকাহর
+            ধারাবাহিকতা বজায় রাখুন।
+          </p>
+          <div class="mt-6 flex flex-wrap gap-4">
+            <a
+              href="#"
+              class="px-7 py-3.5 rounded-lg bg-gold-500 hover:bg-gold-400 font-bold transition"
+              >স্বেচ্ছাসেবক হোন</a
+            >
+            <a
+              href="#"
+              class="px-7 py-3.5 rounded-lg border border-white/40 hover:bg-white/10 font-semibold transition"
+              >মাসিক ডোনার</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer
+      id="contact"
+      class="relative text-sand-200/80 border-t border-em-600 bg-cover bg-center bg-no-repeat"
+      style="
+        background-image:
+          linear-gradient(
+            135deg,
+            rgba(15, 90, 63, 0.92),
+            rgba(7, 46, 32, 0.95)
+          ),
+          url(&quot;https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=2000&q=70&quot;);
+      "
+    >
+      <!-- Main Footer Content -->
+      <div
+        class="max-w-7xl mx-auto px-4 pt-8 pb-12 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-x-3 gap-y-4 relative z-10"
+      >
+        <div>
+          <a href="#" class="flex items-center gap-3">
+            <span
+              class="w-12 h-12 rounded-lg bg-gold-500 text-white grid place-items-center text-2xl"
+              >☪</span
+            >
+            <span class="leading-tight">
+              <span
+                class="block font-head text-xl font-bold tracking-wider text-white"
+              >
+                Noore Sadaqah
+              </span>
+              <span
+                class="block font-head text-base font-bold tracking-[0.45em] text-sand-200"
+              >
+                Foundation
+              </span>
+            </span>
+          </a>
+          <p class="mt-4 text-sm leading-relaxed">
+            সাদাকাহ ও মানবসেবার মাধ্যমে সমাজে নূর ছড়ানোর বিনীত প্রয়াস।
+          </p>
+          <div class="mt-4 flex gap-3">
+            <a
+              href="#"
+              class="w-10 h-10 rounded-lg bg-white/10 grid place-items-center hover:bg-gold-500 hover:text-white transition"
+              >f</a
+            >
+            <a
+              href="#"
+              class="w-10 h-10 rounded-lg bg-white/10 grid place-items-center hover:bg-gold-500 hover:text-white transition"
+              >▶</a
+            >
+            <a
+              href="#"
+              class="w-10 h-10 rounded-lg bg-white/10 grid place-items-center hover:bg-gold-500 hover:text-white transition"
+              >in</a
+            >
+          </div>
+        </div>
+
+        <div>
+          <h5 class="text-white font-bold mb-3">লিংক</h5>
+          <ul class="space-y-2 text-sm">
+            <li>
+              <a href="#about" class="hover:text-gold-400 rounded-lg"
+                >পরিচিতি</a
+              >
+            </li>
+            <li>
+              <a href="#programs" class="hover:text-gold-400 rounded-lg"
+                >কার্যক্রম</a
+              >
+            </li>
+            <li>
+              <a href="#gallery" class="hover:text-gold-400 rounded-lg"
+                >গ্যালারি</a
+              >
+            </li>
+            <li>
+              <a href="#news" class="hover:text-gold-400 rounded-lg">সংবাদ</a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="text-white font-bold mb-3">সহযোগিতা</h5>
+          <ul class="space-y-2 text-sm">
+            <li>
+              <a href="#donate" class="hover:text-gold-400 rounded-lg"
+                >দান করুন</a
+              >
+            </li>
+            <li>
+              <a href="#programs" class="hover:text-gold-400 rounded-lg"
+                >আমাদের উদ্যোগ</a
+              >
+            </li>
+            <li>
+              <a href="#news" class="hover:text-gold-400 rounded-lg"
+                >সাফল্যের গল্প</a
+              >
+            </li>
+            <li>
+              <a href="#contact" class="hover:text-gold-400 rounded-lg"
+                >স্বেচ্ছাসেবক হোন</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="text-white font-bold mb-3">যোগাযোগ</h5>
+          <ul class="space-y-2 text-sm">
+            <li>📍 ঢাকা, বাংলাদেশ</li>
+            <li>📞 +880 1XXX-XXXXXX</li>
+            <li>✉️ info@nooresadaqah.org</li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="text-white font-bold mb-3">আপডেট পান</h5>
+          <div class="flex rounded-lg bg-white/10 p-1 border border-white/10">
+            <input
+              class="flex-1 bg-transparent px-3 text-sm outline-none placeholder:text-sand-200/50 rounded-lg text-white"
+              placeholder="ইমেইল লিখুন"
+            />
+            <button
+              class="px-4 py-2 rounded-lg bg-gold-500 text-white font-bold text-sm whitespace-nowrap hover:bg-gold-400 transition"
+            >
+              যুক্ত হোন
+            </button>
+          </div>
+          <p class="mt-4 text-xs text-sand-200/60">
+            bKash · Nagad · Rocket · Visa · Mastercard
+          </p>
+        </div>
+      </div>
+
+      <!-- Copyright Bar -->
+      <div class="border-t border-white/10 relative z-10">
+        <div
+          class="max-w-7xl mx-auto px-4 py-5 flex flex-wrap justify-between gap-3 text-xs text-sand-200/60"
+        >
+          <p>© 2026 Noore Sadaqah Foundation. সর্বস্বত্ব সংরক্ষিত।</p>
+          <p>ছবি: Unsplash (ডিজাইন নমুনা)</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
