@@ -16,7 +16,7 @@ The contract between `frontend/` and `backend/`. **Change this file first**, the
 | Pagination | `?page=N`, 12 items per page: `{ "count", "page", "pages", "results": [...] }`. |
 | Images | `{ "url", "alt", "width", "height" }`. `url` is on `NEXT_PUBLIC_MEDIA_HOST`. |
 | Mock | `frontend/src/mocks/` implements this whole contract for frontend-first work (ARCHITECTURE.md "API modes") and must change in the same commit as this file. Mock-only behaviour: `POST /donations/` returns `redirect_url: "/donate/mock-gateway?id=…"`; the OTP code is always `123456`; in `static` mode every write returns `503 comingSoon`. |
-| Caching | Public GETs send `Cache-Control: public, max-age=60`. Next.js caches with tags (listed per endpoint) and Django triggers `/internal/revalidate` on admin saves. |
+| Caching | Public GETs send `Cache-Control: public, max-age=60`. Next.js caches them with `"use cache"` + `cacheTag` (tags listed per endpoint); Django triggers `/internal/revalidate` on admin saves, which calls `revalidateTag(tag, "max")`. |
 
 ### Errors
 

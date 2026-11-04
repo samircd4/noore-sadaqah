@@ -35,6 +35,11 @@
 - Add the analytics domains to the CSP only when consent is given (SECURITY.md §8), or allow them in CSP and rely on
   not loading the script; pick one and test it.
 
+## Core Web Vitals
+
+Google ranks on mobile performance. Targets and how to meet them: RESPONSIVE.md §12. Watch the field data in
+Search Console → Core Web Vitals after launch.
+
 ## Search Console
 
 At launch: verify the domain (DNS TXT on Cloudflare), submit `sitemap.xml`, check both languages are indexed after a week.

@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+/* Palette, fonts, shadows, overlays and z-index layers: the single source of truth (CLAUDE.md rule 4). */
+@import "../../../design/tokens.css";
+
+/*
+ * next/font loads Noto Sans/Serif Bengali under generated family names and exposes them as
+ * --font-noto-sans / --font-noto-serif on <html>. Point the theme's font-sans / font-head at them,
+ * keeping the plain family names from tokens.css as fallbacks.
+ */
+@theme inline {
+  --font-sans: var(--font-noto-sans), "Noto Sans Bengali", system-ui, sans-serif;
+  --font-head: var(--font-noto-serif), "Noto Serif Bengali", serif;
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent; /* docs/RESPONSIVE.md §11; controls show an active: state instead */
+  }
+
+  body {
+    @apply bg-sand-50 font-sans text-base leading-relaxed text-em-950 antialiased;
+  }
+}

@@ -30,6 +30,7 @@ Nginx serves one domain: `/` → Next.js, `/api/` and `/admin/` → Django (see 
 | `docs/DONATION_FLOW.md` | Payments, recurring giving, receipts, zakat calculator |
 | `docs/SECURITY.md` | JWT cookies, CSRF, headers, throttles, PII rules |
 | `docs/DESIGN_SYSTEM.md` | Palette, typography, component classes, contrast rules |
+| `docs/RESPONSIVE.md` | **Mobile spec**: widths down to 320px, phone layout of every section and page, touch, performance |
 | `docs/HOME_PAGE.md` | Home page section map, seed content, fixes to apply |
 | `docs/PAGES.md` | Section-by-section spec for every page other than home |
 | `docs/ADMIN.md` | Django admin: staff groups, permissions, admin screens, workflows |
@@ -60,7 +61,7 @@ Nginx serves one domain: `/` → Next.js, `/api/` and `/admin/` → Django (see 
 11. **Secrets stay in `.env` files that are never committed.** Never `NEXT_PUBLIC_` a secret. Update the matching `.env.example` when adding a variable.
 12. **Zakat money stays in zakat funds.** No code path may move a zakat donation to a non-zakat fund.
 13. **Never log or send to Sentry** donor phone numbers, emails, OTP codes, tokens or gateway secrets.
-14. **Mobile first.** Check every page at 375px: no overlap, no horizontal scroll.
+14. **Mobile first, down to 320px.** Follow `docs/RESPONSIVE.md`: build the phone layout first, check every component at 320, 375, 768 and 1440, touch targets ≥ 44px, no horizontal scroll. Its "definition of done" (§18) applies to every page.
 
 ## Conventions
 

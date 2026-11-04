@@ -108,6 +108,27 @@ before any backend code exists; frontend and backend work don't block each other
 - Payment, receipt, SMS and security behaviour can only be truly tested once Django exists (QA_CHECKLIST.md note).
 - **Replaces:** the old roadmap order, where the backend started after the static pages.
 
+## D14. Mobile: 320px minimum and a sticky donate bar (2026-11-04, Decided)
+
+**Decision:** The site must look right from **320px** wide (not only "no horizontal scroll"). Phones and tablets
+(below 1024px) get a **sticky "দান করুন" bar** at the bottom of the screen. Full spec: `RESPONSIVE.md`.
+**Why:** Most donors are on phones, many on budget Android devices and in Facebook/WhatsApp in-app browsers; the
+approved design's header and some sections don't fit on phones. A visible donate button on every scroll position is a
+common, effective pattern for charity sites.
+**Consequences:**
+- The sticky bar is a **design addition** to `design/reference/home.html` (HOME_PAGE.md fix 15); its hide rules are in RESPONSIVE.md §9.
+- The phone header differs from the design (HOME_PAGE.md fix 16).
+- Inputs are 44px tall instead of the design's 42px (touch target and no iOS zoom).
+
+## D15. Next.js 16.4 defaults kept; `master` branch (2026-11-04, Decided)
+
+**Decision:** Keep the create-next-app defaults of Next.js 16.4: **Cache Components** (`cacheComponents: true`) and
+Partial Prefetching. Public content is cached with `"use cache"` + `cacheTag`; the locale comes from
+`next/root-params`. The default git branch is **`master`**.
+**Why:** Cache Components becomes the only model in the next major version; starting on it avoids a migration.
+**Consequences:** `src/lib/api.js` has two functions, `apiGet()` (cached, no request headers) and `apiRequest()`
+(uncached). Next.js must run with `HOSTNAME=localhost` in production (DEPLOYMENT.md).
+
 ---
 
 ## Open decisions (foundation must answer; don't guess)

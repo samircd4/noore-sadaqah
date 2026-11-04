@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "siteName": "Noore Sadaqah Foundation",
+    "titleTemplate": "%s | Noore Sadaqah Foundation",
+    "description": "Noore Sadaqah Foundation stands beside orphans, widows and people in need. Your donation is our trust."
+  },
+  "common": {
+    "skipToContent": "Skip to main content",
+    "loading": "Loading…",
+    "comingSoon": "Coming soon"
+  },
+  "setup": {
+    "title": "Noore Sadaqah Foundation",
+    "body": "The website is being built."
+  },
+  "errors": {
+    "required": "Please fill in this field",
+    "mobileInvalid": "Enter a valid mobile number (01XXXXXXXXX)",
+    "emailInvalid": "Enter a valid email address",
+    "minAmount": "The minimum amount is ৳{min}",
+    "maxAmount": "The maximum amount is ৳{max}",
+    "amountInvalid": "Enter a valid amount (whole numbers only)",
+    "fundInactive": "This fund is not accepting donations right now",
+    "recurringNotAllowed": "Monthly giving isn't available for this fund",
+    "campaignEnded": "This campaign has ended",
+    "onBehalfPermission": "Please confirm you have permission from the person you are giving for",
+    "otpInvalid": "That code is not correct",
+    "otpExpired": "The code has expired, please request a new one",
+    "otpTooManyAttempts": "Too many wrong codes, please request a new one",
+    "fitraClosed": "Fitra collection for this year has closed",
+    "tooLong": "This text is too long",
+    "validation": "Please correct the errors in the form",
+    "authRequired": "Please log in",
+    "tokenInvalid": "Your session has expired, please log in again",
+    "forbidden": "You don't have permission to see this page",
+    "notFound": "Not found",
+    "conflict": "This action isn't possible right now",
+    "throttled": "Too many attempts, please try again in a little while",
+    "gatewayUnavailable": "The payment service isn't available right now, please try again shortly",
+    "comingSoon": "This feature is coming soon",
+    "apiUnavailable": "Can't reach the server right now, please try again shortly",
+    "unknown": "Something went wrong, please try again"
+  }
+}

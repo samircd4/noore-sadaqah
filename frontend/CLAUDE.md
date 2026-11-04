@@ -22,21 +22,27 @@ Tailwind CSS v4 with `../design/tokens.css` · next-intl · Zod + react-hook-for
    Never return a token to the browser or store one in `localStorage` (`../docs/SECURITY.md` §2).
 6. **Next 16 specifics:** route protection and token refresh live in `src/proxy.js` (not `middleware.js`).
    `params`, `searchParams`, `cookies()` and `headers()` are async: `const { slug } = await params`.
-7. **Caching:** public GETs use `next: { tags: [...], revalidate: 300 }` with the tags listed in API.md.
-   Donor data (`/me/*`) is always `cache: "no-store"`.
-8. **Every `apiGet()` sends** `Accept-Language` (current locale) and `X-Forwarded-For` (from the incoming request).
+7. **Caching (Cache Components are on):** public content goes through `apiGet(path, { locale, tags })`, which is
+   cached with `"use cache"` + `cacheTag` + `cacheLife`; pass the tags listed in API.md. Writes, donation status and
+   donor data (`/me/*`) go through `apiRequest()`, which is never cached. Never call `headers()` or `cookies()` inside
+   a `"use cache"` scope: read them outside and pass values in. Uncached data in a page goes inside `<Suspense>`.
+8. **Every call sends** `Accept-Language` (the locale you pass; read it with `locale()` from `next/root-params` in server
+   components). `apiRequest()` also forwards `X-Forwarded-For` from the incoming request.
 9. **Reuse `src/components/ui/*`** (Button, Badge, SectionHeader, StatCard, ProgressBar, Input, Select, EmptyState,
    Pagination, Accordion, Tabs, Breadcrumb) before writing new markup. One component per file, PascalCase.
 10. **Styling:** only palette tokens (`em-*`, `sand-*`, `gold-*`); `rounded-lg` everywhere; headings `font-head`.
     Text on gold is `text-em-950`. See `../docs/DESIGN_SYSTEM.md`.
 11. **Text:** every UI label in `messages/bn.json` **and** `messages/en.json` (same keys). Numbers with `bnNumber()`,
     money with `taka()`, dates with `bnDate()` from `src/lib/format.js`. Convert input digits with `toLatinDigits()` before Zod.
-12. **Images:** `next/image` with Bengali `alt` (from the API's `alt` field); the R2 host is in `images.remotePatterns`.
+12. **Images:** `next/image` with Bengali `alt` (from the API's `alt` field) and a **`sizes` value from `../docs/RESPONSIVE.md` §12**; the R2 host is in `images.remotePatterns`.
     The hero image uses `priority`.
 13. **HTML from the API** (`body_html`) is already sanitized by Django; render it only in the prose component. Never
     inject any other HTML.
 14. **Each page** has `generateMetadata` (SEO_ANALYTICS.md) and handles a 404 from the API with `notFound()`.
-15. **Mobile first:** check every page at 375px; no horizontal scroll.
+15. **Mobile first, down to 320px:** follow `../docs/RESPONSIVE.md`. Unprefixed classes are the phone layout; check at 320, 375, 768 and 1440; meet its definition of done (§18). Use the z-index tokens (`z-(--z-header)` …), never raw z values.
+16. **Next.js 16.4 differs from older versions.** Before using an API you are unsure of, read the bundled docs in
+   `node_modules/next/dist/docs/` (see `AGENTS.md`). The locale comes from `next/root-params` (the `[locale]` root
+   segment); don't use next-intl's deprecated `setRequestLocale`.
 
 ## Commands
 

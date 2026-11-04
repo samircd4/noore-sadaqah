@@ -46,7 +46,7 @@ PostgreSQL, Redis. Media on Cloudflare R2. Details: `DEPLOYMENT.md`.
 
 ```
                          ┌───────────────────────── VPS ─────────────────────────────┐
-Browser ── HTTPS ──► Nginx ─┬─ /                    → Next.js  127.0.0.1:3000          │
+Browser ── HTTPS ──► Nginx ─┬─ /                    → Next.js  localhost:3000          │
                             ├─ /admin/              → Gunicorn 127.0.0.1:8000 (Django) │
                             ├─ /dj-static/          → files from collectstatic         │
                             ├─ /api/v1/payments/    → Django (gateway callbacks)       │
@@ -57,7 +57,7 @@ Browser ── HTTPS ──► Nginx ─┬─ /                    → Next.js 
 Next.js server ── http://127.0.0.1:8000/api/v1/… (Bearer JWT, X-Forwarded-For) ──► Django
 Django ── PostgreSQL · Redis ──► Celery worker / beat
 Django ── SSLCommerz · bKash · SMS gateway · email · Cloudflare R2
-Django ── POST http://127.0.0.1:3000/internal/revalidate (secret) ──► Next.js cache
+Django ── POST http://localhost:3000/internal/revalidate (secret) ──► Next.js cache
                          └──────────────────────────────────────────────────────────┘
 ```
 
@@ -73,9 +73,12 @@ Rules:
    expired access token before the page renders. Browser JavaScript never sees a token (`SECURITY.md`).
 5. **Client IP:** Nginx sets `X-Forwarded-For: $remote_addr` (overwrite, not append). Next.js forwards that value to
    Django, so throttles count the real visitor, not the Next.js server. Django trusts the header only from `127.0.0.1`.
-6. **Caching:** public GETs use `fetch(url, { next: { tags: ["programs"] , revalidate: 300 } })`. When staff save in
-   the admin, a Django signal enqueues a Celery task that POSTs the changed tags to Next's `/internal/revalidate`
-   (header `X-Revalidate-Secret`). Nginx blocks `/internal/` from outside.
+6. **Caching (Next.js Cache Components, `cacheComponents: true`):** public content is read with `apiGet()`, which
+   runs inside `"use cache"` with `cacheTag(...)` (tags per endpoint in API.md) and `cacheLife("minutes")`. Cached
+   functions can't read headers or cookies, so the locale is passed in. Everything else (writes, donation status,
+   `/me/*`) uses `apiRequest()`, which is never cached. When staff save in the admin, a Django signal enqueues a
+   Celery task that POSTs the changed tags to Next's `/internal/revalidate` (header `X-Revalidate-Secret`), which
+   calls `revalidateTag(tag, "max")`. Nginx blocks `/internal/` from outside.
 7. **Gateway callbacks go to Django.** After validation Django **303-redirects** the browser to
    `/donate/success?id=…` or `/donate/failed?id=…` on the Next.js side (`DONATION_FLOW.md`).
 8. **Client components** (`"use client"`) only where there is interaction: quick-donate form, donate form, mobile menu,
@@ -146,7 +149,7 @@ noore-sadaqah/
 │       ├── components/
 │       │   ├── ui/          # Button, Badge, Input, Select, SectionHeader, StatCard, ProgressBar,
 │       │   │                # EmptyState, Pagination, Accordion, Tabs, Breadcrumb
-│       │   ├── layout/      # Header, MobileMenu, Footer, LanguageSwitch, PageHero, CookieBanner
+│       │   ├── layout/      # Header, MobileMenu, MobileDonateBar, Footer, LanguageSwitch, PageHero, CookieBanner
 │       │   ├── home/        # Hero, Stats, AboutPreview, Programs, ProgramCard, CampaignBanner, …
 │       │   └── donate/      # QuickDonate, AmountPicker, FundCard, DonateForm, DonateCta
 │       ├── mocks/           # in-process mock of API.md (see "API modes")
@@ -231,7 +234,7 @@ DATABASE_URL=postgres://noore:***@127.0.0.1:5432/noore
 REDIS_URL=redis://127.0.0.1:6379/0
 
 SITE_URL=https://nooresadaqah.org                 # used to build callback and redirect URLs
-FRONTEND_INTERNAL_URL=http://127.0.0.1:3000       # for the revalidate hook
+FRONTEND_INTERNAL_URL=http://localhost:3000       # for the revalidate hook (localhost, see DEPLOYMENT.md)
 REVALIDATE_SECRET=
 
 JWT_SIGNING_KEY=                                  # separate from DJANGO_SECRET_KEY

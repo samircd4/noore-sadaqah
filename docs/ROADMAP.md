@@ -41,7 +41,7 @@ These take weeks. The site can't launch without them.
 - [ ] `src/lib/api.js` with the three API modes, `src/mocks/` skeleton, `src/lib/format.js` (+ tests)
 - [ ] CI skeleton: lint, Vitest, build, i18n check, palette grep
 
-> **Prompt:** "Set up `frontend/` as described in `docs/ARCHITECTURE.md` and `frontend/CLAUDE.md`: Next.js 16 in JavaScript (no TypeScript) with App Router, Tailwind v4, `src/` and the `@/*` alias. Wire `design/tokens.css` into `src/app/globals.css`; load Noto Sans Bengali and Noto Serif Bengali with next/font as `--font-sans` and `--font-head`; set up next-intl with `bn` default and `localePrefix: 'as-needed'` and `src/proxy.js`. Create `src/lib/api.js` with `API_MODE=mock|static|live` exactly as ARCHITECTURE.md 'API modes' describes, an empty `src/mocks/` (fixtures, handlers, store), and `src/lib/format.js` with Vitest tests. Add `frontend/.env.example`, a root `.gitignore`, and a GitHub Actions job for lint, test and build. No pages yet."
+> **Prompt:** "Set up `frontend/` as described in `docs/ARCHITECTURE.md` and `frontend/CLAUDE.md`: Next.js 16 in JavaScript (no TypeScript) with App Router, Tailwind v4, `src/` and the `@/*` alias. Wire `design/tokens.css` into `src/app/globals.css`; load Noto Sans Bengali and Noto Serif Bengali with next/font as `--font-sans` and `--font-head`; set up next-intl with `bn` default and `localePrefix: 'as-needed'` and `src/proxy.js`. Add the root `viewport` export and use the z-index tokens from `tokens.css` as described in `docs/RESPONSIVE.md` §10–11. Create `src/lib/api.js` with `API_MODE=mock|static|live` exactly as ARCHITECTURE.md 'API modes' describes, an empty `src/mocks/` (fixtures, handlers, store), and `src/lib/format.js` with Vitest tests. Add `frontend/.env.example`, a root `.gitignore`, and a GitHub Actions job for lint, test and build. No pages yet."
 
 ### F1: Home page
 
@@ -50,7 +50,7 @@ These take weeks. The site can't launch without them.
 - [ ] Fixtures + handlers for `GET /site/`, `/funds/`, `/programs/?featured=1`, `/campaigns/?featured=1`, `/gallery/?limit=6`, `/posts/`
 - [ ] Every home section from `HOME_PAGE.md`; all fixes applied · QA §1–2
 
-> **Prompt:** "Build the home page at `frontend/src/app/[locale]/page.jsx` so it matches `design/reference/home.html` exactly. Split it into the components listed in `docs/HOME_PAGE.md`. Load all content through `src/lib/api.js`; add the mock fixtures and handlers for every endpoint the home page uses, with the exact JSON shapes from `docs/API.md` and the seed content from HOME_PAGE.md / CONTENT.md (translatable fields as `{bn, en}`). Apply every fix in HOME_PAGE.md. UI labels go in `messages/bn.json` and `en.json`. Check it at 375px and 1440px."
+> **Prompt:** "Build the home page at `frontend/src/app/[locale]/page.jsx` so it matches `design/reference/home.html` exactly. Split it into the components listed in `docs/HOME_PAGE.md`. Load all content through `src/lib/api.js`; add the mock fixtures and handlers for every endpoint the home page uses, with the exact JSON shapes from `docs/API.md` and the seed content from HOME_PAGE.md / CONTENT.md (translatable fields as `{bn, en}`). Apply every fix in HOME_PAGE.md. Build each section **phone-first** from the table in `docs/RESPONSIVE.md` §14, including the phone header (§8) and the sticky donate bar (§9). UI labels go in `messages/bn.json` and `en.json`. Check it at 320, 375, 768 and 1440px against RESPONSIVE.md §18."
 
 ### F2: Content pages
 
@@ -60,7 +60,7 @@ These take weeks. The site can't launch without them.
 - [ ] Forms (contact, volunteer, newsletter) as server actions → `POST /contact/`, `/volunteers/`, `/subscribers/` (mocked, with validation errors and throttling)
 - [ ] Fixtures + handlers for every endpoint these pages use · QA §1, §3, §11
 
-> **Prompt (one page at a time):** "Create `/programs/[slug]` as specified in `docs/PAGES.md`, using only components from `src/components/ui` and the patterns in `docs/DESIGN_SYSTEM.md`. Load data with `apiGet('/programs/{slug}/')`; add the fixture and handler with the exact shape from `docs/API.md`, including the 404 case. Add `generateMetadata` and `generateStaticParams`, and all labels in both message files."
+> **Prompt (one page at a time):** "Create `/programs/[slug]` as specified in `docs/PAGES.md`, using only components from `src/components/ui` and the patterns in `docs/DESIGN_SYSTEM.md`. Load data with `apiGet('/programs/{slug}/')`; add the fixture and handler with the exact shape from `docs/API.md`, including the 404 case. Build the phone layout first from `docs/RESPONSIVE.md` §15 and check at 320, 375, 768 and 1440px. Add `generateMetadata` and `generateStaticParams`, and all labels in both message files."
 
 ### F3: Donation flow (mock gateway)
 
@@ -86,7 +86,8 @@ These take weeks. The site can't launch without them.
 
 - [ ] English labels for every key; English content in the fixtures where available
 - [ ] SEO_ANALYTICS.md: metadata, JSON-LD, sitemap, robots, cookie banner, analytics after consent
-- [ ] Playwright e2e flows from TESTING.md against `API_MODE=mock`, at 375 and 1440 px, plus axe
+- [ ] Playwright e2e flows from TESTING.md against `API_MODE=mock`, at 320, 375, 768 and 1440 px, plus axe
+- [ ] Real-device pass (RESPONSIVE.md §17) and the mobile performance budgets (§12)
 - [ ] Lighthouse targets · QA §1, §11
 
 ### Optional: pre-launch site (if a gateway asks for a live site)

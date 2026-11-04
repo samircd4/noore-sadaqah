@@ -72,6 +72,10 @@ Heading scale used in the design:
 
 - **Radius:** `rounded-lg` on everything (buttons, cards, inputs, badges). No pills, no sharp corners.
 - **Container:** `max-w-7xl mx-auto px-4` (quick-donate panel uses `max-w-6xl`).
+- **Breakpoints:** Tailwind defaults (`sm` 640, `md` 768, `lg` 1024, `xl` 1280); unprefixed classes are the phone layout. What changes where: RESPONSIVE.md §3.
+- **Touch targets:** at least 44 × 44px with 8px between them (RESPONSIVE.md §6).
+- **Line-height minimums (Bengali):** body 1.6, headings 1.3 (RESPONSIVE.md §5).
+- **Layers:** only the z-index tokens in `tokens.css` (`--z-header`, `--z-sticky-bar`, `--z-drawer`, `--z-modal`, `--z-banner`, `--z-toast`, `--z-raised`); use them as `z-(--z-header)`.
 - **Section padding:** `py-14 lg:py-20` (light sections), `py-16 lg:py-20` (banners).
 - **Card shadow:** `shadow-card` → `hover:shadow-card-hover` with `hover:-translate-y-1`.
 - **Grid gaps:** `gap-6`.
@@ -89,7 +93,8 @@ Heading scale used in the design:
 | Section header | Eyebrow + `h2`, centered (`text-center max-w-2xl mx-auto`) or split with a "সব দেখুন →" link |
 | Photo card | Background image + `--overlay-card` + text pinned to bottom (`flex flex-col justify-end`) |
 | Progress bar | Track `h-3 rounded-lg bg-white/20`, fill `bg-gold-500` with `width: {percent}%` |
-| Input | `h-[42px] w-full rounded-lg border border-sand-300 bg-white px-3 text-em-950 placeholder:text-em-900/50 focus:border-gold-600` (the design uses `gray-*` / `yellow-*` here; those are replaced by palette tokens) |
+| Input | `h-11 w-full rounded-lg border border-sand-300 bg-white px-3 text-base text-em-950 placeholder:text-em-900/50 focus:border-gold-600` (the design uses `h-[42px]` and `gray-*` / `yellow-*`; 44px height and 16px text are required on phones, RESPONSIVE.md §7) |
+| Mobile donate bar | `fixed inset-x-0 bottom-0 lg:hidden h-14 bg-gold-500 text-em-950 font-bold` + safe-area padding; rules in RESPONSIVE.md §9 |
 | Input error | No `red-*` (not in the palette). Use `border-gold-600` + an error line below in `text-em-950 font-semibold` with an alert icon. If a red error color is truly wanted, add it to `tokens.css` first (CLAUDE.md rule 4) |
 | Empty state, pagination, accordion, tabs, page hero | See `PAGES.md` → "Shared page parts" |
 

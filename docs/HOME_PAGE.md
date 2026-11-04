@@ -52,7 +52,7 @@ All photos are Unsplash placeholders. Replace them with the foundation's own pho
 
 1. **Mobile menu does nothing.** The ☰ button needs a client component that opens a drawer with the same nav links and the Donate button.
 2. **Nav links are `#anchors`.** On the home page keep anchors for About/Programs/Gallery; point "সংবাদ" to `/news`, "যোগাযোগ" to `/contact`, "দান করুন" to `/donate` once those pages exist.
-3. **Quick-donate panel overlaps on phones.** It is `absolute -bottom-[120px]`; on small screens the stacked form is taller than 120px and covers the stats. Use `relative -mt-24 lg:absolute` (or measure and adjust the stats `pt-36`) and test at 375px wide.
+3. **Quick-donate panel overlaps on phones.** It is `absolute -bottom-[120px]`; on small screens the stacked form is taller than 120px and covers the stats. On phones put it in normal flow under the hero (at most a small `-mt-8` overlap) and keep the `absolute` overlap only from `lg:`; adjust the stats padding to match. Phone layout of the panel: RESPONSIVE.md §14 row 3. Test at 320px.
 4. **Amount chips are not wired.** Make them a radio group: clicking a chip sets the amount input; the selected chip uses `bg-em-700`, others `bg-em-500`. Amount input should be `inputMode="numeric"`, min ৳10.
 5. **Form fields have no `name`, `id` or label link.** Add `htmlFor`/`id`, `name`, `required`, and `type="tel"` for mobile with BD number validation (`01XXXXXXXXX`).
 6. **Low-contrast text on gold** (see DESIGN_SYSTEM.md): quick-donate heading, campaign/volunteer gold buttons and footer subscribe button use white on gold. Switch to `text-em-950`.
@@ -67,10 +67,21 @@ All photos are Unsplash placeholders. Replace them with the foundation's own pho
     `linear-gradient(135deg, #2b7fa8, #072e20)` (a blue), and the header Donate icon uses `text-black`. Use the
     standard `--overlay-card` over the photo for the water card, and `text-em-950` for the icon.
 
+15. **Sticky donate bar on phones** (design addition, DECISIONS.md D14): `MobileDonateBar` below `lg`, with the
+    hide rules in RESPONSIVE.md §9.
+16. **The header doesn't fit on phones.** Logo + name + বাং/EN switch + menu button inside `px-6` is about 450px
+    wide. Use the phone header in RESPONSIVE.md §8 (`h-16`, smaller name, switch and Donate moved into the drawer below `sm`).
+17. **Other phone problems in the design:** quick-donate labels use `text-red-500` for the `*` (off-palette: use
+    `text-em-950` or drop the star and mark optional fields instead); social icons are 40px (use 44px); footer links
+    are small tap targets; the campaign's three `text-3xl` amount cards don't fit at 320px; `.bg-parallax` uses
+    `background-attachment: fixed` (only from `lg:`). Fixes for each: RESPONSIVE.md §6, §11, §14.
+
+Every section's phone layout (320 / 768 / 1440) is in **RESPONSIVE.md §14**; build each section from that table.
+
 ## Acceptance checklist
 
 - [ ] At 1440px the page looks like `design/reference/home.html` opened in a browser
-- [ ] At 375px nothing overlaps, no horizontal scroll, mobile menu works
+- [ ] At **320**, 375 and 768px nothing overlaps or clips, no horizontal scroll, mobile menu works, sticky donate bar follows its hide rules
 - [ ] Quick-donate submits fund + name + mobile + amount and goes to the checkout step (mock gateway from F3, real gateways from B2)
 - [ ] Stats, programs, campaign, gallery and news come from data, not hard-coded JSX
 - [ ] Lighthouse: Accessibility ≥ 95, Performance ≥ 85 on mobile

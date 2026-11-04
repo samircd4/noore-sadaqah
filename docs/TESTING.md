@@ -10,7 +10,7 @@ What to test, with which tool, and when. The manual checklist is `QA_CHECKLIST.m
 | Backend concurrency | pytest with real Postgres + threads | `backend/tests/test_concurrency.py` | 20 parallel `mark_paid()` calls → 20 unique, gap-free receipt numbers; double IPN; two workers charging subscriptions |
 | Frontend unit | **Vitest** | `frontend/src/**/*.test.js` | `format.js` (Bengali digits, taka, dates, `shortNumber`), `toLatinDigits`, Zod schemas, API error mapping |
 | Mock API | **Vitest** | `frontend/src/mocks/*.test.js` | Handlers return the API.md shapes, error codes, pagination and 404s |
-| End-to-end | **Playwright** | `e2e/` (root) | Main flows at 375 and 1440 px: against `API_MODE=mock` from F3, against Django + mocked gateways from B2 |
+| End-to-end | **Playwright** | `e2e/` (root) | Main flows in four projects (viewports 320, 375, 768, 1440; `isMobile` + `hasTouch` for the phone ones): against `API_MODE=mock` from F3, against Django + mocked gateways from B2 |
 | Contract | pytest | `backend/tests/test_contract.py` | Every Django response has the same keys and types as its fixture in `frontend/src/mocks/fixtures/` (added in each B phase) |
 | Manual | QA_CHECKLIST.md | | Look, sandbox payments, PDFs, emails, SMS, Excel |
 | Accessibility & speed | Lighthouse, axe (Playwright `@axe-core/playwright`) | | QA §11 |
@@ -43,7 +43,7 @@ Rules:
 3. Failed payment → failed page → "আবার চেষ্টা করুন" pre-filled.
 4. Login with OTP (code read from the console SMS provider in test mode) → `/account` lists the donation → receipt downloads.
 5. Monthly → login round-trip → subscription created → pause → resume → cancel.
-6. Every public page at 375 px: no horizontal scroll, no console errors, axe has no serious violations.
+6. Every public page at **320** and 375 px: no horizontal scroll, no console errors, axe has no serious violations, sticky donate bar shown/hidden per RESPONSIVE.md §9, header fits.
 7. `/en` versions of the home and donate pages show no Bengali UI labels.
 
 Before the backend exists, e2e runs with `API_MODE=mock`: the fake gateway page is `/donate/mock-gateway` and the OTP
@@ -62,9 +62,9 @@ the gateway page and posts a valid-looking callback, while the Validation API is
 
 ## CI (`.github/workflows/ci.yml`)
 
-On every push and pull request:
+Workflow: `.github/workflows/ci.yml`. On every push to `master` and every pull request:
 - **backend:** Python 3.12, Postgres 16 and Redis services → `ruff check`, `ruff format --check`, `python manage.py makemigrations --check --dry-run`, `pytest`, `pip-audit`.
 - **frontend:** Node 22 → `npm ci`, `npm run lint`, `npm run i18n:check`, `npm run test` (Vitest), `npm run build`, `npm audit --audit-level=high`, palette grep (QA §1).
-- **e2e:** from F3, Playwright against `next start` with `API_MODE=mock` (no backend) on every push; from B2, also against both apps and the CI database on `main` and release branches.
+- **e2e:** from F3, Playwright against the standalone server (`HOSTNAME=localhost`, see DEPLOYMENT.md) with `API_MODE=mock` (no backend) on every push; from B2, also against both apps and the CI database on `master` and release branches.
 
-Deploy only from a green `main` (DEPLOYMENT.md).
+Deploy only from a green `master` (DEPLOYMENT.md).

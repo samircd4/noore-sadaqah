@@ -47,6 +47,15 @@
 
 /* Image overlays — dark emerald washes used over photos */
 :root {
+  /* Layers (z-index). Use only these: z-(--z-header) etc. See docs/RESPONSIVE.md §10 */
+  --z-raised: 10;
+  --z-header: 40;
+  --z-sticky-bar: 40;
+  --z-drawer: 50;
+  --z-modal: 60;
+  --z-banner: 70;
+  --z-toast: 80;
+
   --overlay-hero: linear-gradient(
     180deg,
     rgba(4, 28, 19, 0.75) 0%,

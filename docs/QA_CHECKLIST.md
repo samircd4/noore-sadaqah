@@ -11,7 +11,11 @@ Don't tick those boxes in mock mode.
 
 ## 1. Every page
 
-- [ ] 375px (iPhone SE), 768px, 1440px: no overlap, no horizontal scroll (`document.documentElement.scrollWidth === innerWidth`) 🤖
+- [ ] **320**, 360, 375, 768, 1024, 1440px and phone landscape (640×360): no overlap, no clipped Bengali text, no horizontal scroll (`document.documentElement.scrollWidth === innerWidth`) 🤖
+- [ ] RESPONSIVE.md §18 definition of done met (touch targets ≥ 44px, right keyboards, 16px inputs, `sizes` on images)
+- [ ] Sticky donate bar: visible below 1024px, hidden on the routes and in the states listed in RESPONSIVE.md §9, never covers content 🤖
+- [ ] Real devices: a budget Android (Chrome and Samsung Internet), an iPhone (Safari), and a link opened from Facebook Messenger or WhatsApp
+- [ ] Browser text size 200% / Android largest font: nothing clipped or overlapping
 - [ ] Header, mobile menu (opens, closes with Esc and by tapping outside, focus stays inside), footer
 - [ ] Bengali text renders in Noto Sans/Serif Bengali (no fallback boxes), numbers in Bengali digits
 - [ ] Keyboard only: every link and button is reachable with Tab and shows the gold focus ring
@@ -25,7 +29,8 @@ Don't tick those boxes in mock mode.
 
 - [ ] Side by side with `design/reference/home.html` at 1440px: same look
 - [ ] All fixes in HOME_PAGE.md are applied
-- [ ] Quick-donate panel doesn't cover the stats at 375px
+- [ ] Quick-donate panel doesn't cover the stats at 320 and 375px; chips are a 2×2 grid on phones
+- [ ] Phone header fits at 320px (RESPONSIVE.md §8); every section matches its row in RESPONSIVE.md §14
 - [ ] Amount chips act as a radio group; the free amount updates the selection
 - [ ] Video button opens a modal; the video stops when the modal closes
 
@@ -54,6 +59,7 @@ Use the SSLCommerz sandbox test cards and mobile banking test accounts from thei
 - [ ] IPN with a fake `val_id`: rejected by the Validation API; not PAID 🤖
 - [ ] IPN arrives before the browser success POST, and the other way round: both end in PAID, once 🤖
 - [ ] Close the browser on the gateway page: the IPN still marks it PAID; the donor gets the SMS
+- [ ] Whole flow inside the Facebook / Messenger in-app browser on a phone: redirect to the gateway and back works
 - [ ] PENDING older than 24 hours is settled by `cleanup_pending` (after one gateway query) 🤖
 - [ ] Gateway timeout on initiate: friendly error, donation stays PENDING
 
@@ -132,6 +138,8 @@ Use the SSLCommerz sandbox test cards and mobile banking test accounts from thei
 ## 11. Performance & SEO
 
 - [ ] Lighthouse mobile on home, `/donate/[fund]`, `/programs/[slug]`: Performance ≥ 85, Accessibility ≥ 95, Best practices ≥ 90, SEO ≥ 95
+- [ ] Mobile budgets in RESPONSIVE.md §12 (LCP ≤ 2.5 s, CLS ≤ 0.1, INP ≤ 200 ms, JS ≤ 150 KB gzipped per page)
+- [ ] YouTube and map load only after a tap
 - [ ] Hero image uses `priority`; others lazy-load; images come from the R2 domain through `next/image`
 - [ ] `sitemap.xml` and `robots.txt` are correct; staging has `noindex` and basic auth
 - [ ] 404 page works

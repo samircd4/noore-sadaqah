@@ -1,0 +1,40 @@
+# Secrets: never commit real env files (CLAUDE.md rule 11). The .env.example files are committed.
+.env
+.env.*
+!.env.example
+
+# Node / Next.js (frontend/ has its own .gitignore too)
+node_modules/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Python / Django (backend/, from phase B1)
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+backend/staticfiles/
+backend/media/
+
+# Playwright (e2e/, from phase F3)
+playwright-report/
+test-results/
+blob-report/
+
+# Editors and OS
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+
+# Logs and local dumps
+*.log
+*.dump
+*.sql.gz

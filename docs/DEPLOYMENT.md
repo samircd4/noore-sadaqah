@@ -44,7 +44,7 @@ Users: `noore` (runs the services, no sudo), `deploy` (SSH key login, can restar
 
 | Service (systemd unit in `deploy/systemd/`) | Command | Listens |
 |---|---|---|
-| `noore-web` | `node frontend/.next/standalone/server.js` (`output: "standalone"`) | 127.0.0.1:3000 |
+| `noore-web` | `node frontend/.next/standalone/frontend/server.js` (`output: "standalone"`), with `HOSTNAME=localhost PORT=3000` | localhost:3000 |
 | `noore-api` | `gunicorn config.wsgi -w 3 --timeout 30` | 127.0.0.1:8000 |
 | `noore-worker` | `celery -A config worker -l info --concurrency 2` | — |
 | `noore-beat` | `celery -A config beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler` | — (**exactly one** beat process) |
@@ -76,10 +76,15 @@ server {
   location /admin/            { proxy_pass http://127.0.0.1:8000; limit_req zone=admin burst=20; }
   location /dj-static/        { alias /srv/noore/app/backend/staticfiles/; expires 30d; }
   location /internal/         { return 404; }        # Next revalidate hook: localhost only
-  location /                  { proxy_pass http://127.0.0.1:3000; }
+  location /                  { proxy_pass http://localhost:3000; }   # localhost, not 127.0.0.1: see below
 }
 server { listen 80; server_name nooresadaqah.org www.nooresadaqah.org; return 301 https://nooresadaqah.org$request_uri; }
 ```
+**Run Next.js with `HOSTNAME=localhost`, never `127.0.0.1`.** Next normalises `127.0.0.1` to `localhost` in request
+URLs; if the server itself is bound to `127.0.0.1`, the locale rewrite from `src/proxy.js` looks like a different
+origin and Next tries to proxy it as an external URL, which ends in a redirect loop or a 500. Found while testing F0
+(Next.js 16.4.5). On Ubuntu `localhost` resolves to `127.0.0.1`, so Nginx can still reach it. `deploy.sh` checks it.
+
 `limit_req zone=admin` needs `limit_req_zone $binary_remote_addr zone=admin:10m rate=10r/s;` in the `http {}` block
 (`/etc/nginx/conf.d/limits.conf`). With `output: "standalone"`, the build step must copy `.next/static` to
 `.next/standalone/.next/static` and `public/` to `.next/standalone/public` (do it in `npm run build:standalone`).
@@ -104,7 +109,7 @@ so `$remote_addr` is the visitor. Gateways must still reach the callback URLs: d
 
 ```bash
 set -euo pipefail
-cd /srv/noore/app && git fetch && git checkout --detach "${1:-origin/main}"
+cd /srv/noore/app && git fetch && git checkout --detach "${1:-origin/master}"
 # backend
 /srv/noore/venv/bin/pip install -r backend/requirements.lock
 /srv/noore/venv/bin/python backend/manage.py migrate --noinput
@@ -113,12 +118,13 @@ cd /srv/noore/app && git fetch && git checkout --detach "${1:-origin/main}"
 # frontend
 cd frontend && npm ci && npm run build:standalone && cd ..
 sudo systemctl restart noore-api noore-worker noore-beat noore-web
+curl -fsS -o /dev/null http://localhost:3000/ && curl -fsS -o /dev/null http://localhost:3000/en   # no redirect loop
 curl -fsS https://nooresadaqah.org/api/v1/health/ && echo "$(date -Is) $(git rev-parse --short HEAD)" >> ../releases.log
 ```
 - Migrations must be backward compatible with the running code for the few seconds of a restart (add columns first, remove them in a later release).
 - After changing a `NEXT_PUBLIC_*` value, rebuild the frontend.
 - Rollback: `deploy.sh <previous commit>` (only if no irreversible migration happened in between).
-- Later: GitHub Actions runs tests, then SSHes in and runs `deploy.sh` for `main` (TESTING.md).
+- Later: GitHub Actions runs tests, then SSHes in and runs `deploy.sh` for `master` (TESTING.md).
 
 ## Scheduled jobs (django-celery-beat, times Asia/Dhaka)
 

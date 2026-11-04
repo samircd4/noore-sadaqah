@@ -24,6 +24,7 @@ docs/
   DONATION_FLOW.md   One-time and monthly donations, receipts, zakat calculator
   SECURITY.md        Auth, cookies, headers, throttles, personal data
   DESIGN_SYSTEM.md   Palette, typography, components, contrast rules
+  RESPONSIVE.md      Mobile spec: 320px and up, phone layout of every section and page
   HOME_PAGE.md       Home page sections → components, seed content, fixes
   PAGES.md           Spec for every other page
   ADMIN.md           Django admin: groups, permissions, workflows

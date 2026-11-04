@@ -18,6 +18,9 @@ DESIGN_SYSTEM.md first.
 | **Accordion** (`components/ui/Accordion.jsx`) | Use `<details>/<summary>` (no JS needed), `border-sand-200 rounded-lg`, chevron icon. For FAQs. |
 | **Tabs** (`components/ui/Tabs.jsx`, client) | Underlined active tab `border-gold-500`, synced to `?tab=` in the URL. |
 | **Breadcrumb** | `nav aria-label="breadcrumb"`, `text-sm`. |
+| **MobileDonateBar** (`components/layout/MobileDonateBar.jsx`, client) | Sticky gold "দান করুন" bar below `lg`; in the layout; hide rules in RESPONSIVE.md §9. |
+
+**Phone layouts:** every page below has its phone layout in **RESPONSIVE.md §15** (column order, sticky parts, tables as cards). Build the phone layout first.
 
 Each page sets `generateMetadata` (title `… | নূরে সাদাকাহ ফাউন্ডেশন`, description, OG image).
 
