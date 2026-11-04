@@ -197,6 +197,25 @@
     "donorCountLabel": "Number of donors",
     "timeLabel": "Time"
   },
+  "newsPage": {
+    "title": "News",
+    "eyebrow": "Latest news",
+    "subtitle": "Recent news from our programmes, distributions and projects.",
+    "metaDescription": "The latest news and updates from Noore Sadaqah Foundation: relief, education and medical work.",
+    "listTitle": "News list",
+    "filterLabel": "Filter by topic",
+    "all": "All",
+    "empty": "No news on this topic yet.",
+    "showAll": "See all news",
+    "related": "More news",
+    "share": "Share",
+    "shareFacebook": "Share on Facebook",
+    "shareWhatsapp": "Share on WhatsApp",
+    "shareNative": "Share with another app",
+    "copyLink": "Copy link",
+    "copied": "Link copied",
+    "published": "Published {date}"
+  },
   "errors": {
     "required": "Please fill in this field",
     "mobileInvalid": "Enter a valid mobile number (01XXXXXXXXX)",

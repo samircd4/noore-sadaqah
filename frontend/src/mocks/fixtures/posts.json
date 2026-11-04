@@ -1,49 +1,406 @@
 {
   "_note": "Sample posts from the design (CONTENT.md §14). Real posts replace these before launch.",
   "categories": [
-    { "slug": "relief", "name": { "bn": "ত্রাণ", "en": "Relief" }, "sort_order": 1 },
-    { "slug": "education", "name": { "bn": "শিক্ষা", "en": "Education" }, "sort_order": 2 },
-    { "slug": "health", "name": { "bn": "স্বাস্থ্য", "en": "Health" }, "sort_order": 3 }
+    {
+      "slug": "relief",
+      "name": {
+        "bn": "ত্রাণ",
+        "en": "Relief"
+      },
+      "sort_order": 1
+    },
+    {
+      "slug": "education",
+      "name": {
+        "bn": "শিক্ষা",
+        "en": "Education"
+      },
+      "sort_order": 2
+    },
+    {
+      "slug": "health",
+      "name": {
+        "bn": "স্বাস্থ্য",
+        "en": "Health"
+      },
+      "sort_order": 3
+    }
   ],
   "posts": [
     {
       "slug": "flood-relief-1000-families",
-      "title": { "bn": "বন্যাকবলিত এলাকায় ১,০০০ পরিবারে ত্রাণ", "en": "Relief for 1,000 families in flood-hit areas" },
-      "excerpt": { "bn": "নমুনা সংবাদ: বন্যাকবলিত এলাকায় খাদ্য ও প্রয়োজনীয় সামগ্রী বিতরণ।", "en": "Sample news: food and essentials for families in flood-hit areas." },
-      "body": { "bn": "নমুনা লেখা।", "en": "Sample text." },
+      "title": {
+        "bn": "বন্যাকবলিত এলাকায় ১,০০০ পরিবারে ত্রাণ",
+        "en": "Relief for 1,000 families in flood-hit areas"
+      },
+      "excerpt": {
+        "bn": "নমুনা সংবাদ: বন্যাকবলিত এলাকায় খাদ্য ও প্রয়োজনীয় সামগ্রী বিতরণ।",
+        "en": "Sample news: food and essentials for families in flood-hit areas."
+      },
+      "body": {
+        "bn": "নমুনা লেখা।",
+        "en": "Sample text."
+      },
       "cover": {
         "url": "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=800&q=70",
-        "alt": { "bn": "ত্রাণ গ্রহণকারী পরিবার (নমুনা ছবি)", "en": "A family receiving relief (sample photo)" },
-        "width": 800, "height": 533
+        "alt": {
+          "bn": "ত্রাণ গ্রহণকারী পরিবার (নমুনা ছবি)",
+          "en": "A family receiving relief (sample photo)"
+        },
+        "width": 800,
+        "height": 533
       },
       "category": "relief",
       "published_at": "2026-10-20T04:00:00Z"
     },
     {
       "slug": "school-supplies-500-students",
-      "title": { "bn": "৫০০ শিক্ষার্থীর মাঝে শিক্ষাসামগ্রী প্রদান", "en": "School supplies for 500 students" },
-      "excerpt": { "bn": "নমুনা সংবাদ: সুবিধাবঞ্চিত শিক্ষার্থীদের মাঝে বই, খাতা ও কলম বিতরণ।", "en": "Sample news: books, notebooks and pens for students in need." },
-      "body": { "bn": "নমুনা লেখা।", "en": "Sample text." },
+      "title": {
+        "bn": "৫০০ শিক্ষার্থীর মাঝে শিক্ষাসামগ্রী প্রদান",
+        "en": "School supplies for 500 students"
+      },
+      "excerpt": {
+        "bn": "নমুনা সংবাদ: সুবিধাবঞ্চিত শিক্ষার্থীদের মাঝে বই, খাতা ও কলম বিতরণ।",
+        "en": "Sample news: books, notebooks and pens for students in need."
+      },
+      "body": {
+        "bn": "নমুনা লেখা।",
+        "en": "Sample text."
+      },
       "cover": {
         "url": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=800&q=70",
-        "alt": { "bn": "বইয়ের তাক (নমুনা ছবি)", "en": "Books on a shelf (sample photo)" },
-        "width": 800, "height": 533
+        "alt": {
+          "bn": "বইয়ের তাক (নমুনা ছবি)",
+          "en": "Books on a shelf (sample photo)"
+        },
+        "width": 800,
+        "height": 533
       },
       "category": "education",
       "published_at": "2026-10-12T04:00:00Z"
     },
     {
       "slug": "free-medical-camp-800-patients",
-      "title": { "bn": "ফ্রি মেডিকেল ক্যাম্পে ৮০০ রোগীকে সেবা", "en": "Free medical camp treats 800 patients" },
-      "excerpt": { "bn": "নমুনা সংবাদ: বিশেষজ্ঞ চিকিৎসকদের নিয়ে বিনামূল্যে মেডিকেল ক্যাম্প।", "en": "Sample news: a free medical camp with specialist doctors." },
-      "body": { "bn": "নমুনা লেখা।", "en": "Sample text." },
+      "title": {
+        "bn": "ফ্রি মেডিকেল ক্যাম্পে ৮০০ রোগীকে সেবা",
+        "en": "Free medical camp treats 800 patients"
+      },
+      "excerpt": {
+        "bn": "নমুনা সংবাদ: বিশেষজ্ঞ চিকিৎসকদের নিয়ে বিনামূল্যে মেডিকেল ক্যাম্প।",
+        "en": "Sample news: a free medical camp with specialist doctors."
+      },
+      "body": {
+        "bn": "নমুনা লেখা।",
+        "en": "Sample text."
+      },
       "cover": {
         "url": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=70",
-        "alt": { "bn": "চিকিৎসা সেবার দৃশ্য (নমুনা ছবি)", "en": "Medical care (sample photo)" },
-        "width": 800, "height": 533
+        "alt": {
+          "bn": "চিকিৎসা সেবার দৃশ্য (নমুনা ছবি)",
+          "en": "Medical care (sample photo)"
+        },
+        "width": 800,
+        "height": 533
       },
       "category": "health",
       "published_at": "2026-10-04T04:00:00Z"
+    },
+    {
+      "_note": "SAMPLE filler post so /news has 2 pages in the mock. Not real news; delete before launch.",
+      "slug": "sample-update-1",
+      "title": {
+        "bn": "নমুনা আপডেট ১",
+        "en": "Sample update 1"
+      },
+      "excerpt": {
+        "bn": "নমুনা লেখা: পৃষ্ঠা বিভাজন দেখানোর জন্য একটি নমুনা সংবাদ।",
+        "en": "Sample text: a sample post to show pagination."
+      },
+      "body": {
+        "bn": "নমুনা লেখা: এটি একটি নমুনা সংবাদ, আসল সংবাদ নয়।\n\nফাউন্ডেশনের আসল সংবাদ পরে যোগ করা হবে।",
+        "en": "Sample text: this is a sample post, not real news.\n\nThe foundation will add real news later."
+      },
+      "cover": {
+        "url": "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=900&q=70",
+        "alt": {
+          "bn": "শিশুদের পড়াশোনা (নমুনা ছবি)",
+          "en": "Children studying (sample photo)"
+        },
+        "width": 900,
+        "height": 600
+      },
+      "category": "education",
+      "published_at": "2026-09-26T04:00:00Z"
+    },
+    {
+      "_note": "SAMPLE filler post so /news has 2 pages in the mock. Not real news; delete before launch.",
+      "slug": "sample-update-2",
+      "title": {
+        "bn": "নমুনা আপডেট ২",
+        "en": "Sample update 2"
+      },
+      "excerpt": {
+        "bn": "নমুনা লেখা: পৃষ্ঠা বিভাজন দেখানোর জন্য একটি নমুনা সংবাদ।",
+        "en": "Sample text: a sample post to show pagination."
+      },
+      "body": {
+        "bn": "নমুনা লেখা: এটি একটি নমুনা সংবাদ, আসল সংবাদ নয়।\n\nফাউন্ডেশনের আসল সংবাদ পরে যোগ করা হবে।",
+        "en": "Sample text: this is a sample post, not real news.\n\nThe foundation will add real news later."
+      },
+      "cover": {
+        "url": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=70",
+        "alt": {
+          "bn": "চিকিৎসা সেবার দৃশ্য (নমুনা ছবি)",
+          "en": "Medical care (sample photo)"
+        },
+        "width": 900,
+        "height": 600
+      },
+      "category": "health",
+      "published_at": "2026-09-24T04:00:00Z"
+    },
+    {
+      "_note": "SAMPLE filler post so /news has 2 pages in the mock. Not real news; delete before launch.",
+      "slug": "sample-update-3",
+      "title": {
+        "bn": "নমুনা আপডেট ৩",
+        "en": "Sample update 3"
+      },
+      "excerpt": {
+        "bn": "নমুনা লেখা: পৃষ্ঠা বিভাজন দেখানোর জন্য একটি নমুনা সংবাদ।",
+        "en": "Sample text: a sample post to show pagination."
+      },
+      "body": {
+        "bn": "নমুনা লেখা: এটি একটি নমুনা সংবাদ, আসল সংবাদ নয়।\n\nফাউন্ডেশনের আসল সংবাদ পরে যোগ করা হবে।",
+        "en": "Sample text: this is a sample post, not real news.\n\nThe foundation will add real news later."
+      },
+      "cover": {
+        "url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=900&q=70",
+        "alt": {
+          "bn": "স্বেচ্ছাসেবকদের কাজ (নমুনা ছবি)",
+          "en": "Volunteers at work (sample photo)"
+        },
+        "width": 900,
+        "height": 600
+      },
+      "category": "relief",
+      "published_at": "2026-09-22T04:00:00Z"
+    },
+    {
+      "_note": "SAMPLE filler post so /news has 2 pages in the mock. Not real news; delete before launch.",
+      "slug": "sample-update-4",
+      "title": {
+        "bn": "নমুনা আপডেট ৪",
+        "en": "Sample update 4"
+      },
+      "excerpt": {
+        "bn": "নমুনা লেখা: পৃষ্ঠা বিভাজন দেখানোর জন্য একটি নমুনা সংবাদ।",
+        "en": "Sample text: a sample post to show pagination."
+      },
+      "body": {
+        "bn": "নমুনা লেখা: এটি একটি নমুনা সংবাদ, আসল সংবাদ নয়।\n\nফাউন্ডেশনের আসল সংবাদ পরে যোগ করা হবে।",
+        "en": "Sample text: this is a sample post, not real news.\n\nThe foundation will add real news later."
+      },
+      "cover": {
+        "url": "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=900&q=70",
+        "alt": {
+          "bn": "শিশুদের পড়াশোনা (নমুনা ছবি)",
+          "en": "Children studying (sample photo)"
+        },
+        "width": 900,
+        "height": 600
+      },
+      "category": "education",
+      "published_at": "2026-09-20T04:00:00Z"
+    },
+    {
+      "_note": "SAMPLE filler post so /news has 2 pages in the mock. Not real news; delete before launch.",
+      "slug": "sample-update-5",
+      "title": {
+        "bn": "নমুনা আপডেট ৫",
+        "en": "Sample update 5"
+      },
+      "excerpt": {
+        "bn": "নমুনা লেখা: পৃষ্ঠা বিভাজন দেখানোর জন্য একটি নমুনা সংবাদ।",
+        "en": "Sample text: a sample post to show pagination."
+      },
+      "body": {
+        "bn": "নমুনা লেখা: এটি একটি নমুনা সংবাদ, আসল সংবাদ নয়।\n\nফাউন্ডেশনের আসল সংবাদ পরে যোগ করা হবে।",
+        "en": "Sample text: this is a sample post, not real news.\n\nThe foundation will add real news later."
+      },
+      "cover": {
+        "url": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=70",
+        "alt": {
+          "bn": "চিকিৎসা সেবার দৃশ্য (নমুনা ছবি)",
+          "en": "Medical care (sample photo)"
+        },
+        "width": 900,
+        "height": 600
+      },
+      "category": "health",
+      "published_at": "2026-09-18T04:00:00Z"
+    },
+    {
+      "_note": "SAMPLE filler post so /news has 2 pages in the mock. Not real news; delete before launch.",
+      "slug": "sample-update-6",
+      "title": {
+        "bn": "নমুনা আপডেট ৬",
+        "en": "Sample update 6"
+      },
+      "excerpt": {
+        "bn": "নমুনা লেখা: পৃষ্ঠা বিভাজন দেখানোর জন্য একটি নমুনা সংবাদ।",
+        "en": "Sample text: a sample post to show pagination."
+      },
+      "body": {
+        "bn": "নমুনা লেখা: এটি একটি নমুনা সংবাদ, আসল সংবাদ নয়।\n\nফাউন্ডেশনের আসল সংবাদ পরে যোগ করা হবে।",
+        "en": "Sample text: this is a sample post, not real news.\n\nThe foundation will add real news later."
+      },
+      "cover": {
+        "url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=900&q=70",
+        "alt": {
+          "bn": "স্বেচ্ছাসেবকদের কাজ (নমুনা ছবি)",
+          "en": "Volunteers at work (sample photo)"
+        },
+        "width": 900,
+        "height": 600
+      },
+      "category": "relief",
+      "published_at": "2026-09-16T04:00:00Z"
+    },
+    {
+      "_note": "SAMPLE filler post so /news has 2 pages in the mock. Not real news; delete before launch.",
+      "slug": "sample-update-7",
+      "title": {
+        "bn": "নমুনা আপডেট ৭",
+        "en": "Sample update 7"
+      },
+      "excerpt": {
+        "bn": "নমুনা লেখা: পৃষ্ঠা বিভাজন দেখানোর জন্য একটি নমুনা সংবাদ।",
+        "en": "Sample text: a sample post to show pagination."
+      },
+      "body": {
+        "bn": "নমুনা লেখা: এটি একটি নমুনা সংবাদ, আসল সংবাদ নয়।\n\nফাউন্ডেশনের আসল সংবাদ পরে যোগ করা হবে।",
+        "en": "Sample text: this is a sample post, not real news.\n\nThe foundation will add real news later."
+      },
+      "cover": {
+        "url": "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=900&q=70",
+        "alt": {
+          "bn": "শিশুদের পড়াশোনা (নমুনা ছবি)",
+          "en": "Children studying (sample photo)"
+        },
+        "width": 900,
+        "height": 600
+      },
+      "category": "education",
+      "published_at": "2026-09-14T04:00:00Z"
+    },
+    {
+      "_note": "SAMPLE filler post so /news has 2 pages in the mock. Not real news; delete before launch.",
+      "slug": "sample-update-8",
+      "title": {
+        "bn": "নমুনা আপডেট ৮",
+        "en": "Sample update 8"
+      },
+      "excerpt": {
+        "bn": "নমুনা লেখা: পৃষ্ঠা বিভাজন দেখানোর জন্য একটি নমুনা সংবাদ।",
+        "en": "Sample text: a sample post to show pagination."
+      },
+      "body": {
+        "bn": "নমুনা লেখা: এটি একটি নমুনা সংবাদ, আসল সংবাদ নয়।\n\nফাউন্ডেশনের আসল সংবাদ পরে যোগ করা হবে।",
+        "en": "Sample text: this is a sample post, not real news.\n\nThe foundation will add real news later."
+      },
+      "cover": {
+        "url": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=70",
+        "alt": {
+          "bn": "চিকিৎসা সেবার দৃশ্য (নমুনা ছবি)",
+          "en": "Medical care (sample photo)"
+        },
+        "width": 900,
+        "height": 600
+      },
+      "category": "health",
+      "published_at": "2026-09-12T04:00:00Z"
+    },
+    {
+      "_note": "SAMPLE filler post so /news has 2 pages in the mock. Not real news; delete before launch.",
+      "slug": "sample-update-9",
+      "title": {
+        "bn": "নমুনা আপডেট ৯",
+        "en": "Sample update 9"
+      },
+      "excerpt": {
+        "bn": "নমুনা লেখা: পৃষ্ঠা বিভাজন দেখানোর জন্য একটি নমুনা সংবাদ।",
+        "en": "Sample text: a sample post to show pagination."
+      },
+      "body": {
+        "bn": "নমুনা লেখা: এটি একটি নমুনা সংবাদ, আসল সংবাদ নয়।\n\nফাউন্ডেশনের আসল সংবাদ পরে যোগ করা হবে।",
+        "en": "Sample text: this is a sample post, not real news.\n\nThe foundation will add real news later."
+      },
+      "cover": {
+        "url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=900&q=70",
+        "alt": {
+          "bn": "স্বেচ্ছাসেবকদের কাজ (নমুনা ছবি)",
+          "en": "Volunteers at work (sample photo)"
+        },
+        "width": 900,
+        "height": 600
+      },
+      "category": "relief",
+      "published_at": "2026-09-10T04:00:00Z"
+    },
+    {
+      "_note": "SAMPLE filler post so /news has 2 pages in the mock. Not real news; delete before launch.",
+      "slug": "sample-update-10",
+      "title": {
+        "bn": "নমুনা আপডেট ১০",
+        "en": "Sample update 10"
+      },
+      "excerpt": {
+        "bn": "নমুনা লেখা: পৃষ্ঠা বিভাজন দেখানোর জন্য একটি নমুনা সংবাদ।",
+        "en": "Sample text: a sample post to show pagination."
+      },
+      "body": {
+        "bn": "নমুনা লেখা: এটি একটি নমুনা সংবাদ, আসল সংবাদ নয়।\n\nফাউন্ডেশনের আসল সংবাদ পরে যোগ করা হবে।",
+        "en": "Sample text: this is a sample post, not real news.\n\nThe foundation will add real news later."
+      },
+      "cover": {
+        "url": "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=900&q=70",
+        "alt": {
+          "bn": "শিশুদের পড়াশোনা (নমুনা ছবি)",
+          "en": "Children studying (sample photo)"
+        },
+        "width": 900,
+        "height": 600
+      },
+      "category": "education",
+      "published_at": "2026-09-08T04:00:00Z"
+    },
+    {
+      "_note": "SAMPLE draft: published_at is in the future, so the API must treat it as unpublished (404). Delete before launch.",
+      "slug": "sample-scheduled-post",
+      "title": {
+        "bn": "নমুনা নির্ধারিত সংবাদ",
+        "en": "Sample scheduled post"
+      },
+      "excerpt": {
+        "bn": "নমুনা লেখা।",
+        "en": "Sample text."
+      },
+      "body": {
+        "bn": "নমুনা লেখা।",
+        "en": "Sample text."
+      },
+      "cover": {
+        "url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=900&q=70",
+        "alt": {
+          "bn": "স্বেচ্ছাসেবকদের কাজ (নমুনা ছবি)",
+          "en": "Volunteers at work (sample photo)"
+        },
+        "width": 900,
+        "height": 600
+      },
+      "category": "relief",
+      "published_at": "2099-01-01T04:00:00Z"
     }
   ]
 }
