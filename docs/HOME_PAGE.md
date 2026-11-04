@@ -95,6 +95,8 @@ All 17 fixes are applied. These visual details also differ from `home.html`, eac
 | Icons | lucide-react; social links keep the design's "f", ▶, "in" glyphs | lucide 1.x has no brand icons |
 | Quick-donate amounts | Bengali digits (৳১০০) instead of "৳ 100" | CLAUDE.md rule 7 |
 | Fund list in quick-donate | Fitra hidden while `zakat_enabled` is false | The fitra form needs ZAKAT_POLICY.md sign-off |
+| Program cards (F2, owner request) | "বিস্তারিত →" is a gold button-style label (`bg-gold-500 text-em-950`) in the bottom-right corner, always visible; the whole card stays one link | The design showed it only on hover, which phones can't do (RESPONSIVE.md §6: no hover-only content) |
+| News cards (F2, owner request) | The whole card is clickable (pointer cursor, hover lift) through the "পড়ুন" link's stretched `::after`; still one link per card | Matches the program cards; a bigger tap target on phones |
 
 Until phase F3, "দান করুন" links scroll to the quick-donate panel (`DONATE_HREF` in `src/lib/nav.js`), and submitting the
 panel goes to `/donate/checkout`, which doesn't exist yet. The video modal shows "শীঘ্রই" until `promo_video.youtube_id`

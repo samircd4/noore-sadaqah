@@ -28,18 +28,19 @@ export default function ProgramCard({ program, detailsLabel }) {
       />
 
       <div className="w-full p-5 transition-transform duration-300 motion-safe:group-hover:-translate-y-1 sm:p-6">
-        <div className="flex items-center justify-between gap-3">
-          <Badge>{program.badge}</Badge>
-          <span
-            aria-hidden="true"
-            className="flex items-center gap-1 text-xs text-sand-200 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
-          >
-            {detailsLabel}
-            <ArrowRight className="size-3.5" />
-          </span>
-        </div>
+        <Badge>{program.badge}</Badge>
         <h3 className="mt-3 font-head text-2xl leading-snug font-bold transition-colors group-hover:text-gold-400">{program.title}</h3>
         <p className="mt-2 text-sm leading-relaxed text-sand-100/90">{program.summary}</p>
+        {/* Always visible (no hover-only content, RESPONSIVE.md §6). Part of the card link, so a span, not a button. */}
+        <div className="mt-4 flex justify-end">
+          <span
+            aria-hidden="true"
+            className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-gold-500 px-3.5 text-sm font-bold text-em-950 shadow-md transition-colors group-hover:bg-gold-400 group-active:bg-gold-600 motion-reduce:transition-none"
+          >
+            {detailsLabel}
+            <ArrowRight className="size-4 transition-transform motion-safe:group-hover:translate-x-0.5" />
+          </span>
+        </div>
       </div>
     </Link>
   );

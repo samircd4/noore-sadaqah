@@ -155,7 +155,42 @@ describe("content endpoints (docs/API.md shapes)", () => {
     const posts = await get("/posts/", { limit: "3" });
     expect(posts.body.results.map((p) => p.published_at)).toEqual([...posts.body.results.map((p) => p.published_at)].sort().reverse());
     expect((await get("/posts/", { page: "9" })).status).toBe(404);
-    expect((await get("/posts/school-supplies-500-students/")).body.related).toHaveLength(2);
+    expect((await get("/posts/school-supplies-500-students/")).body.related).toHaveLength(3);
+  });
+
+  it("GET /posts/ pages 12 at a time, filters by category, hides drafts", async () => {
+    const first = await get("/posts/");
+    expect(first.body).toEqual(expect.objectContaining({ count: 13, page: 1, pages: 2 }));
+    expect(first.body.results).toHaveLength(12);
+    const second = await get("/posts/", { page: "2" });
+    expect(second.body.results).toHaveLength(1);
+    expect([...first.body.results, ...second.body.results].map((p) => p.slug)).not.toContain("sample-scheduled-post");
+    expect((await get("/posts/", { page: "3" })).status).toBe(404);
+
+    const health = await get("/posts/", { category: "health" });
+    expect(health.body.results.every((p) => p.category.slug === "health")).toBe(true);
+    expect(health.body.pages).toBe(1);
+    // An unknown category is an empty list, not an error.
+    expect((await get("/posts/", { category: "nope" })).body).toEqual({ count: 0, page: 1, pages: 1, results: [] });
+  });
+
+  it("GET /posts/{slug}/ returns the detail shape; drafts and unknown slugs are 404", async () => {
+    const { status, body } = await get("/posts/flood-relief-1000-families/");
+    expect(status).toBe(200);
+    expect(hasPrivateKeys(body)).toBe(false);
+    expect(hasUnresolvedText(body)).toBe(false);
+    expect(Object.keys(body).sort()).toEqual(
+      ["body_html", "category", "cover", "excerpt", "published_at", "related", "slug", "title"].sort(),
+    );
+    expect(body.related).toHaveLength(3);
+    expect(body.related.map((p) => p.slug)).not.toContain(body.slug);
+    expect((await get("/posts/sample-scheduled-post/")).status).toBe(404);
+    expect((await get("/posts/nope/")).status).toBe(404);
+    expect((await get("/post-categories/", {}, "en")).body).toEqual([
+      { slug: "relief", name: expect.any(String) },
+      { slug: "education", name: expect.any(String) },
+      { slug: "health", name: expect.any(String) },
+    ]);
   });
 });
 
