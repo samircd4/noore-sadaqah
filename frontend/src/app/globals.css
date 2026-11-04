@@ -178,3 +178,25 @@ body:has(:is(input, select, textarea):focus) [data-mobile-donate-bar] {
     translate: 0 -6px;
   }
 }
+
+/*
+ * Lightbox (components/gallery/Lightbox.jsx): fades in and out with its backdrop. Same technique as the drawer;
+ * instant in older browsers and with "reduce motion".
+ */
+@media (prefers-reduced-motion: no-preference) {
+  dialog[data-lightbox] {
+    opacity: 0;
+    transition:
+      opacity 220ms ease,
+      overlay 220ms allow-discrete,
+      display 220ms allow-discrete;
+  }
+  dialog[data-lightbox][open] {
+    opacity: 1;
+  }
+  @starting-style {
+    dialog[data-lightbox][open] {
+      opacity: 0;
+    }
+  }
+}

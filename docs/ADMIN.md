@@ -107,6 +107,7 @@ Inline: charge history (Donations). Actions: pause, resume, cancel (with reason)
   wide on upload (Pillow), stored on R2.
 - `sort_order` editable in the list (`list_editable`); `is_active` / `is_featured` toggles.
 - Program: inline `ProgramImage`; `faq` and `impact` edited as repeatable rows (Unfold JSON widget or a small inline form), not raw JSON.
+- Page (`privacy`, `terms`, `refund-policy`, `about`, `how-we-spend`): edit title and markdown body only; no add or delete (the set is fixed by `seed`). Policy pages are Admin-only (legal text); `about` and `how-we-spend` also Editor.
 - Post: "প্রকাশ করুন" action sets `published_at = now`. Changing the slug of a published post shows a warning that old links break.
 - Campaign: only one `is_featured` at a time (validated).
 - Body fields use a markdown editor with preview. Output is sanitized on render.

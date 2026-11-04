@@ -67,10 +67,11 @@ export default async function Footer({ site, locale }) {
         <div>
           <h2 className="mb-2 font-bold text-white">{t("links")}</h2>
           <ul className="text-sm">
-            <li><Link href={{ pathname: "/", hash: "about" }} className={linkClass}>{tNav("about")}</Link></li>
+            <li><Link href="/about" className={linkClass}>{tNav("about")}</Link></li>
             <li><Link href="/programs" className={linkClass}>{tNav("programs")}</Link></li>
-            <li><Link href={{ pathname: "/", hash: "gallery" }} className={linkClass}>{tNav("gallery")}</Link></li>
+            <li><Link href="/gallery" className={linkClass}>{tNav("gallery")}</Link></li>
             <li><Link href="/news" className={linkClass}>{tNav("news")}</Link></li>
+            <li><Link href="/transparency" className={linkClass}>{tNav("transparency")}</Link></li>
           </ul>
         </div>
 
@@ -132,6 +133,14 @@ export default async function Footer({ site, locale }) {
           <p>
             {t("copyright", { year: bnNumber(year, locale).replace(/,/g, "") })}
           </p>
+          {/* POLICIES.md: all three policies are linked from the footer (payment gateways check for them). */}
+          <nav aria-label={t("legal")}>
+            <ul className="flex flex-wrap gap-x-4">
+              <li><Link href="/privacy" className="inline-flex min-h-11 items-center hover:text-gold-400">{t("privacy")}</Link></li>
+              <li><Link href="/terms" className="inline-flex min-h-11 items-center hover:text-gold-400">{t("terms")}</Link></li>
+              <li><Link href="/refund-policy" className="inline-flex min-h-11 items-center hover:text-gold-400">{t("refund")}</Link></li>
+            </ul>
+          </nav>
           <p>{t("photoCredit")}</p>
         </div>
       </div>

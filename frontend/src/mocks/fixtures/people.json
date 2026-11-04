@@ -1,0 +1,51 @@
+[
+  {
+    "_note": "SAMPLE people (CONTENT.md §6 is TODO). Names are invented; photos are null until each person gives photo consent.",
+    "name": { "bn": "মোহাম্মদ আব্দুর রহমান (নমুনা)", "en": "Mohammad Abdur Rahman (sample)" },
+    "role": { "bn": "চেয়ারম্যান", "en": "Chairman" },
+    "bio": { "bn": "নমুনা পরিচিতি: দীর্ঘদিন ধরে সমাজসেবামূলক কাজে যুক্ত।", "en": "Sample bio: long involved in community service." },
+    "photo": null, "photo_consent": false, "sort_order": 1
+  },
+  {
+    "name": { "bn": "আবু তাহের মিয়া (নমুনা)", "en": "Abu Taher Mia (sample)" },
+    "role": { "bn": "সাধারণ সম্পাদক", "en": "General Secretary" },
+    "bio": { "bn": "নমুনা পরিচিতি: ত্রাণ ও শিক্ষা কার্যক্রমের সমন্বয়ক।", "en": "Sample bio: coordinates relief and education work." },
+    "photo": null, "photo_consent": false, "sort_order": 2
+  },
+  {
+    "name": { "bn": "ফাতেমা খাতুন (নমুনা)", "en": "Fatema Khatun (sample)" },
+    "role": { "bn": "কোষাধ্যক্ষ", "en": "Treasurer" },
+    "bio": { "bn": "নমুনা পরিচিতি: হিসাবরক্ষণ ও আর্থিক প্রতিবেদনের দায়িত্বে।", "en": "Sample bio: responsible for accounts and financial reports." },
+    "photo": null, "photo_consent": false, "sort_order": 3
+  },
+  {
+    "name": { "bn": "মাওলানা ইউসুফ আলী (নমুনা)", "en": "Maulana Yusuf Ali (sample)" },
+    "role": { "bn": "শরীয়াহ উপদেষ্টা", "en": "Shariah Advisor" },
+    "bio": { "bn": "নমুনা পরিচিতি: যাকাত ও সাদাকাহ বিষয়ে শরয়ী নির্দেশনা দেন।", "en": "Sample bio: gives Shariah guidance on zakat and sadaqah." },
+    "photo": null, "photo_consent": false, "sort_order": 4
+  },
+  {
+    "name": { "bn": "ডা. নুসরাত জাহান (নমুনা)", "en": "Dr Nusrat Jahan (sample)" },
+    "role": { "bn": "স্বাস্থ্য উপদেষ্টা", "en": "Health Advisor" },
+    "bio": { "bn": "নমুনা পরিচিতি: বিনামূল্যে মেডিকেল ক্যাম্পের পরিকল্পনায় সহায়তা করেন।", "en": "Sample bio: helps plan the free medical camps." },
+    "photo": null, "photo_consent": false, "sort_order": 5
+  },
+  {
+    "name": { "bn": "কামরুল হাসান (নমুনা)", "en": "Kamrul Hasan (sample)" },
+    "role": { "bn": "শিক্ষা উপদেষ্টা", "en": "Education Advisor" },
+    "bio": { "bn": "নমুনা পরিচিতি: শিক্ষাবৃত্তি কর্মসূচির দেখাশোনা করেন।", "en": "Sample bio: oversees the scholarship programme." },
+    "photo": null, "photo_consent": false, "sort_order": 6
+  },
+  {
+    "name": { "bn": "শাহানা পারভীন (নমুনা)", "en": "Shahana Parvin (sample)" },
+    "role": { "bn": "নির্বাহী সদস্য", "en": "Executive Member" },
+    "bio": { "bn": "", "en": "" },
+    "photo": null, "photo_consent": false, "sort_order": 7
+  },
+  {
+    "name": { "bn": "রাশেদুল ইসলাম (নমুনা)", "en": "Rashedul Islam (sample)" },
+    "role": { "bn": "নির্বাহী সদস্য", "en": "Executive Member" },
+    "bio": { "bn": "", "en": "" },
+    "photo": null, "photo_consent": false, "sort_order": 8
+  }
+]

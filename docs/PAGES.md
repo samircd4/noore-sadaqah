@@ -178,7 +178,7 @@ There are no admin pages in Next.js.
 | Page | Endpoints (API.md) |
 |---|---|
 | Layout (header, footer) | `GET /site/` |
-| `/` | `/site/`, `/funds/`, `/programs/?featured=1`, `/campaigns/?featured=1`, `/gallery/?limit=6`, `/posts/?page=1` |
+| `/` | `/site/`, `/funds/`, `/programs/?featured=1`, `/campaigns/?featured=1`, `/gallery/?limit=6&kind=photo`, `/posts/?limit=3` |
 | `/about` | `/site/`, `/people/`, `/reports/?kind=registration` |
 | `/programs`, `/programs/[slug]` | `/programs/`, `/programs/{slug}/` |
 | `/campaigns/[slug]` | `/campaigns/{slug}/` |

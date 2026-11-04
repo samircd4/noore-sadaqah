@@ -1,57 +1,442 @@
 [
   {
     "_note": "Placeholder photos from the design (Unsplash).",
-    "id": 1, "kind": "photo", "category": "relief", "youtube_id": "",
+    "id": 1,
+    "kind": "photo",
+    "category": "relief",
+    "youtube_id": "",
     "image": {
       "url": "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=1200&q=70",
-      "alt": { "bn": "সহায়তা গ্রহণকারী পরিবার (নমুনা ছবি)", "en": "A family receiving support (sample photo)" },
-      "width": 1200, "height": 1200
+      "alt": {
+        "bn": "সহায়তা গ্রহণকারী পরিবার (নমুনা ছবি)",
+        "en": "A family receiving support (sample photo)"
+      },
+      "width": 1200,
+      "height": 1200
     },
-    "caption": { "bn": "ত্রাণ বিতরণ", "en": "Relief distribution" }
+    "caption": {
+      "bn": "ত্রাণ বিতরণ",
+      "en": "Relief distribution"
+    }
   },
   {
-    "id": 2, "kind": "photo", "category": "relief", "youtube_id": "",
+    "id": 2,
+    "kind": "photo",
+    "category": "relief",
+    "youtube_id": "",
     "image": {
       "url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=900&q=70",
-      "alt": { "bn": "স্বেচ্ছাসেবকেরা ত্রাণসামগ্রী গুছিয়ে রাখছেন (নমুনা ছবি)", "en": "Volunteers packing relief goods (sample photo)" },
-      "width": 900, "height": 900
+      "alt": {
+        "bn": "স্বেচ্ছাসেবকেরা ত্রাণসামগ্রী গুছিয়ে রাখছেন (নমুনা ছবি)",
+        "en": "Volunteers packing relief goods (sample photo)"
+      },
+      "width": 900,
+      "height": 900
     },
-    "caption": { "bn": "স্বেচ্ছাসেবকদের কাজ", "en": "Volunteers at work" }
+    "caption": {
+      "bn": "স্বেচ্ছাসেবকদের কাজ",
+      "en": "Volunteers at work"
+    }
   },
   {
-    "id": 3, "kind": "photo", "category": "relief", "youtube_id": "",
+    "id": 3,
+    "kind": "photo",
+    "category": "relief",
+    "youtube_id": "",
     "image": {
       "url": "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=900&q=70",
-      "alt": { "bn": "সাহায্য বিতরণের সময় একদল মানুষ (নমুনা ছবি)", "en": "People during an aid distribution (sample photo)" },
-      "width": 900, "height": 900
+      "alt": {
+        "bn": "সাহায্য বিতরণের সময় একদল মানুষ (নমুনা ছবি)",
+        "en": "People during an aid distribution (sample photo)"
+      },
+      "width": 900,
+      "height": 900
     },
-    "caption": { "bn": "খাদ্য বিতরণ", "en": "Food distribution" }
+    "caption": {
+      "bn": "খাদ্য বিতরণ",
+      "en": "Food distribution"
+    }
   },
   {
-    "id": 4, "kind": "photo", "category": "education", "youtube_id": "",
+    "id": 4,
+    "kind": "photo",
+    "category": "education",
+    "youtube_id": "",
     "image": {
       "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=900&q=70",
-      "alt": { "bn": "হাসিমুখে শিশুরা (নমুনা ছবি)", "en": "Smiling children (sample photo)" },
-      "width": 900, "height": 1200
+      "alt": {
+        "bn": "হাসিমুখে শিশুরা (নমুনা ছবি)",
+        "en": "Smiling children (sample photo)"
+      },
+      "width": 900,
+      "height": 1200
     },
-    "caption": { "bn": "শিক্ষা কার্যক্রম", "en": "Education programme" }
+    "caption": {
+      "bn": "শিক্ষা কার্যক্রম",
+      "en": "Education programme"
+    }
   },
   {
-    "id": 5, "kind": "photo", "category": "relief", "youtube_id": "",
+    "id": 5,
+    "kind": "photo",
+    "category": "relief",
+    "youtube_id": "",
     "image": {
       "url": "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=900&q=70",
-      "alt": { "bn": "খাদ্যসামগ্রী বিতরণ (নমুনা ছবি)", "en": "Food distribution (sample photo)" },
-      "width": 900, "height": 900
+      "alt": {
+        "bn": "খাদ্যসামগ্রী বিতরণ (নমুনা ছবি)",
+        "en": "Food distribution (sample photo)"
+      },
+      "width": 900,
+      "height": 900
     },
-    "caption": { "bn": "রমযান প্যাকেজ", "en": "Ramadan packages" }
+    "caption": {
+      "bn": "রমযান প্যাকেজ",
+      "en": "Ramadan packages"
+    }
   },
   {
-    "id": 6, "kind": "photo", "category": "health", "youtube_id": "",
+    "id": 6,
+    "kind": "photo",
+    "category": "health",
+    "youtube_id": "",
     "image": {
       "url": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1200&q=70",
-      "alt": { "bn": "চারাগাছ রোপণ (নমুনা ছবি)", "en": "Planting a sapling (sample photo)" },
-      "width": 1200, "height": 600
+      "alt": {
+        "bn": "চারাগাছ রোপণ (নমুনা ছবি)",
+        "en": "Planting a sapling (sample photo)"
+      },
+      "width": 1200,
+      "height": 600
     },
-    "caption": { "bn": "বৃক্ষরোপণ", "en": "Tree planting" }
+    "caption": {
+      "bn": "বৃক্ষরোপণ",
+      "en": "Tree planting"
+    }
+  },
+  {
+    "_note": "SAMPLE gallery items so /gallery has two pages in the mock. Replace with real photos before launch.",
+    "id": 7,
+    "kind": "photo",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=1200&q=70",
+      "alt": {
+        "bn": "স্বেচ্ছাসেবকেরা ত্রাণসামগ্রী গোছাচ্ছেন (নমুনা ছবি)",
+        "en": "Volunteers packing relief goods (sample photo)"
+      },
+      "width": 1200,
+      "height": 800
+    },
+    "youtube_id": "",
+    "caption": {
+      "bn": "স্বেচ্ছাসেবকেরা ত্রাণসামগ্রী গোছাচ্ছেন (নমুনা)",
+      "en": "Volunteers packing relief goods (sample)"
+    },
+    "category": "relief"
+  },
+  {
+    "id": 8,
+    "kind": "photo",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=900&q=70",
+      "alt": {
+        "bn": "বৃত্তিপ্রাপ্ত শিশুদের সাথে একটি দিন (নমুনা ছবি)",
+        "en": "A day with scholarship children (sample photo)"
+      },
+      "width": 900,
+      "height": 1200
+    },
+    "youtube_id": "",
+    "caption": {
+      "bn": "বৃত্তিপ্রাপ্ত শিশুদের সাথে একটি দিন (নমুনা)",
+      "en": "A day with scholarship children (sample)"
+    },
+    "category": "education"
+  },
+  {
+    "id": 9,
+    "kind": "photo",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1000&q=70",
+      "alt": {
+        "bn": "বিনামূল্যে মেডিকেল ক্যাম্প (নমুনা ছবি)",
+        "en": "Free medical camp (sample photo)"
+      },
+      "width": 1000,
+      "height": 1000
+    },
+    "youtube_id": "",
+    "caption": {
+      "bn": "বিনামূল্যে মেডিকেল ক্যাম্প (নমুনা)",
+      "en": "Free medical camp (sample)"
+    },
+    "category": "health"
+  },
+  {
+    "id": 10,
+    "kind": "photo",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=1200&q=70",
+      "alt": {
+        "bn": "রমযানের খাদ্য বিতরণ (নমুনা ছবি)",
+        "en": "Ramadan food distribution (sample photo)"
+      },
+      "width": 1200,
+      "height": 800
+    },
+    "youtube_id": "",
+    "caption": {
+      "bn": "রমযানের খাদ্য বিতরণ (নমুনা)",
+      "en": "Ramadan food distribution (sample)"
+    },
+    "category": "relief"
+  },
+  {
+    "id": 11,
+    "kind": "photo",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=900&q=70",
+      "alt": {
+        "bn": "মক্তবে কুরআন শিক্ষা (নমুনা ছবি)",
+        "en": "Quran class for children (sample photo)"
+      },
+      "width": 900,
+      "height": 1200
+    },
+    "youtube_id": "",
+    "caption": {
+      "bn": "মক্তবে কুরআন শিক্ষা (নমুনা)",
+      "en": "Quran class for children (sample)"
+    },
+    "category": "education"
+  },
+  {
+    "id": 12,
+    "kind": "photo",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1000&q=70",
+      "alt": {
+        "bn": "বর্ষায় চারাগাছ রোপণ (নমুনা ছবি)",
+        "en": "Planting saplings in the monsoon (sample photo)"
+      },
+      "width": 1000,
+      "height": 1000
+    },
+    "youtube_id": "",
+    "caption": {
+      "bn": "বর্ষায় চারাগাছ রোপণ (নমুনা)",
+      "en": "Planting saplings in the monsoon (sample)"
+    },
+    "category": "relief"
+  },
+  {
+    "id": 13,
+    "kind": "photo",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=1200&q=70",
+      "alt": {
+        "bn": "সহায়তা পেয়ে একটি পরিবার (নমুনা ছবি)",
+        "en": "A family receiving support (sample photo)"
+      },
+      "width": 1200,
+      "height": 800
+    },
+    "youtube_id": "",
+    "caption": {
+      "bn": "সহায়তা পেয়ে একটি পরিবার (নমুনা)",
+      "en": "A family receiving support (sample)"
+    },
+    "category": "relief"
+  },
+  {
+    "id": 14,
+    "kind": "photo",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=900&q=70",
+      "alt": {
+        "bn": "সংস্কারের পর গ্রামের মসজিদ (নমুনা ছবি)",
+        "en": "A village mosque after repairs (sample photo)"
+      },
+      "width": 900,
+      "height": 1200
+    },
+    "youtube_id": "",
+    "caption": {
+      "bn": "সংস্কারের পর গ্রামের মসজিদ (নমুনা)",
+      "en": "A village mosque after repairs (sample)"
+    },
+    "category": "relief"
+  },
+  {
+    "id": 15,
+    "kind": "photo",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1541544537156-7627a7a4aa1c?auto=format&fit=crop&w=1000&q=70",
+      "alt": {
+        "bn": "নলকূপ স্থাপনের দিন (নমুনা ছবি)",
+        "en": "The day a tube well was installed (sample photo)"
+      },
+      "width": 1000,
+      "height": 1000
+    },
+    "youtube_id": "",
+    "caption": {
+      "bn": "নলকূপ স্থাপনের দিন (নমুনা)",
+      "en": "The day a tube well was installed (sample)"
+    },
+    "category": "health"
+  },
+  {
+    "id": 16,
+    "kind": "photo",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=70",
+      "alt": {
+        "bn": "রোগীদের ওষুধ বিতরণ (নমুনা ছবি)",
+        "en": "Handing out medicine to patients (sample photo)"
+      },
+      "width": 1200,
+      "height": 800
+    },
+    "youtube_id": "",
+    "caption": {
+      "bn": "রোগীদের ওষুধ বিতরণ (নমুনা)",
+      "en": "Handing out medicine to patients (sample)"
+    },
+    "category": "health"
+  },
+  {
+    "id": 17,
+    "kind": "photo",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=900&q=70",
+      "alt": {
+        "bn": "বছরের শুরুতে বই বিতরণ (নমুনা ছবি)",
+        "en": "Books for the new school year (sample photo)"
+      },
+      "width": 900,
+      "height": 1200
+    },
+    "youtube_id": "",
+    "caption": {
+      "bn": "বছরের শুরুতে বই বিতরণ (নমুনা)",
+      "en": "Books for the new school year (sample)"
+    },
+    "category": "education"
+  },
+  {
+    "id": 18,
+    "kind": "photo",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=1000&q=70",
+      "alt": {
+        "bn": "বন্যার পর জরুরি সহায়তা (নমুনা ছবি)",
+        "en": "Emergency help after the flood (sample photo)"
+      },
+      "width": 1000,
+      "height": 1000
+    },
+    "youtube_id": "",
+    "caption": {
+      "bn": "বন্যার পর জরুরি সহায়তা (নমুনা)",
+      "en": "Emergency help after the flood (sample)"
+    },
+    "category": "relief"
+  },
+  {
+    "id": 19,
+    "kind": "photo",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=1200&q=70",
+      "alt": {
+        "bn": "শিক্ষকদের সাথে মতবিনিময় (নমুনা ছবি)",
+        "en": "Meeting the teachers (sample photo)"
+      },
+      "width": 1200,
+      "height": 800
+    },
+    "youtube_id": "",
+    "caption": {
+      "bn": "শিক্ষকদের সাথে মতবিনিময় (নমুনা)",
+      "en": "Meeting the teachers (sample)"
+    },
+    "category": "education"
+  },
+  {
+    "id": 20,
+    "kind": "photo",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=900&q=70",
+      "alt": {
+        "bn": "ঈদের উপহার বিতরণ (নমুনা ছবি)",
+        "en": "Eid gifts for families (sample photo)"
+      },
+      "width": 900,
+      "height": 1200
+    },
+    "youtube_id": "",
+    "caption": {
+      "bn": "ঈদের উপহার বিতরণ (নমুনা)",
+      "en": "Eid gifts for families (sample)"
+    },
+    "category": "relief"
+  },
+  {
+    "_note": "SAMPLE videos: youtube_id stays empty until the foundation sends real video IDs (the lightbox then shows 'coming soon').",
+    "id": 21,
+    "kind": "video",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=1200&q=70",
+      "alt": {
+        "bn": "ভিডিও: ত্রাণ বিতরণের একটি দিন (নমুনা ছবি)",
+        "en": "Video: a day of relief distribution (sample photo)"
+      },
+      "width": 1200,
+      "height": 675
+    },
+    "youtube_id": "",
+    "caption": {
+      "bn": "ভিডিও: ত্রাণ বিতরণের একটি দিন (নমুনা)",
+      "en": "Video: a day of relief distribution (sample)"
+    },
+    "category": "relief"
+  },
+  {
+    "id": 22,
+    "kind": "video",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1200&q=70",
+      "alt": {
+        "bn": "ভিডিও: শিশুদের মুখে হাসি (নমুনা ছবি)",
+        "en": "Video: smiles from the children (sample photo)"
+      },
+      "width": 1200,
+      "height": 675
+    },
+    "youtube_id": "",
+    "caption": {
+      "bn": "ভিডিও: শিশুদের মুখে হাসি (নমুনা)",
+      "en": "Video: smiles from the children (sample)"
+    },
+    "category": "education"
+  },
+  {
+    "id": 23,
+    "kind": "video",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=70",
+      "alt": {
+        "bn": "ভিডিও: মেডিকেল ক্যাম্পের গল্প (নমুনা ছবি)",
+        "en": "Video: the medical camp story (sample photo)"
+      },
+      "width": 1200,
+      "height": 675
+    },
+    "youtube_id": "",
+    "caption": {
+      "bn": "ভিডিও: মেডিকেল ক্যাম্পের গল্প (নমুনা)",
+      "en": "Video: the medical camp story (sample)"
+    },
+    "category": "health"
   }
 ]

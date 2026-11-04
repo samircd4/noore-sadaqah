@@ -1,14 +1,14 @@
 /**
- * Site navigation (HOME_PAGE.md fix 2): anchors for sections on the home page, real routes for the rest.
+ * Site navigation (HOME_PAGE.md fix 2). Every menu item now has its own page (F2), so no home-page anchors remain.
  * Hrefs are next-intl Link targets, so the language prefix is added automatically.
  */
 
 /** Main menu (header, drawer). `key` is the label in messages "nav". */
 export const MAIN_NAV = [
   { key: "home", href: "/" },
-  { key: "about", href: { pathname: "/", hash: "about" } },
+  { key: "about", href: "/about" },
   { key: "programs", href: "/programs" },
-  { key: "gallery", href: { pathname: "/", hash: "gallery" } },
+  { key: "gallery", href: "/gallery" },
   { key: "news", href: "/news" },
   { key: "contact", href: "/contact" },
 ];

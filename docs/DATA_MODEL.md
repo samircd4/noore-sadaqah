@@ -83,6 +83,8 @@ class SiteSetting(TimeStamped):
 | `recurring_modes` | `{"bkash": "reminder", "sslcommerz": "reminder"}`: AUTO only once the gateway enables it (DONATION_FLOW.md) | Admin |
 | `payment_methods` | `["bkash", "sslcommerz"]`: online methods currently live | Admin |
 | `home_images` | `{hero, about_main, about_small, quote, volunteer, footer}`, each an image with `alt_bn`/`alt_en` | Admin, Editor |
+| `about` | `{mission_bn, mission_en, vision_bn, vision_en}` (shown on `/about`) | Admin, Editor |
+| `contact_faq` | `[{q_bn, q_en, a_bn, a_en}]` (FAQ on `/contact`) | Admin, Editor |
 
 Each key has a JSON schema validated in the admin form (`apps/core/schemas.py`), so a typo can't break the site.
 
@@ -164,6 +166,12 @@ class GalleryItem(TimeStamped):
     category = models.ForeignKey(PostCategory, on_delete=models.PROTECT)  # same categories as news
     taken_at = models.DateField(null=True, blank=True)
     is_published = models.BooleanField(default=True)
+
+class Page(TimeStamped):                                  # long editable text: privacy, terms, refund-policy, about, how-we-spend
+    slug = models.SlugField(unique=True)                   # fixed set, created by `seed`; no add/delete in the admin
+    title_bn, title_en = …CharField(120)
+    body_bn, body_en = …TextField                          # markdown → sanitized body_html in the API
+    # updated_at (from TimeStamped) is the "সর্বশেষ হালনাগাদ" date on the policy pages
 
 class Person(TimeStamped):                                # board & advisors on /about
     name_bn, name_en = …CharField(120)

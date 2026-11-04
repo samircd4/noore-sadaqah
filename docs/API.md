@@ -42,7 +42,7 @@ them (`errors.mobileInvalid`):
 
 Field error keys used: `required`, `mobileInvalid`, `emailInvalid`, `minAmount`, `maxAmount`, `amountInvalid`,
 `fundInactive`, `recurringNotAllowed`, `campaignEnded`, `onBehalfPermission`, `otpInvalid`, `otpExpired`,
-`otpTooManyAttempts`, `fitraClosed`, `tooLong`. Every key must exist in both `messages/*.json`.
+`otpTooManyAttempts`, `fitraClosed`, `tooLong`, `contactInvalid`, `districtInvalid`, `choiceInvalid`. Every key must exist in both `messages/*.json`.
 
 ### Throttles (DRF `ScopedRateThrottle`, Redis cache)
 
@@ -72,9 +72,12 @@ Everything the layout needs, one call per page render (cached).
   "nisab": {"silver_price_per_gram": 0, "gold_price_per_gram": 0, "karat": "22K", "updated_at": null},
   "fitra": {"year": 2027, "rates": [{"item": "গম", "amount": 0}], "cutoff": null, "open": false},
   "zakat_enabled": false,
-  "home_images": {"hero": {…image}, "about_main": {…}, "about_small": {…}, "quote": {…}, "volunteer": {…}, "footer": {…}}
+  "home_images": {"hero": {…image}, "about_main": {…}, "about_small": {…}, "quote": {…}, "volunteer": {…}, "footer": {…}},
+  "about": {"mission": "…", "vision": "…"},
+  "contact_faq": [{"q": "…", "a": "…"}]
 }
 ```
+`about` is shown on `/about` (the long story is the `about` page below); `contact_faq` is the FAQ on `/contact`.
 `zakat_enabled` stays `false` until ZAKAT_POLICY.md is signed off (a SiteSetting flag set by an Admin).
 
 ### `GET /funds/` · `GET /funds/{slug}/` · tags `funds`
@@ -111,6 +114,21 @@ Items: `id, kind, image {…}, youtube_id, caption, category {slug, name}`. `?li
 ### `GET /people/` · `GET /reports/` · `GET /jobs/` · tags `people`, `reports`, `jobs`
 `/reports/` accepts `?kind=annual|audit|registration|other` and `?year=`. People without `photo_consent` come back with `photo: null`. Jobs: only `is_open` and not past `closes_at`.
 
+Items, all plain arrays in `sort_order` (people), newest first (reports, jobs):
+```json
+{"name": "…", "role": "চেয়ারম্যান", "bio": "", "photo": {…image} | null}
+{"id": 3, "kind": "annual", "year": 2025, "title": "বার্ষিক প্রতিবেদন ২০২৫", "file_url": "https://…/report.pdf", "published_at": "2026-02-10"}
+{"slug": "field-officer", "title": "…", "location": "…", "body_html": "<p>…</p>", "apply_email": "", "apply_url": "", "closes_at": "2026-12-31" | null}
+```
+
+### `GET /pages/{slug}/` · tag `pages`
+Long text pages edited in the admin (markdown, rendered and sanitized on the server like `body_html` elsewhere):
+`privacy`, `terms`, `refund-policy` (POLICIES.md), `about` (the story on `/about`) and `how-we-spend` (on `/transparency`).
+```json
+{"slug": "privacy", "title": "গোপনীয়তা নীতি", "body_html": "<h2>…</h2><p>…</p>", "updated_at": "2026-11-01"}
+```
+`updated_at` is a date (the "সর্বশেষ হালনাগাদ" line). Unknown slug → 404.
+
 ### `GET /transparency/totals/` · tag `transparency`
 ```json
 {"years": [{"year": 2026, "funds": [{"slug": "sadaqah", "title": "সাদাকাহ", "total": 0, "is_zakat": false}], "total": 0}]}
@@ -125,6 +143,10 @@ Sum of PAID donations by year (Asia/Dhaka) and fund; zakat funds listed separate
 |---|---|---|
 | `POST /contact/` | `name, contact, subject, message` | `201 {}` |
 | `POST /volunteers/` | `name, phone, email?, district, skills?, availability?` | `201 {}` |
+
+Field rules (the same Zod schemas in `frontend/src/lib/validation/forms.js`):
+- contact: `name` ≤ 120, `contact` a BD mobile (`01XXXXXXXXX`, stored normalised) **or** an email (`contactInvalid` otherwise), `subject` ≤ 150, `message` ≤ 2000 (`tooLong`).
+- volunteers: `name` ≤ 120, `phone` BD mobile, `email` optional, `district` one of the 64 district slugs (`frontend/src/lib/districts.js`, `districtInvalid`), `skills` ≤ 500, `availability` `""|weekdays|weekends|flexible`.
 | `POST /subscribers/` | `email` | `201 {}`. Existing emails also get `201` (no enumeration). |
 | `POST /subscribers/unsubscribe/` | `token` | `200 {}` |
 

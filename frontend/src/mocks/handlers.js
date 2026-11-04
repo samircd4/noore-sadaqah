@@ -8,6 +8,7 @@
 
 import "./routes/content";
 import "./routes/forms";
+import "./routes/org";
 
 export { handle, matchPath, route } from "./router";
 export { errors, localize, paginate, throttle } from "./helpers";

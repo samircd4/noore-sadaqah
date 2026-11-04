@@ -19,6 +19,22 @@ export function shortDescription(text) {
 }
 
 /**
+ * Plain text from sanitized API HTML (`body_html`), for meta descriptions: tags removed, the basic entities decoded.
+ * @param {string | undefined | null} html
+ */
+export function textFromHtml(html) {
+  return String(html ?? "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/**
  * The URL of a page in one language: Bengali has no prefix, English lives under /en (I18N.md).
  * @param {string} path  e.g. "/programs/water" ("/" for home)
  * @param {"bn" | "en"} locale
