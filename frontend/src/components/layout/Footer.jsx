@@ -2,7 +2,7 @@ import { Mail, MapPin, Phone, Play } from "lucide-react";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { bnNumber } from "@/lib/format";
+import { bnDigits } from "@/lib/format";
 import { DONATE_HREF } from "@/lib/nav";
 import { currentYear } from "@/lib/time";
 import Logo from "./Logo";
@@ -131,7 +131,7 @@ export default async function Footer({ site, locale }) {
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-x-6 gap-y-2 px-4 py-5 text-xs leading-6 text-sand-200/70">
           <p>
-            {t("copyright", { year: bnNumber(year, locale).replace(/,/g, "") })}
+            {t("copyright", { year: bnDigits(year, locale) })}
           </p>
           {/* POLICIES.md: all three policies are linked from the footer (payment gateways check for them). */}
           <nav aria-label={t("legal")}>

@@ -99,7 +99,9 @@ export async function apiGet(path, { locale, query, tags = [], life = "minutes" 
 
 /**
  * apiGet() for detail pages: an API 404 (unknown slug, draft post) becomes Next's notFound(), so the page shows
- * not-found.jsx with a 404 status (frontend/CLAUDE.md rule 14). Every other error is thrown as usual.
+ * not-found.js (frontend/CLAUDE.md rule 14). Every other error is thrown as usual. The status is a real 404 only
+ * when this runs before the page starts streaming; inside a <Suspense> hole (e.g. ?page= past the end on /news)
+ * it stays 200 and Next adds a noindex meta tag.
  * @param {string} path
  * @param {Parameters<typeof apiGet>[1]} [options]
  */

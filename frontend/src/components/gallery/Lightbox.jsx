@@ -50,6 +50,18 @@ export default function Lightbox({ items, index, onChange }) {
     return () => dialog.removeEventListener("close", onClose);
   }, [onChange]);
 
+  // Leaving the page while the lightbox is open (back swipe, client navigation): Next either unmounts the page or
+  // keeps it hidden for back/forward. A hidden page's open modal dialog would make the new page inert, and an
+  // unmounted one never fires "close", so on cleanup close the dialog, reset the index and clear the overlay flag.
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    return () => {
+      if (dialog?.open) dialog.close();
+      delete document.body.dataset.overlay;
+      onChange(null);
+    };
+  }, [onChange]);
+
   const go = (step) => {
     if (index === null || count < 2) return;
     onChange((index + step + count) % count);

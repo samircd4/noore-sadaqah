@@ -7,6 +7,7 @@ import Accordion from "@/components/ui/Accordion";
 import { apiGet } from "@/lib/api";
 import { currentLocale } from "@/lib/locale";
 import { pageMetadata } from "@/lib/seo";
+import { normalizeBdMobile } from "@/lib/validation/common";
 
 /**
  * /contact (PAGES.md): contact details and the form (→ POST /contact/), then a tap-to-load map and the FAQ.
@@ -25,6 +26,17 @@ function dialable(number) {
   return digits.replace(/\D/g, "").length >= 11 ? digits : null;
 }
 
+/**
+ * Digits for a wa.me link, which needs the country code: a BD mobile in any form (01…, +880…, Bengali digits)
+ * becomes 8801XXXXXXXXX; another number must already start with "+". Otherwise null (no link).
+ */
+function whatsappDigits(number) {
+  const mobile = normalizeBdMobile(number);
+  if (mobile) return `88${mobile}`;
+  const digits = dialable(number);
+  return digits?.startsWith("+") ? digits.replace(/\D/g, "") : null;
+}
+
 export default async function ContactPage() {
   const locale = await currentLocale();
   const [t, tFooter, site] = await Promise.all([
@@ -34,7 +46,7 @@ export default async function ContactPage() {
   ]);
   const c = site.contact;
   const phone = dialable(c.phone);
-  const whatsapp = dialable(c.whatsapp);
+  const whatsapp = whatsappDigits(c.whatsapp);
   const social = ["facebook", "youtube", "instagram", "linkedin"].filter((k) => site.social?.[k]);
 
   const rowLink = "font-semibold break-words text-em-700 underline-offset-4 hover:text-em-500 hover:underline";
@@ -55,7 +67,7 @@ export default async function ContactPage() {
       Icon: MessageCircle,
       label: t("whatsapp"),
       value: (
-        <a href={`https://wa.me/${whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" className={`inline-flex min-h-11 items-center ${rowLink}`} dir="ltr">
+        <a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer" className={`inline-flex min-h-11 items-center ${rowLink}`} dir="ltr">
           {c.whatsapp}
         </a>
       ),

@@ -14,8 +14,9 @@ import { pageMetadata } from "@/lib/seo";
 
 /**
  * /gallery (PAGES.md): category chips (?category=), photo/video toggle (?kind=), grid of tiles, Pagination
- * (?page=, 12 per page), Lightbox. Data: GET /gallery/, /post-categories/. The list reads searchParams, so it
- * renders per request inside <Suspense>; the hero is prerendered.
+ * (?page=, 12 per page), Lightbox. Data: GET /gallery/, /post-categories/. The hero and the category list are
+ * prerendered; the grid reads searchParams, so it renders per request inside <Suspense>. A page past the end
+ * shows the not-found UI with status 200 + noindex (already streaming; see /news).
  */
 
 const KINDS = ["photo", "video"];
@@ -26,7 +27,11 @@ export async function generateMetadata() {
 }
 
 export default async function GalleryPage({ searchParams }) {
-  const [locale, t] = await Promise.all([currentLocale(), getTranslations("galleryPage")]);
+  const locale = await currentLocale();
+  const [t, categories] = await Promise.all([
+    getTranslations("galleryPage"),
+    apiGet("/post-categories/", { locale, tags: ["posts"] }),
+  ]);
   return (
     <>
       <PageHero title={t("title")} eyebrow={t("eyebrow")} subtitle={t("subtitle")} breadcrumb={[{ label: t("title") }]} />
@@ -36,7 +41,7 @@ export default async function GalleryPage({ searchParams }) {
             {t("listTitle")}
           </h2>
           <Suspense fallback={<GallerySkeleton />}>
-            <GalleryList searchParams={searchParams} locale={locale} />
+            <GalleryList searchParams={searchParams} locale={locale} categories={categories} />
           </Suspense>
         </div>
       </section>
@@ -61,17 +66,18 @@ function GallerySkeleton() {
   );
 }
 
-/** @param {{ searchParams: Promise<Record<string, string | string[] | undefined>>, locale: "bn" | "en" }} props */
-async function GalleryList({ searchParams, locale }) {
+/**
+ * @param {{ searchParams: Promise<Record<string, string | string[] | undefined>>, locale: "bn" | "en", categories: Array<{ slug: string, name: string }> }} props
+ */
+async function GalleryList({ searchParams, locale, categories }) {
   const params = await searchParams;
   const category = parseSlug(params.category);
   const kindParam = parseSlug(params.kind);
   const kind = KINDS.includes(kindParam) ? kindParam : "";
   const page = parsePage(params.page);
 
-  const [t, categories, gallery] = await Promise.all([
+  const [t, gallery] = await Promise.all([
     getTranslations("galleryPage"),
-    apiGet("/post-categories/", { locale, tags: ["posts"] }),
     apiGetOrNotFound("/gallery/", { locale, query: { category, kind, page }, tags: ["gallery"] }),
   ]);
 

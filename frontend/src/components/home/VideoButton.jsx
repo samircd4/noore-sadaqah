@@ -22,7 +22,13 @@ export default function VideoButton({ youtubeId, label }) {
       delete document.body.dataset.overlay;
     };
     dialog.addEventListener("close", onClose);
-    return () => dialog.removeEventListener("close", onClose);
+    return () => {
+      dialog.removeEventListener("close", onClose);
+      // Leaving the page with the player open (back gesture): Next may keep the page hidden for back/forward, and a
+      // hidden open modal would make the next page inert. Close it and drop the iframe (stops the video).
+      if (dialog.open) dialog.close();
+      onClose();
+    };
   }, []);
 
   const show = () => {

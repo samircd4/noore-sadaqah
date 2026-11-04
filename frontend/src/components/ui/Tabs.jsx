@@ -1,28 +1,33 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useId, useRef } from "react";
 
 /**
- * Tabs (PAGES.md "Tabs"): underlined active tab in gold, synced to `?tab=` in the URL. The server reads `?tab=`
- * and passes `initial`, so the right panel is in the first HTML; switching updates the URL with replaceState
- * (no reload, no new history entry). Inactive panels stay mounted (hidden), so a half-filled form isn't lost.
+ * Tabs (PAGES.md "Tabs"): underlined active tab in gold. The active tab IS `?tab=` in the URL (useSearchParams), so
+ * the right panel is in the first HTML and a link to another `?tab=` (e.g. the footer's volunteer link while already
+ * on the page) switches it. Clicking a tab updates the URL with replaceState (no reload, no new history entry), which
+ * Next syncs into useSearchParams. Inactive panels stay mounted (hidden), so a half-filled form isn't lost.
+ * useSearchParams needs a <Suspense> boundary above this component (it renders per request).
  * Keyboard: arrows, Home, End (WAI-ARIA tabs pattern). On phones the tab row scrolls sideways (RESPONSIVE.md §15).
  * @param {object} props
  * @param {Array<{ key: string, label: string, content: React.ReactNode }>} props.tabs
- * @param {string} props.initial key of the tab shown first
+ * @param {string} [props.fallback] tab shown when `?tab=` is missing or unknown; the first tab by default
  * @param {string} props.label accessible name of the tab list
  * @param {string} [props.param="tab"] the query parameter to sync
  */
-export default function Tabs({ tabs, initial, label, param = "tab" }) {
-  const [active, setActive] = useState(tabs.some((t) => t.key === initial) ? initial : tabs[0].key);
+export default function Tabs({ tabs, fallback, label, param = "tab" }) {
+  const requested = useSearchParams().get(param);
+  const valid = (key) => tabs.some((t) => t.key === key);
+  const active = valid(requested) ? requested : valid(fallback) ? fallback : tabs[0].key;
   const baseId = useId();
   const buttons = useRef(/** @type {Array<HTMLButtonElement | null>} */ ([]));
 
   const select = (key, focus = false) => {
-    setActive(key);
     const url = new URL(window.location.href);
     url.searchParams.set(param, key);
-    window.history.replaceState(window.history.state, "", url);
+    // null state, as in Next's docs: Next then syncs the new URL into useSearchParams (and the router).
+    window.history.replaceState(null, "", url);
     if (focus) {
       const button = buttons.current[tabs.findIndex((t) => t.key === key)];
       button?.focus();

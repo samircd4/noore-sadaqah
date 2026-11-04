@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { normalizeBdMobile, parseAmount } from "./common";
 import { quickDonateSchema } from "./donation";
-import { subscriberSchema } from "./forms";
+import { contactSchema, subscriberSchema, volunteerSchema } from "./forms";
 
 // Cases from docs/QA_CHECKLIST.md §3.
 describe("normalizeBdMobile", () => {
@@ -83,5 +83,36 @@ describe("subscriberSchema", () => {
   it("rejects empty and invalid emails", () => {
     expect(subscriberSchema.safeParse({ email: "" }).error.issues[0].message).toBe("errors.required");
     expect(subscriberSchema.safeParse({ email: "not-an-email" }).error.issues[0].message).toBe("errors.emailInvalid");
+  });
+});
+
+const message = (result) => result.error?.issues[0].message;
+
+describe("contactSchema", () => {
+  const base = { name: "রহিম", subject: "প্রশ্ন", message: "আসসালামু আলাইকুম" };
+
+  it("accepts a BD mobile (normalised) or an email (lower-cased)", () => {
+    expect(contactSchema.parse({ ...base, contact: "+880 1712-345678" }).contact).toBe("01712345678");
+    expect(contactSchema.parse({ ...base, contact: "Donor@Example.com" }).contact).toBe("donor@example.com");
+  });
+
+  it("uses the same email rule as the newsletter", () => {
+    for (const contact of ["a@b.c,", "x@y.z<>", "not-an-email"]) {
+      expect(message(contactSchema.safeParse({ ...base, contact }))).toBe("errors.contactInvalid");
+    }
+  });
+});
+
+describe("volunteerSchema", () => {
+  const base = { name: "করিম", phone: "01712345678", district: "kurigram" };
+
+  it("allows an empty email and lower-cases a valid one", () => {
+    expect(volunteerSchema.parse(base).email).toBe("");
+    expect(volunteerSchema.parse({ ...base, email: "Vol@Example.com" }).email).toBe("vol@example.com");
+  });
+
+  it("rejects malformed emails and unknown districts", () => {
+    expect(message(volunteerSchema.safeParse({ ...base, email: "a@b.c," }))).toBe("errors.emailInvalid");
+    expect(message(volunteerSchema.safeParse({ ...base, district: "atlantis" }))).toBe("errors.districtInvalid");
   });
 });

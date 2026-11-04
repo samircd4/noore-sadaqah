@@ -40,6 +40,8 @@ export default function VolunteerForm() {
     return e ? tAll(e.key, e.params) : null;
   };
   const req = { required: true, requiredLabel: tCommon("required") };
+  // React doesn't re-apply a changed defaultValue to a mounted <select>, and the form reset after the action puts
+  // it back on its first default. Keying on the returned value remounts the select with the visitor's choice.
 
   return (
     <form ref={formRef} action={formAction} noValidate className="grid gap-5 sm:grid-cols-2">
@@ -68,6 +70,7 @@ export default function VolunteerForm() {
         error={err("email")}
       />
       <Select
+        key={`district-${values.district ?? ""}`}
         id="vol-district"
         name="district"
         label={t("district")}
@@ -78,6 +81,7 @@ export default function VolunteerForm() {
         {...req}
       />
       <Select
+        key={`availability-${values.availability ?? ""}`}
         id="vol-availability"
         name="availability"
         label={`${t("availability")} (${t("optional")})`}
