@@ -121,6 +121,12 @@ Defined as CSS variables in `tokens.css`. Always put text on photos over one of 
   `globals.css`): the page fades out and rises back in (about 0.35 s), the header cross-fades in place, and the gold
   highlight slides to the chosen language. Nav links have a fixed height (40px) so nothing jumps between languages.
   Browsers without View Transitions, and people with "reduce motion" on, get an instant switch.
+- **Drawer animation:** the mobile menu slides in from the right (about 0.3 s), its backdrop fades, and the links
+  fade in one after another; closing slides it back out. CSS only (`globals.css` "Drawer", `@starting-style`);
+  older browsers and "reduce motion" get an instant open/close. The menu button scales down slightly when tapped.
+- **Accordion animation:** an answer opens and closes with a height animation where supported (`::details-content`
+  + `interpolate-size`), otherwise it fades in; the chevron turns and the open item gets a light `em-50` tint.
+  CSS only (`globals.css` "Accordion"); off with "reduce motion".
 
 ## Logo
 

@@ -176,6 +176,27 @@
     "chooseAmount": "পরিমাণ বেছে নিন",
     "donate": "দান করুন"
   },
+  "campaignPage": {
+    "breadcrumb": "ক্যাম্পেইন",
+    "progressTitle": "সংগ্রহের অগ্রগতি",
+    "raisedOf": "লক্ষ্য {goal}",
+    "donors": "{count} জন দাতা",
+    "daysLeft": "আর {days} দিন বাকি",
+    "endsOn": "শেষ হবে {date}",
+    "ongoing": "চলমান",
+    "ended": "ক্যাম্পেইন শেষ হয়েছে",
+    "endedNote": "মোট সংগৃহীত {amount}। সকল দাতাকে আন্তরিক ধন্যবাদ।",
+    "monthlyTitle": "মাসিক দান",
+    "monthlyAria": "মাসে {amount} দান করুন",
+    "oneTime": "এককালীন দান করুন",
+    "donateClosed": "দান গ্রহণ বন্ধ",
+    "story": "ক্যাম্পেইনের গল্প",
+    "donorsTitle": "সাম্প্রতিক দাতা",
+    "anonymous": "নাম প্রকাশে অনিচ্ছুক",
+    "noDonors": "এখনো কোনো দান আসেনি। প্রথম দাতা হোন।",
+    "donorCountLabel": "দাতার সংখ্যা",
+    "timeLabel": "সময়"
+  },
   "errors": {
     "required": "এই ঘরটি পূরণ করুন",
     "mobileInvalid": "সঠিক মোবাইল নম্বর দিন (01XXXXXXXXX)",
