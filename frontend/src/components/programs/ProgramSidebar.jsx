@@ -57,7 +57,7 @@ export default async function ProgramSidebar({ program, locale }) {
                 {fund.preset_amounts.map((amount) => (
                   <li key={amount}>
                     <Link
-                      href={fundDonateHref(fund.slug, amount)}
+                      href={fundDonateHref(fund.slug, { amount })}
                       className="flex h-11 items-center justify-center rounded-lg border border-white/25 bg-white/10 font-bold transition hover:border-gold-400 hover:bg-white/20 active:bg-white/25 motion-reduce:transition-none"
                     >
                       {taka(amount, locale)}

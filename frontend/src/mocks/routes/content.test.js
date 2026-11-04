@@ -93,6 +93,50 @@ describe("content endpoints (docs/API.md shapes)", () => {
     expect(await get("/programs/nope/")).toEqual({ status: 404, body: { error: { code: "notFound" } } });
   });
 
+  it("GET /campaigns/{slug}/ returns the detail shape; unknown slug is 404", async () => {
+    resetStore();
+    const { status, body } = await get("/campaigns/orphan-smile/");
+    expect(status).toBe(200);
+    expect(hasPrivateKeys(body)).toBe(false);
+    expect(hasUnresolvedText(body)).toBe(false);
+    expect(Object.keys(body).sort()).toEqual(
+      [
+        "body_html", "cover", "donor_count", "ends_at", "fund", "goal_amount", "highlighted_option", "is_ended",
+        "monthly_options", "percent", "raised_amount", "recent_donors", "slug", "starts_at", "summary", "title",
+      ].sort(),
+    );
+    expect(body).toEqual(expect.objectContaining({ ends_at: null, is_ended: false, fund: { slug: "orphan", title: "এতিম সহায়তা" } }));
+    expect(body.body_html).toMatch(/^<p>/);
+    expect((await get("/campaigns/orphan-smile/", {}, "en")).body.title).toBe("Bring a smile to an orphan's face");
+    expect(await get("/campaigns/nope/")).toEqual({ status: 404, body: { error: { code: "notFound" } } });
+  });
+
+  it("GET /campaigns/{slug}/ marks a campaign past ends_at as ended", async () => {
+    const { body } = await get("/campaigns/winter-blanket-2025/");
+    expect(body.is_ended).toBe(true);
+    expect(body.raised_amount).toBe(186500);
+    expect(body.percent).toBe(93);
+    // Ended campaigns are not featured, so the home banner never shows one.
+    const featured = (await get("/campaigns/", { featured: "1" })).body.map((c) => c.slug);
+    expect(featured).not.toContain("winter-blanket-2025");
+    expect((await get("/campaigns/")).body.map((c) => c.slug)).toContain("winter-blanket-2025");
+  });
+
+  it("GET /campaigns/{slug}/ recent_donors: first name only, null when anonymous, never phone or email", async () => {
+    resetStore();
+    const { store } = await import("../store");
+    const base = { campaign: "orphan-smile", status: "paid", amount: 500, donor_phone: "01711000000", donor_email: "x@example.com" };
+    store.donations.set("d1", { ...base, id: "d1", donor_name: "রহিম উদ্দিন", is_anonymous: false, paid_at: "2026-11-01T05:00:00Z" });
+    store.donations.set("d2", { ...base, id: "d2", donor_name: "করিম", is_anonymous: true, paid_at: "2026-11-02T05:00:00Z" });
+    const { body } = await get("/campaigns/orphan-smile/");
+    expect(body.recent_donors).toEqual([
+      { name: null, amount: 500, paid_at: "2026-11-02T05:00:00Z" },
+      { name: "রহিম", amount: 500, paid_at: "2026-11-01T05:00:00Z" },
+    ]);
+    expect(JSON.stringify(body)).not.toMatch(/01711000000|example\.com/);
+    resetStore();
+  });
+
   it("GET /campaigns/ computes raised, percent and donors, never personal data", async () => {
     resetStore();
     const [campaign] = (await get("/campaigns/", { featured: "1" })).body;

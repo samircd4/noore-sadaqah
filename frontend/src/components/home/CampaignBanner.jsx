@@ -1,4 +1,5 @@
 import { Flame } from "lucide-react";
+import MonthlyOptions from "@/components/campaigns/MonthlyOptions";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import Badge from "@/components/ui/Badge";
@@ -57,24 +58,13 @@ export default async function CampaignBanner({ campaign, locale }) {
           </div>
         </div>
 
-        <ul aria-label={t("monthlyOptions")} className="grid grid-cols-3 gap-2 min-[360px]:gap-3 sm:gap-4">
-          {campaign.monthly_options.map((option) => {
-            const highlighted = option === campaign.highlighted_option;
-            return (
-              <li
-                key={option}
-                className={`rounded-lg p-3 text-center sm:p-4 ${
-                  highlighted
-                    ? "bg-gold-500 text-em-950 shadow-xl"
-                    : "border border-white/20 bg-em-950/40 sm:bg-white/10 sm:backdrop-blur"
-                }`}
-              >
-                <p className="font-head text-2xl font-bold sm:text-3xl">{bnNumber(option, locale)}</p>
-                <p className={`mt-1 text-xs leading-5 ${highlighted ? "" : "text-sand-100/80"}`}>{t("perMonth")}</p>
-              </li>
-            );
-          })}
-        </ul>
+        <MonthlyOptions
+          options={campaign.monthly_options}
+          highlighted={campaign.highlighted_option}
+          locale={locale}
+          perMonthLabel={t("perMonth")}
+          listLabel={t("monthlyOptions")}
+        />
       </div>
     </section>
   );

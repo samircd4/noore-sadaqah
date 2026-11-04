@@ -19,5 +19,26 @@
     "ends_at": null,
     "fund": "orphan",
     "is_featured": true
+  },
+  {
+    "_note": "SAMPLE ended campaign, only to exercise the 'campaign ended' state in the mock. Not real; remove or replace before launch.",
+    "slug": "winter-blanket-2025",
+    "title": { "bn": "শীতার্তদের জন্য কম্বল (নমুনা)", "en": "Blankets for the cold (sample)" },
+    "summary": { "bn": "নমুনা: উত্তরবঙ্গের শীতার্ত পরিবারগুলোর জন্য কম্বল বিতরণ ক্যাম্পেইন।", "en": "Sample: a blanket drive for families in the cold north." },
+    "body": { "bn": "নমুনা লেখা: এই ক্যাম্পেইনটি শুধু 'শেষ হয়েছে' অবস্থা দেখানোর জন্য।\n\nআসল ক্যাম্পেইনের তথ্য ফাউন্ডেশন দেবে।", "en": "Sample text: this campaign only shows the 'ended' state.\n\nThe foundation will provide real campaign details." },
+    "cover": {
+      "url": "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=1200&q=70",
+      "alt": { "bn": "সহায়তা গ্রহণকারী পরিবার (নমুনা ছবি)", "en": "A family receiving support (sample photo)" },
+      "width": 1200, "height": 800
+    },
+    "goal_amount": 200000,
+    "offline_raised": 186500,
+    "offline_donors": 340,
+    "monthly_options": [300, 500, 1000],
+    "highlighted_option": 500,
+    "starts_at": "2025-12-01T00:00:00Z",
+    "ends_at": "2026-02-28T17:59:59Z",
+    "fund": "sadaqah",
+    "is_featured": false
   }
 ]

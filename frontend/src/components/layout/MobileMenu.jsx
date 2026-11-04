@@ -10,6 +10,7 @@ import LanguageSwitch from "./LanguageSwitch";
 /**
  * Phone/tablet menu (HOME_PAGE.md fix 1, RESPONSIVE.md §8). Uses a modal <dialog>, which gives focus
  * trapping, Esc to close and an inert page behind it for free. Closes on outside tap and on link tap.
+ * Open/close animation (slide from the right, backdrop fade, staggered links) is CSS only: globals.css "Drawer".
  * @param {{ phone?: string }} props contact phone shown at the bottom of the drawer
  */
 export default function MobileMenu({ phone }) {
@@ -37,14 +38,15 @@ export default function MobileMenu({ phone }) {
         onClick={open}
         aria-label={t("openMenu")}
         aria-haspopup="dialog"
-        className="grid size-11 place-items-center rounded-lg bg-white/15 text-white hover:bg-white/25 lg:hidden"
+        className="group grid size-11 place-items-center rounded-lg bg-white/15 text-white hover:bg-white/25 active:bg-white/30 lg:hidden"
       >
-        <Menu aria-hidden="true" className="size-6" />
+        <Menu aria-hidden="true" className="size-6 transition-transform motion-safe:group-active:scale-90" />
       </button>
 
       <dialog
         ref={dialogRef}
         aria-label={t("menuTitle")}
+        data-drawer=""
         // Outside tap: the click lands on the dialog element itself (the backdrop area), not on its content.
         onClick={(event) => event.target === dialogRef.current && close()}
         className="m-0 ms-auto h-dvh max-h-none w-[85vw] max-w-xs flex-col bg-em-900 p-0 text-white backdrop:bg-em-950/60 open:flex"
@@ -63,8 +65,8 @@ export default function MobileMenu({ phone }) {
 
         <nav aria-label={t("mainNav")} className="flex-1 overflow-y-auto px-2 py-3">
           <ul>
-            {MAIN_NAV.map((item) => (
-              <li key={item.key}>
+            {MAIN_NAV.map((item, i) => (
+              <li key={item.key} data-drawer-item="" style={{ "--i": i }}>
                 <Link
                   href={item.href}
                   onClick={close}

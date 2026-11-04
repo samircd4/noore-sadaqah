@@ -176,6 +176,27 @@
     "chooseAmount": "Choose an amount",
     "donate": "Donate"
   },
+  "campaignPage": {
+    "breadcrumb": "Campaigns",
+    "progressTitle": "Progress",
+    "raisedOf": "Goal {goal}",
+    "donors": "{count} donors",
+    "daysLeft": "{days} days left",
+    "endsOn": "Ends {date}",
+    "ongoing": "Ongoing",
+    "ended": "This campaign has ended",
+    "endedNote": "Final total {amount}. Thank you to every donor.",
+    "monthlyTitle": "Give monthly",
+    "monthlyAria": "Give {amount} a month",
+    "oneTime": "Give once",
+    "donateClosed": "Donations closed",
+    "story": "The story",
+    "donorsTitle": "Recent donors",
+    "anonymous": "Anonymous",
+    "noDonors": "No donations yet. Be the first.",
+    "donorCountLabel": "Number of donors",
+    "timeLabel": "Time"
+  },
   "errors": {
     "required": "Please fill in this field",
     "mobileInvalid": "Enter a valid mobile number (01XXXXXXXXX)",

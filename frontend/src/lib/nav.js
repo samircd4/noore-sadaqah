@@ -20,12 +20,14 @@ export const MAIN_NAV = [
 export const DONATE_HREF = { pathname: "/", hash: "donate" };
 
 /**
- * "Donate to this fund" links (program sidebar, DonateCta). The target is `/donate/[fund]?amount=` (PAGES.md).
- * That page arrives in phase F3; until then this falls back to DONATE_HREF so no link leads to a 404.
- * From F3 return `{ pathname: `/donate/${fundSlug}`, query: amount ? { amount } : undefined }`.
+ * "Donate to this fund" links (program sidebar, campaign page, DonateCta). The target is
+ * `/donate/[fund]?amount=&campaign=&monthly=1` (PAGES.md). That page arrives in phase F3; until then this falls
+ * back to DONATE_HREF so no link leads to a 404. From F3 return
+ * `{ pathname: `/donate/${fundSlug}`, query: { amount, campaign, monthly: monthly ? 1 : undefined } }`
+ * (dropping empty values), or DONATE_HREF when there is no fund.
  * @param {string | null | undefined} fundSlug
- * @param {number} [amount]
+ * @param {{ amount?: number, campaign?: string, monthly?: boolean }} [options]
  */
-export function fundDonateHref(fundSlug, amount) {
+export function fundDonateHref(fundSlug, options = {}) {
   return DONATE_HREF;
 }
