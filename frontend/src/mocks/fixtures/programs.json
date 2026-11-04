@@ -1,10 +1,53 @@
 [
   {
-    "_note": "Placeholder (CONTENT.md §10). Detail fields (body, goals, impact, faq, images) are added in F2.",
+    "_note": "Placeholder (CONTENT.md §10). Detail fields (body, goals, beneficiary, area, duration, faq, impact, images) are SAMPLE text and numbers until the foundation fills in CONTENT.md §10.",
     "slug": "food",
     "badge": { "bn": "খাদ্য", "en": "Food" },
     "title": { "bn": "খাদ্য সহায়তা", "en": "Food support" },
     "summary": { "bn": "রমযান, ঈদ ও প্রাকৃতিক দুর্যোগে বিপন্ন ও অসহায় পরিবারগুলোর মাঝে পুষ্টিকর খাদ্যসামগ্রী বিতরণ।", "en": "Nutritious food for families in need during Ramadan, Eid and natural disasters." },
+    "body": {
+      "bn": "নমুনা লেখা: রমযান, ঈদ এবং বন্যা বা ঘূর্ণিঝড়ের মতো দুর্যোগের সময় আমরা অসহায় পরিবারগুলোর কাছে চাল, ডাল, তেল ও অন্যান্য প্রয়োজনীয় খাদ্যসামগ্রী পৌঁছে দিই।\n\nপ্রতিটি প্যাকেট স্থানীয় স্বেচ্ছাসেবকদের মাধ্যমে যাচাই করা পরিবারের হাতে সরাসরি তুলে দেওয়া হয়। প্রকল্পের আসল বিবরণ পরে যোগ করা হবে।",
+      "en": "Sample text: during Ramadan, Eid and disasters such as floods and cyclones we bring rice, lentils, oil and other essentials to families in need.\n\nLocal volunteers hand every pack directly to a verified family. The real project description will be added later."
+    },
+    "goals": [
+      { "bn": "রমযানে অসহায় পরিবারের কাছে ইফতার ও সেহরির খাবার পৌঁছানো", "en": "Iftar and suhoor food for families in need during Ramadan" },
+      { "bn": "দুর্যোগের প্রথম সপ্তাহে জরুরি খাদ্য সহায়তা", "en": "Emergency food in the first week after a disaster" },
+      { "bn": "ঈদে কুরবানির গোশত বিতরণ", "en": "Qurbani meat distribution at Eid" }
+    ],
+    "beneficiary": { "bn": "নমুনা: দরিদ্র ও দুর্যোগকবলিত পরিবার", "en": "Sample: poor and disaster-hit families" },
+    "area": { "bn": "নমুনা: ঢাকা, সিলেট, কুড়িগ্রাম", "en": "Sample: Dhaka, Sylhet, Kurigram" },
+    "duration": { "bn": "নমুনা: সারা বছর, রমযানে বিশেষ কার্যক্রম", "en": "Sample: all year, with a special Ramadan drive" },
+    "faq": [
+      {
+        "q": { "bn": "একটি খাদ্য প্যাকেটে কী থাকে?", "en": "What is in one food pack?" },
+        "a": { "bn": "নমুনা উত্তর: চাল, ডাল, তেল, লবণ ও চিনি। আসল তালিকা ফাউন্ডেশন নিশ্চিত করবে।", "en": "Sample answer: rice, lentils, oil, salt and sugar. The foundation will confirm the real list." }
+      },
+      {
+        "q": { "bn": "পরিবার কীভাবে বাছাই করা হয়?", "en": "How are families chosen?" },
+        "a": { "bn": "নমুনা উত্তর: স্থানীয় স্বেচ্ছাসেবকরা ঘরে ঘরে গিয়ে যাচাই করেন।", "en": "Sample answer: local volunteers visit each home to verify need." }
+      }
+    ],
+    "impact": [
+      { "year": 2024, "metric": { "bn": "খাদ্য প্যাকেট বিতরণ (নমুনা)", "en": "Food packs given (sample)" }, "value": 1200 },
+      { "year": 2025, "metric": { "bn": "খাদ্য প্যাকেট বিতরণ (নমুনা)", "en": "Food packs given (sample)" }, "value": 1800 }
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=900&q=70",
+        "alt": { "bn": "স্বেচ্ছাসেবকরা খাদ্য বিতরণ করছেন (নমুনা ছবি)", "en": "Volunteers handing out food (sample photo)" },
+        "width": 900, "height": 600
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=900&q=70",
+        "alt": { "bn": "খাদ্যসামগ্রী বিতরণ (নমুনা ছবি)", "en": "Food distribution (sample photo)" },
+        "width": 900, "height": 600
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=1200&q=70",
+        "alt": { "bn": "সহায়তা গ্রহণকারী পরিবার (নমুনা ছবি)", "en": "A family receiving support (sample photo)" },
+        "width": 1200, "height": 800
+      }
+    ],
     "cover": {
       "url": "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=900&q=70",
       "alt": { "bn": "খাদ্যসামগ্রী বিতরণ (নমুনা ছবি)", "en": "Food distribution (sample photo)" },
@@ -15,10 +58,54 @@
     "sort_order": 1
   },
   {
+    "_note": "Placeholder (CONTENT.md §10). Detail fields are SAMPLE text and numbers until CONTENT.md §10 is filled in.",
     "slug": "education",
     "badge": { "bn": "শিক্ষা", "en": "Education" },
     "title": { "bn": "এতিম ও শিক্ষা সেবা", "en": "Orphan care and education" },
     "summary": { "bn": "সুবিধাবঞ্চিত শিশু ও এতিমদের শিক্ষাবৃত্তি, বিনামূল্যে বই, পোশাক ও মাসিক ভরণপোষণ প্রদান।", "en": "Scholarships, free books, clothes and monthly support for orphans and children in need." },
+    "body": {
+      "bn": "নমুনা লেখা: আমরা এতিম ও সুবিধাবঞ্চিত শিশুদের পড়াশোনা চালিয়ে যেতে শিক্ষাবৃত্তি, বই, খাতা ও স্কুলের পোশাক দিই।\n\nমাসিক দাতারা একজন শিশুর নিয়মিত ভরণপোষণের দায়িত্ব নিতে পারেন। প্রকল্পের আসল বিবরণ পরে যোগ করা হবে।",
+      "en": "Sample text: we give orphans and children in need scholarships, books, notebooks and school uniforms so they can stay in school.\n\nMonthly donors can take on one child's regular support. The real project description will be added later."
+    },
+    "goals": [
+      { "bn": "প্রতিটি শিশুর পড়াশোনা চালিয়ে যাওয়া নিশ্চিত করা", "en": "Keep every child in school" },
+      { "bn": "বছরের শুরুতে বিনামূল্যে বই ও পোশাক", "en": "Free books and uniforms at the start of the year" },
+      { "bn": "এতিম শিশুদের মাসিক ভরণপোষণ", "en": "Monthly support for orphans" }
+    ],
+    "beneficiary": { "bn": "নমুনা: এতিম ও সুবিধাবঞ্চিত শিশু", "en": "Sample: orphans and children in need" },
+    "area": { "bn": "নমুনা: ঢাকা ও ময়মনসিংহ", "en": "Sample: Dhaka and Mymensingh" },
+    "duration": { "bn": "নমুনা: চলমান", "en": "Sample: ongoing" },
+    "faq": [
+      {
+        "q": { "bn": "আমি কি একজন নির্দিষ্ট শিশুর দায়িত্ব নিতে পারি?", "en": "Can I sponsor one particular child?" },
+        "a": { "bn": "নমুনা উত্তর: হ্যাঁ, মাসিক দানের মাধ্যমে। বিস্তারিত ফাউন্ডেশন নিশ্চিত করবে।", "en": "Sample answer: yes, through a monthly donation. The foundation will confirm the details." }
+      },
+      {
+        "q": { "bn": "শিশুদের অগ্রগতি কি জানানো হয়?", "en": "Do you report on the children's progress?" },
+        "a": { "bn": "নমুনা উত্তর: বছরে দুবার অগ্রগতির প্রতিবেদন পাঠানো হয়।", "en": "Sample answer: we send a progress report twice a year." }
+      }
+    ],
+    "impact": [
+      { "year": 2024, "metric": { "bn": "শিক্ষাবৃত্তিপ্রাপ্ত শিশু (নমুনা)", "en": "Children on scholarships (sample)" }, "value": 80 },
+      { "year": 2025, "metric": { "bn": "শিক্ষাবৃত্তিপ্রাপ্ত শিশু (নমুনা)", "en": "Children on scholarships (sample)" }, "value": 120 }
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=900&q=70",
+        "alt": { "bn": "হাসিমুখে শিশুরা (নমুনা ছবি)", "en": "Smiling children (sample photo)" },
+        "width": 900, "height": 600
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=900&q=70",
+        "alt": { "bn": "শিশুদের পড়াশোনা (নমুনা ছবি)", "en": "Children studying (sample photo)" },
+        "width": 900, "height": 600
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=1200&q=70",
+        "alt": { "bn": "সহায়তা গ্রহণকারী পরিবার (নমুনা ছবি)", "en": "A family receiving support (sample photo)" },
+        "width": 1200, "height": 800
+      }
+    ],
     "cover": {
       "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=900&q=70",
       "alt": { "bn": "হাসিমুখে শিশুরা (নমুনা ছবি)", "en": "Smiling children (sample photo)" },
@@ -29,10 +116,54 @@
     "sort_order": 2
   },
   {
+    "_note": "Placeholder (CONTENT.md §10). Detail fields are SAMPLE text and numbers until CONTENT.md §10 is filled in.",
     "slug": "water",
     "badge": { "bn": "পানি", "en": "Water" },
     "title": { "bn": "বিশুদ্ধ পানি প্রকল্প", "en": "Clean water project" },
     "summary": { "bn": "নলকূপ স্থাপন ও গভীর সুপেয় পানির ব্যবস্থা — নিরবচ্ছিন্ন সাদাকায়ে জারিয়ার উত্তম সুযোগ।", "en": "Tube wells and safe drinking water: a lasting sadaqah jariyah." },
+    "body": {
+      "bn": "নমুনা লেখা: যেসব গ্রামে নিরাপদ খাবার পানির অভাব, সেখানে আমরা নলকূপ ও গভীর নলকূপ স্থাপন করি।\n\nএকটি নলকূপ বছরের পর বছর বহু পরিবারের পানির চাহিদা মেটায় — এটি সাদাকায়ে জারিয়ার একটি উত্তম মাধ্যম। প্রকল্পের আসল বিবরণ পরে যোগ করা হবে।",
+      "en": "Sample text: we install tube wells and deep tube wells in villages without safe drinking water.\n\nOne well serves many families for years, which makes it a fine sadaqah jariyah. The real project description will be added later."
+    },
+    "goals": [
+      { "bn": "প্রতিটি নলকূপের পানি পরীক্ষা করে স্থাপন", "en": "Test the water before installing each well" },
+      { "bn": "আর্সেনিকপ্রবণ এলাকায় গভীর নলকূপ", "en": "Deep wells in arsenic-affected areas" },
+      { "bn": "স্থানীয় কমিটির মাধ্যমে রক্ষণাবেক্ষণ", "en": "Upkeep by a local committee" }
+    ],
+    "beneficiary": { "bn": "নমুনা: পানির সংকটে থাকা গ্রামবাসী", "en": "Sample: villagers without safe water" },
+    "area": { "bn": "নমুনা: সাতক্ষীরা ও খুলনা", "en": "Sample: Satkhira and Khulna" },
+    "duration": { "bn": "নমুনা: প্রতিটি নলকূপ প্রায় ৩ সপ্তাহে", "en": "Sample: about 3 weeks per well" },
+    "faq": [
+      {
+        "q": { "bn": "একটি নলকূপে কত খরচ হয়?", "en": "How much does one well cost?" },
+        "a": { "bn": "নমুনা উত্তর: এলাকা ও গভীরতা অনুযায়ী খরচ ভিন্ন হয়। আসল হিসাব ফাউন্ডেশন জানাবে।", "en": "Sample answer: the cost depends on the area and depth. The foundation will publish real figures." }
+      },
+      {
+        "q": { "bn": "নলকূপে কি দাতার নাম দেওয়া যায়?", "en": "Can a well carry the donor's name?" },
+        "a": { "bn": "নমুনা উত্তর: ফাউন্ডেশন এই নিয়ম নিশ্চিত করবে।", "en": "Sample answer: the foundation will confirm this rule." }
+      }
+    ],
+    "impact": [
+      { "year": 2024, "metric": { "bn": "নলকূপ স্থাপন (নমুনা)", "en": "Wells installed (sample)" }, "value": 15 },
+      { "year": 2025, "metric": { "bn": "নলকূপ স্থাপন (নমুনা)", "en": "Wells installed (sample)" }, "value": 24 }
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1541544537156-7627a7a4aa1c?auto=format&fit=crop&w=900&q=70",
+        "alt": { "bn": "নমুনা ছবি (প্রকল্পের আসল ছবি পরে বসবে)", "en": "Sample photo (the real project photo comes later)" },
+        "width": 900, "height": 600
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=900&q=70",
+        "alt": { "bn": "স্বেচ্ছাসেবকদের কাজ (নমুনা ছবি)", "en": "Volunteers at work (sample photo)" },
+        "width": 900, "height": 600
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=1200&q=70",
+        "alt": { "bn": "সহায়তা গ্রহণকারী পরিবার (নমুনা ছবি)", "en": "A family receiving support (sample photo)" },
+        "width": 1200, "height": 800
+      }
+    ],
     "cover": {
       "url": "https://images.unsplash.com/photo-1541544537156-7627a7a4aa1c?auto=format&fit=crop&w=900&q=70",
       "alt": { "bn": "নমুনা ছবি: খাবারের প্লেট (প্রকল্পের আসল ছবি পরে বসবে)", "en": "Sample photo: a plate of food (the real project photo comes later)" },
@@ -43,10 +174,54 @@
     "sort_order": 3
   },
   {
+    "_note": "Placeholder (CONTENT.md §10). Detail fields are SAMPLE text and numbers until CONTENT.md §10 is filled in.",
     "slug": "health",
     "badge": { "bn": "স্বাস্থ্য", "en": "Health" },
     "title": { "bn": "চিকিৎসা সহায়তা", "en": "Medical support" },
     "summary": { "bn": "দরিদ্র রোগীর জরুরী চিকিৎসা খরচ বহন ও বিনামূল্যে বিশেষজ্ঞ মেডিকেল ক্যাম্প পরিচালনা।", "en": "Emergency treatment costs for poor patients and free specialist medical camps." },
+    "body": {
+      "bn": "নমুনা লেখা: দরিদ্র রোগীদের জরুরি অস্ত্রোপচার, ওষুধ ও হাসপাতালের খরচে আমরা সহায়তা করি।\n\nপাশাপাশি প্রত্যন্ত এলাকায় বিশেষজ্ঞ চিকিৎসকদের নিয়ে বিনামূল্যে মেডিকেল ক্যাম্প আয়োজন করা হয়। প্রকল্পের আসল বিবরণ পরে যোগ করা হবে।",
+      "en": "Sample text: we help poor patients with emergency surgery, medicine and hospital costs.\n\nWe also run free medical camps with specialist doctors in remote areas. The real project description will be added later."
+    },
+    "goals": [
+      { "bn": "জরুরি চিকিৎসার খরচে সহায়তা", "en": "Help with emergency treatment costs" },
+      { "bn": "প্রত্যন্ত এলাকায় বিনামূল্যে মেডিকেল ক্যাম্প", "en": "Free medical camps in remote areas" },
+      { "bn": "দীর্ঘমেয়াদী রোগীদের ওষুধ সহায়তা", "en": "Medicine for patients with long-term illness" }
+    ],
+    "beneficiary": { "bn": "নমুনা: দরিদ্র রোগী", "en": "Sample: poor patients" },
+    "area": { "bn": "নমুনা: সারা দেশ", "en": "Sample: nationwide" },
+    "duration": { "bn": "নমুনা: চলমান, প্রতি মাসে একটি ক্যাম্প", "en": "Sample: ongoing, one camp a month" },
+    "faq": [
+      {
+        "q": { "bn": "চিকিৎসা সহায়তার জন্য কীভাবে আবেদন করব?", "en": "How do I apply for medical help?" },
+        "a": { "bn": "নমুনা উত্তর: যোগাযোগ পাতার ফর্মে বিস্তারিত লিখে পাঠান। প্রক্রিয়া ফাউন্ডেশন নিশ্চিত করবে।", "en": "Sample answer: send the details through the contact form. The foundation will confirm the process." }
+      },
+      {
+        "q": { "bn": "টাকা কি সরাসরি হাসপাতালে দেওয়া হয়?", "en": "Is the money paid straight to the hospital?" },
+        "a": { "bn": "নমুনা উত্তর: যেখানে সম্ভব, বিল সরাসরি হাসপাতালে পরিশোধ করা হয়।", "en": "Sample answer: where possible, we pay the bill directly to the hospital." }
+      }
+    ],
+    "impact": [
+      { "year": 2024, "metric": { "bn": "চিকিৎসা সহায়তাপ্রাপ্ত রোগী (নমুনা)", "en": "Patients helped (sample)" }, "value": 300 },
+      { "year": 2025, "metric": { "bn": "চিকিৎসা সহায়তাপ্রাপ্ত রোগী (নমুনা)", "en": "Patients helped (sample)" }, "value": 450 }
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=70",
+        "alt": { "bn": "চিকিৎসা সেবার দৃশ্য (নমুনা ছবি)", "en": "Medical care (sample photo)" },
+        "width": 900, "height": 600
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=900&q=70",
+        "alt": { "bn": "স্বেচ্ছাসেবকদের কাজ (নমুনা ছবি)", "en": "Volunteers at work (sample photo)" },
+        "width": 900, "height": 600
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=1200&q=70",
+        "alt": { "bn": "সহায়তা গ্রহণকারী পরিবার (নমুনা ছবি)", "en": "A family receiving support (sample photo)" },
+        "width": 1200, "height": 800
+      }
+    ],
     "cover": {
       "url": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=70",
       "alt": { "bn": "চিকিৎসা সেবার দৃশ্য (নমুনা ছবি)", "en": "Medical care (sample photo)" },
@@ -57,10 +232,54 @@
     "sort_order": 4
   },
   {
+    "_note": "Placeholder (CONTENT.md §10). Detail fields are SAMPLE text and numbers until CONTENT.md §10 is filled in.",
     "slug": "trees",
     "badge": { "bn": "পরিবেশ", "en": "Environment" },
     "title": { "bn": "বৃক্ষরোপণ কর্মসূচি", "en": "Tree planting" },
     "summary": { "bn": "পরিবেশ রক্ষা ও সওয়াবের আশায় ফলদ ও ঔষধি গাছ লাগিয়ে দীর্ঘমেয়াদী কল্যাণ ত্বরান্বিত করা।", "en": "Fruit and medicinal trees for the environment and lasting reward." },
+    "body": {
+      "bn": "নমুনা লেখা: বর্ষা মৌসুমে আমরা গ্রামের স্কুল, মসজিদ ও দরিদ্র পরিবারের বাড়িতে ফলদ ও ঔষধি গাছের চারা রোপণ করি।\n\nপ্রতিটি গাছ পরিবেশ রক্ষার পাশাপাশি পরিবারগুলোকে ফল ও আয়ের উৎস দেয়। প্রকল্পের আসল বিবরণ পরে যোগ করা হবে।",
+      "en": "Sample text: in the monsoon we plant fruit and medicinal saplings at village schools, mosques and the homes of poor families.\n\nEach tree protects the environment and gives a family fruit and some income. The real project description will be added later."
+    },
+    "goals": [
+      { "bn": "প্রতি বর্ষায় ফলদ ও ঔষধি গাছ রোপণ", "en": "Plant fruit and medicinal trees every monsoon" },
+      { "bn": "রোপণের পর এক বছর পরিচর্যা", "en": "Care for each sapling for a year after planting" },
+      { "bn": "স্কুলে পরিবেশ সচেতনতা", "en": "Environmental awareness at schools" }
+    ],
+    "beneficiary": { "bn": "নমুনা: গ্রামের পরিবার ও স্কুল", "en": "Sample: village families and schools" },
+    "area": { "bn": "নমুনা: রংপুর ও দিনাজপুর", "en": "Sample: Rangpur and Dinajpur" },
+    "duration": { "bn": "নমুনা: প্রতি বছর জুন থেকে সেপ্টেম্বর", "en": "Sample: June to September each year" },
+    "faq": [
+      {
+        "q": { "bn": "কোন গাছ লাগানো হয়?", "en": "Which trees do you plant?" },
+        "a": { "bn": "নমুনা উত্তর: আম, কাঁঠাল, পেয়ারা ও নিমের মতো ফলদ ও ঔষধি গাছ।", "en": "Sample answer: fruit and medicinal trees such as mango, jackfruit, guava and neem." }
+      },
+      {
+        "q": { "bn": "গাছগুলোর পরিচর্যা কে করে?", "en": "Who looks after the trees?" },
+        "a": { "bn": "নমুনা উত্তর: যে পরিবার বা প্রতিষ্ঠানে গাছ লাগানো হয়, তারাই পরিচর্যা করে।", "en": "Sample answer: the family or institution where the tree is planted." }
+      }
+    ],
+    "impact": [
+      { "year": 2024, "metric": { "bn": "রোপিত চারা (নমুনা)", "en": "Saplings planted (sample)" }, "value": 2000 },
+      { "year": 2025, "metric": { "bn": "রোপিত চারা (নমুনা)", "en": "Saplings planted (sample)" }, "value": 3500 }
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1200&q=70",
+        "alt": { "bn": "চারাগাছ রোপণ (নমুনা ছবি)", "en": "Planting a sapling (sample photo)" },
+        "width": 1200, "height": 800
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=900&q=70",
+        "alt": { "bn": "স্বেচ্ছাসেবকদের কাজ (নমুনা ছবি)", "en": "Volunteers at work (sample photo)" },
+        "width": 900, "height": 600
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=900&q=70",
+        "alt": { "bn": "হাসিমুখে শিশুরা (নমুনা ছবি)", "en": "Smiling children (sample photo)" },
+        "width": 900, "height": 600
+      }
+    ],
     "cover": {
       "url": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=900&q=70",
       "alt": { "bn": "চারাগাছ রোপণ (নমুনা ছবি)", "en": "Planting a sapling (sample photo)" },
@@ -71,10 +290,54 @@
     "sort_order": 5
   },
   {
+    "_note": "Placeholder (CONTENT.md §10). Detail fields are SAMPLE text and numbers until CONTENT.md §10 is filled in.",
     "slug": "mosque",
     "badge": { "bn": "দ্বীন", "en": "Deen" },
     "title": { "bn": "মসজিদ ও মাদ্রাসা সহায়তা", "en": "Mosque and madrasa support" },
     "summary": { "bn": "দ্বীনি শিক্ষার প্রসার এবং আল্লাহর ঘর মসজিদ ও মাদ্রাসার অবকাঠামো নির্মাণ ও সংস্কার কাজ।", "en": "Building and repairing mosques and madrasas, and spreading religious education." },
+    "body": {
+      "bn": "নমুনা লেখা: প্রত্যন্ত এলাকার মসজিদ ও মাদ্রাসার নির্মাণ, সংস্কার এবং অজুখানা ও টয়লেট তৈরিতে আমরা সহায়তা করি।\n\nপাশাপাশি মক্তবে কুরআন শিক্ষার জন্য শিক্ষক ও শিক্ষাসামগ্রীর ব্যবস্থা করা হয়। প্রকল্পের আসল বিবরণ পরে যোগ করা হবে।",
+      "en": "Sample text: we help build and repair mosques and madrasas in remote areas, including wudu areas and toilets.\n\nWe also provide teachers and materials for Quran classes. The real project description will be added later."
+    },
+    "goals": [
+      { "bn": "জরাজীর্ণ মসজিদ সংস্কার", "en": "Repair run-down mosques" },
+      { "bn": "অজুখানা ও টয়লেট নির্মাণ", "en": "Build wudu areas and toilets" },
+      { "bn": "মক্তবে কুরআন শিক্ষার ব্যবস্থা", "en": "Quran classes for children" }
+    ],
+    "beneficiary": { "bn": "নমুনা: গ্রামের মুসল্লি ও শিক্ষার্থী", "en": "Sample: village worshippers and students" },
+    "area": { "bn": "নমুনা: নেত্রকোনা ও সুনামগঞ্জ", "en": "Sample: Netrokona and Sunamganj" },
+    "duration": { "bn": "নমুনা: প্রকল্পভিত্তিক", "en": "Sample: project by project" },
+    "faq": [
+      {
+        "q": { "bn": "কোন মসজিদ বা মাদ্রাসা সহায়তা পায়?", "en": "Which mosques or madrasas get support?" },
+        "a": { "bn": "নমুনা উত্তর: স্থানীয় কমিটির আবেদন যাচাই করে বাছাই করা হয়। প্রক্রিয়া ফাউন্ডেশন নিশ্চিত করবে।", "en": "Sample answer: we check applications from local committees. The foundation will confirm the process." }
+      },
+      {
+        "q": { "bn": "কাজের অগ্রগতি কীভাবে জানব?", "en": "How will I know how the work is going?" },
+        "a": { "bn": "নমুনা উত্তর: সংবাদ পাতায় ছবিসহ আপডেট দেওয়া হয়।", "en": "Sample answer: we post updates with photos on the news page." }
+      }
+    ],
+    "impact": [
+      { "year": 2024, "metric": { "bn": "সংস্কারকৃত মসজিদ ও মাদ্রাসা (নমুনা)", "en": "Mosques and madrasas repaired (sample)" }, "value": 4 },
+      { "year": 2025, "metric": { "bn": "সংস্কারকৃত মসজিদ ও মাদ্রাসা (নমুনা)", "en": "Mosques and madrasas repaired (sample)" }, "value": 7 }
+    ],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=900&q=70",
+        "alt": { "bn": "মসজিদের দৃশ্য (নমুনা ছবি)", "en": "A mosque (sample photo)" },
+        "width": 900, "height": 600
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=900&q=70",
+        "alt": { "bn": "শিশুদের পড়াশোনা (নমুনা ছবি)", "en": "Children studying (sample photo)" },
+        "width": 900, "height": 600
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=900&q=70",
+        "alt": { "bn": "স্বেচ্ছাসেবকদের কাজ (নমুনা ছবি)", "en": "Volunteers at work (sample photo)" },
+        "width": 900, "height": 600
+      }
+    ],
     "cover": {
       "url": "https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=900&q=70",
       "alt": { "bn": "মসজিদের দৃশ্য (নমুনা ছবি)", "en": "A mosque (sample photo)" },

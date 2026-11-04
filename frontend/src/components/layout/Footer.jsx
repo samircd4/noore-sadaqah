@@ -68,7 +68,7 @@ export default async function Footer({ site, locale }) {
           <h2 className="mb-2 font-bold text-white">{t("links")}</h2>
           <ul className="text-sm">
             <li><Link href={{ pathname: "/", hash: "about" }} className={linkClass}>{tNav("about")}</Link></li>
-            <li><Link href={{ pathname: "/", hash: "programs" }} className={linkClass}>{tNav("programs")}</Link></li>
+            <li><Link href="/programs" className={linkClass}>{tNav("programs")}</Link></li>
             <li><Link href={{ pathname: "/", hash: "gallery" }} className={linkClass}>{tNav("gallery")}</Link></li>
             <li><Link href="/news" className={linkClass}>{tNav("news")}</Link></li>
           </ul>
@@ -78,7 +78,7 @@ export default async function Footer({ site, locale }) {
           <h2 className="mb-2 font-bold text-white">{t("support")}</h2>
           <ul className="text-sm">
             <li><Link href={DONATE_HREF} className={linkClass}>{tNav("donate")}</Link></li>
-            <li><Link href={{ pathname: "/", hash: "programs" }} className={linkClass}>{t("initiatives")}</Link></li>
+            <li><Link href="/programs" className={linkClass}>{t("initiatives")}</Link></li>
             <li><Link href="/news" className={linkClass}>{t("stories")}</Link></li>
             <li><Link href={{ pathname: "/get-involved", query: { tab: "volunteer" } }} className={linkClass}>{t("beVolunteer")}</Link></li>
           </ul>

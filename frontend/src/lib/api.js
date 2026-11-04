@@ -2,6 +2,7 @@ import "server-only";
 
 import { cacheLife, cacheTag } from "next/cache";
 import { headers } from "next/headers";
+import { notFound } from "next/navigation";
 import { handle } from "@/mocks/handlers";
 import { ApiError } from "./api-errors";
 import { readApiConfig, resolveTarget } from "./api-mode";
@@ -91,14 +92,50 @@ async function send({ method, path, query = null, body, locale, token = null, ip
  *   life: a cacheLife profile, default "minutes"
  */
 export async function apiGet(path, { locale, query, tags = [], life = "minutes" } = {}) {
-  return cachedGet(path, normalizeLocale(locale), query ?? null, tags, life);
+  const result = await cachedGet(path, normalizeLocale(locale), query ?? null, tags, life);
+  if (result.error) throw new ApiError(result.error.status, result.error.body);
+  return result.data;
 }
 
+/**
+ * apiGet() for detail pages: an API 404 (unknown slug, draft post) becomes Next's notFound(), so the page shows
+ * not-found.jsx with a 404 status (frontend/CLAUDE.md rule 14). Every other error is thrown as usual.
+ * @param {string} path
+ * @param {Parameters<typeof apiGet>[1]} [options]
+ */
+export async function apiGetOrNotFound(path, options) {
+  try {
+    return await apiGet(path, options);
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) notFound();
+    throw error;
+  }
+}
+
+/**
+ * The cached part of apiGet(). It never throws an ApiError: one thrown inside "use cache" comes back out as a
+ * rebuilt object (instanceof ApiError fails), and with Next 16.4.5 an unknown /programs/{slug} then never finished
+ * responding. Errors are returned as plain data instead and turned back into an ApiError by apiGet().
+ * A 404 is cached like content (the endpoint's tag clears it when the item is published); any other error only
+ * for seconds, so a short API outage doesn't stick.
+ */
 async function cachedGet(path, locale, query, tags, life) {
   "use cache";
-  cacheLife(life);
   if (tags.length > 0) cacheTag(...tags);
-  return send({ method: "GET", path, query, locale });
+  try {
+    const data = await send({ method: "GET", path, query, locale });
+    cacheLife(life);
+    return { data };
+  } catch (error) {
+    if (!(error instanceof ApiError)) throw error;
+    cacheLife(error.status === 404 ? life : "seconds");
+    return {
+      error: {
+        status: error.status,
+        body: { code: error.code, fields: error.fields, retry_after: error.retryAfter ?? undefined },
+      },
+    };
+  }
 }
 
 /**

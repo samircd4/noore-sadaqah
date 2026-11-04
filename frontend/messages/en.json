@@ -136,6 +136,46 @@
   "donateBar": {
     "label": "Donate"
   },
+  "breadcrumb": {
+    "label": "Breadcrumb",
+    "home": "Home"
+  },
+  "pagination": {
+    "label": "Pages",
+    "prev": "Previous page",
+    "next": "Next page",
+    "page": "Page {page}",
+    "current": "Page {page} of {pages}"
+  },
+  "donateCta": {
+    "text": "One donation can change a family's life.",
+    "button": "Donate"
+  },
+  "programsPage": {
+    "eyebrow": "Our programmes",
+    "title": "Programmes",
+    "subtitle": "Food, education, water, health care: where your donation goes.",
+    "metaDescription": "All programmes of Noore Sadaqah Foundation: food support, orphan care and education, clean water, medical support, tree planting, and mosques and madrasas.",
+    "listTitle": "All programmes",
+    "empty": "No programmes have been added yet.",
+    "about": "About this programme",
+    "goals": "Our goals",
+    "gallery": "Photos",
+    "impact": "Impact by year",
+    "year": "Year",
+    "metric": "Measure",
+    "value": "Number",
+    "faq": "Frequently asked questions",
+    "related": "Other programmes",
+    "info": "At a glance",
+    "beneficiary": "Who it helps",
+    "area": "Where",
+    "duration": "Duration",
+    "donateBox": "Give to this programme",
+    "fund": "Fund: {fund}",
+    "chooseAmount": "Choose an amount",
+    "donate": "Donate"
+  },
   "errors": {
     "required": "Please fill in this field",
     "mobileInvalid": "Enter a valid mobile number (01XXXXXXXXX)",
