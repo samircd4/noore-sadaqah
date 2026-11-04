@@ -41,6 +41,21 @@ export function toFieldErrors(fields = {}) {
 }
 
 /**
+ * Same result shape as toFieldErrors(), from a Zod error (client-side or server-action validation).
+ * Schemas use message keys as messages ("errors.minAmount") and put values in the issue's `params`.
+ * @param {{ issues: Array<{ path: PropertyKey[], message: string, params?: Record<string, unknown> }> }} zodError
+ */
+export function fromZodError(zodError) {
+  /** @type {Record<string, { key: string, params: Record<string, unknown> }>} */
+  const result = {};
+  for (const issue of zodError.issues) {
+    const field = String(issue.path[0] ?? "form");
+    if (!result[field]) result[field] = { key: issue.message, params: issue.params ?? {} };
+  }
+  return result;
+}
+
+/**
  * The message key for a whole-request error (`throttled`, `comingSoon`, `apiUnavailable` …).
  * @param {unknown} error
  */

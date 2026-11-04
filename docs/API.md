@@ -13,7 +13,7 @@ The contract between `frontend/` and `backend/`. **Change this file first**, the
 | Language | Request header `Accept-Language: bn` or `en`. Content endpoints return **already-resolved** fields (`title`, `summary` …) in that language, with Bengali as the fallback for missing English (I18N.md). |
 | Auth | `Authorization: Bearer <access JWT>` for `me/*`. Public endpoints need no auth. |
 | Client IP | Next.js sends `X-Forwarded-For: <visitor IP>`; Django trusts it only from `127.0.0.1`. |
-| Pagination | `?page=N`, 12 items per page: `{ "count", "page", "pages", "results": [...] }`. |
+| Pagination | Only `/posts/` and `/gallery/` are paginated: `?page=N`, 12 per page (or `?limit=N` for a single short page, e.g. the home page), returning `{ "count", "page", "pages", "results": [...] }`; a page past the end is 404. Every other list (`/funds/`, `/programs/`, `/campaigns/`, `/post-categories/`, `/people/`, `/reports/`, `/jobs/`) returns a plain array. |
 | Images | `{ "url", "alt", "width", "height" }`. `url` is on `NEXT_PUBLIC_MEDIA_HOST`. |
 | Mock | `frontend/src/mocks/` implements this whole contract for frontend-first work (ARCHITECTURE.md "API modes") and must change in the same commit as this file. Mock-only behaviour: `POST /donations/` returns `redirect_url: "/donate/mock-gateway?id=…"`; the OTP code is always `123456`; in `static` mode every write returns `503 comingSoon`. |
 | Caching | Public GETs send `Cache-Control: public, max-age=60`. Next.js caches them with `"use cache"` + `cacheTag` (tags listed per endpoint); Django triggers `/internal/revalidate` on admin saves, which calls `revalidateTag(tag, "max")`. |
@@ -71,7 +71,8 @@ Everything the layout needs, one call per page render (cached).
   "promo_video": {"youtube_id": ""},
   "nisab": {"silver_price_per_gram": 0, "gold_price_per_gram": 0, "karat": "22K", "updated_at": null},
   "fitra": {"year": 2027, "rates": [{"item": "গম", "amount": 0}], "cutoff": null, "open": false},
-  "zakat_enabled": false
+  "zakat_enabled": false,
+  "home_images": {"hero": {…image}, "about_main": {…}, "about_small": {…}, "quote": {…}, "volunteer": {…}, "footer": {…}}
 }
 ```
 `zakat_enabled` stays `false` until ZAKAT_POLICY.md is signed off (a SiteSetting flag set by an Admin).
@@ -85,6 +86,7 @@ Everything the layout needs, one call per page render (cached).
 List returns active funds by `sort_order`, without `body_html`. `body_html` is rendered from markdown and sanitized (bleach/nh3) **on the server**.
 
 ### `GET /programs/?featured=1` · `GET /programs/{slug}/` · tags `programs`
+List items: `slug, badge, title, summary, cover, fund {slug, title}`, in `sort_order`.
 Detail adds `body_html`, `goals[]`, `beneficiary`, `area`, `duration`, `faq[{q, a}]`, `impact[{year, metric, value}]`,
 `images[]`, `fund {slug, title, preset_amounts}` and `related[]` (3 other programs).
 
@@ -99,11 +101,11 @@ Detail adds `body_html`, `goals[]`, `beneficiary`, `area`, `duration`, `faq[{q, 
 `recent_donors`: last 10 PAID, **first name only**; `name: null` when anonymous (the UI shows "নাম প্রকাশে অনিচ্ছুক").
 Never phone or email. `raised_amount` is cached for 60 seconds.
 
-### `GET /posts/?category=&page=` · `GET /posts/{slug}/` · `GET /post-categories/` · tags `posts`
-List items: `slug, title, excerpt, cover, category {slug, name}, published_at`. Detail adds `body_html`, `related[]` (3).
+### `GET /posts/?category=&page=&limit=` · `GET /posts/{slug}/` · `GET /post-categories/` · tags `posts`
+List items (newest first): `slug, title, excerpt, cover, category {slug, name}, published_at`. `/post-categories/`: `[{slug, name}]`. Detail adds `body_html`, `related[]` (3).
 Drafts (`published_at` null or in the future) return 404.
 
-### `GET /gallery/?category=&kind=photo|video&page=` · tags `gallery`
+### `GET /gallery/?category=&kind=photo|video&page=&limit=` · tags `gallery`
 Items: `id, kind, image {…}, youtube_id, caption, category {slug, name}`. `?limit=6` for the home mosaic.
 
 ### `GET /people/` · `GET /reports/` · `GET /jobs/` · tags `people`, `reports`, `jobs`

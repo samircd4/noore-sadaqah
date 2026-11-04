@@ -80,3 +80,28 @@ html {
   background: var(--color-gold-500);
   color: var(--color-em-950);
 }
+
+/*
+ * Pointer cursor on everything clickable (DESIGN_SYSTEM.md "Interaction"). Tailwind v4 no longer gives buttons
+ * a pointer by default. In @layer base so utilities such as disabled:cursor-not-allowed still win.
+ */
+@layer base {
+  a[href],
+  button,
+  [role="button"],
+  summary,
+  select,
+  label:has(> input[type="radio"], > input[type="checkbox"]),
+  input[type="radio"],
+  input[type="checkbox"],
+  input[type="submit"],
+  input[type="button"],
+  input[type="reset"] {
+    cursor: pointer;
+  }
+
+  :disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+}

@@ -140,7 +140,7 @@ Use the SSLCommerz sandbox test cards and mobile banking test accounts from thei
 - [ ] Lighthouse mobile on home, `/donate/[fund]`, `/programs/[slug]`: Performance ≥ 85, Accessibility ≥ 95, Best practices ≥ 90, SEO ≥ 95
 - [ ] Mobile budgets in RESPONSIVE.md §12 (LCP ≤ 2.5 s, CLS ≤ 0.1, INP ≤ 200 ms, JS ≤ 150 KB gzipped per page)
 - [ ] YouTube and map load only after a tap
-- [ ] Hero image uses `priority`; others lazy-load; images come from the R2 domain through `next/image`
+- [ ] Hero image uses `preload`; others lazy-load; images come from the R2 domain through `next/image`
 - [ ] `sitemap.xml` and `robots.txt` are correct; staging has `noindex` and basic auth
 - [ ] 404 page works
 

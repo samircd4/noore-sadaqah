@@ -108,6 +108,41 @@ Defined as CSS variables in `tokens.css`. Always put text on photos over one of 
 - `--overlay-footer` — diagonal emerald (footer)
 - `--overlay-gold` — 50% gold (quote band)
 
+## Interaction
+
+- **Every link and button shows the pointer cursor** (`cursor: pointer`), and so does everything else that reacts to a
+  click: `[role="button"]`, `<summary>` (accordions), `<select>`, radio/checkbox inputs and the labels wrapping them
+  (amount chips, toggles). Disabled controls show `not-allowed`.
+- This is set once, globally, in `design/tokens.css` (`@layer base`), because Tailwind v4 no longer gives buttons a
+  pointer. Don't add `cursor-pointer` to components by hand; if something clickable isn't covered (e.g. a clickable
+  `<div>`), make it a real `<button>` or `<a>` instead.
+- Every clickable element also has a visible hover or `active:` state and the gold focus ring (dark `em-950` ring on gold backgrounds).
+- **Language switch animation:** choosing বাং / EN runs a View Transition (`LanguageSwitch.jsx`, styles in
+  `globals.css`): the page fades out and rises back in (about 0.35 s), the header cross-fades in place, and the gold
+  highlight slides to the chosen language. Nav links have a fixed height (40px) so nothing jumps between languages.
+  Browsers without View Transitions, and people with "reduce motion" on, get an instant switch.
+
+## Logo
+
+- Source file: `design/brand/logo-source.png` (1024×1024, from the foundation). Don't edit it; regenerate the sizes from it.
+- Website sizes: `frontend/public/brand/logo-256.png` (header and footer, circular with transparent corners) and
+  `logo-512.png` (for the OG image and app manifest later). Browser icons: `frontend/src/app/icon.png` (192px) and
+  `apple-icon.png` (180px, white background, as iOS requires).
+- In the header and footer the logo sits in a white circle (`rounded-full bg-white`), 44px on phones and 56px from `sm`,
+  next to the name in the page language: **নূরে সাদাকাহ / ফাউন্ডেশন** or **Noore Sadaqah / Foundation**
+  (`components/layout/BrandName.jsx`):
+  - **Both lines are exactly the same width** in either language. The name keeps its natural spacing (never letter-space
+    the Bengali name: it breaks the word up visually); the second line is letter-spaced to match, measured in the browser
+    so it is exact with the real font, and refitted when the size changes.
+  - **Same height in both languages:** fixed line heights, 44px block on phones and 52px from `sm`. Bengali uses one size
+    step larger than English because Bengali glyphs are narrower.
+  - The block is about 90 / 119px wide in Bengali and 131 / 164px in English (phone / `sm`+); never wraps
+    (`whitespace-nowrap`), in the header or the footer.
+- The logo's own text is too small to read at header size; the name next to it carries it. Inside a link the logo image is
+  decorative (`alt=""`) because the link has the label "নূরে সাদাকাহ ফাউন্ডেশন, হোম পেজ".
+- Still wanted from the foundation: an SVG version (sharper and smaller) and a single-colour version for dark backgrounds
+  (CONTENT.md §1).
+
 ## Icons
 
 The design mixes Font Awesome 5, emoji (🛡️ 🤝 📖 🔥 📍) and text glyphs (☪ ▶ f in).

@@ -1,0 +1,87 @@
+[
+  {
+    "_note": "Placeholder (CONTENT.md §10). Detail fields (body, goals, impact, faq, images) are added in F2.",
+    "slug": "food",
+    "badge": { "bn": "খাদ্য", "en": "Food" },
+    "title": { "bn": "খাদ্য সহায়তা", "en": "Food support" },
+    "summary": { "bn": "রমযান, ঈদ ও প্রাকৃতিক দুর্যোগে বিপন্ন ও অসহায় পরিবারগুলোর মাঝে পুষ্টিকর খাদ্যসামগ্রী বিতরণ।", "en": "Nutritious food for families in need during Ramadan, Eid and natural disasters." },
+    "cover": {
+      "url": "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=900&q=70",
+      "alt": { "bn": "খাদ্যসামগ্রী বিতরণ (নমুনা ছবি)", "en": "Food distribution (sample photo)" },
+      "width": 900, "height": 1200
+    },
+    "fund": "sadaqah",
+    "is_featured": true,
+    "sort_order": 1
+  },
+  {
+    "slug": "education",
+    "badge": { "bn": "শিক্ষা", "en": "Education" },
+    "title": { "bn": "এতিম ও শিক্ষা সেবা", "en": "Orphan care and education" },
+    "summary": { "bn": "সুবিধাবঞ্চিত শিশু ও এতিমদের শিক্ষাবৃত্তি, বিনামূল্যে বই, পোশাক ও মাসিক ভরণপোষণ প্রদান।", "en": "Scholarships, free books, clothes and monthly support for orphans and children in need." },
+    "cover": {
+      "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=900&q=70",
+      "alt": { "bn": "হাসিমুখে শিশুরা (নমুনা ছবি)", "en": "Smiling children (sample photo)" },
+      "width": 900, "height": 1200
+    },
+    "fund": "orphan",
+    "is_featured": true,
+    "sort_order": 2
+  },
+  {
+    "slug": "water",
+    "badge": { "bn": "পানি", "en": "Water" },
+    "title": { "bn": "বিশুদ্ধ পানি প্রকল্প", "en": "Clean water project" },
+    "summary": { "bn": "নলকূপ স্থাপন ও গভীর সুপেয় পানির ব্যবস্থা — নিরবচ্ছিন্ন সাদাকায়ে জারিয়ার উত্তম সুযোগ।", "en": "Tube wells and safe drinking water: a lasting sadaqah jariyah." },
+    "cover": {
+      "url": "https://images.unsplash.com/photo-1541544537156-7627a7a4aa1c?auto=format&fit=crop&w=900&q=70",
+      "alt": { "bn": "নমুনা ছবি: খাবারের প্লেট (প্রকল্পের আসল ছবি পরে বসবে)", "en": "Sample photo: a plate of food (the real project photo comes later)" },
+      "width": 900, "height": 1200
+    },
+    "fund": "sadaqah",
+    "is_featured": true,
+    "sort_order": 3
+  },
+  {
+    "slug": "health",
+    "badge": { "bn": "স্বাস্থ্য", "en": "Health" },
+    "title": { "bn": "চিকিৎসা সহায়তা", "en": "Medical support" },
+    "summary": { "bn": "দরিদ্র রোগীর জরুরী চিকিৎসা খরচ বহন ও বিনামূল্যে বিশেষজ্ঞ মেডিকেল ক্যাম্প পরিচালনা।", "en": "Emergency treatment costs for poor patients and free specialist medical camps." },
+    "cover": {
+      "url": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=70",
+      "alt": { "bn": "চিকিৎসা সেবার দৃশ্য (নমুনা ছবি)", "en": "Medical care (sample photo)" },
+      "width": 900, "height": 1200
+    },
+    "fund": "sadaqah",
+    "is_featured": true,
+    "sort_order": 4
+  },
+  {
+    "slug": "trees",
+    "badge": { "bn": "পরিবেশ", "en": "Environment" },
+    "title": { "bn": "বৃক্ষরোপণ কর্মসূচি", "en": "Tree planting" },
+    "summary": { "bn": "পরিবেশ রক্ষা ও সওয়াবের আশায় ফলদ ও ঔষধি গাছ লাগিয়ে দীর্ঘমেয়াদী কল্যাণ ত্বরান্বিত করা।", "en": "Fruit and medicinal trees for the environment and lasting reward." },
+    "cover": {
+      "url": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=900&q=70",
+      "alt": { "bn": "চারাগাছ রোপণ (নমুনা ছবি)", "en": "Planting a sapling (sample photo)" },
+      "width": 900, "height": 1200
+    },
+    "fund": "sadaqah",
+    "is_featured": true,
+    "sort_order": 5
+  },
+  {
+    "slug": "mosque",
+    "badge": { "bn": "দ্বীন", "en": "Deen" },
+    "title": { "bn": "মসজিদ ও মাদ্রাসা সহায়তা", "en": "Mosque and madrasa support" },
+    "summary": { "bn": "দ্বীনি শিক্ষার প্রসার এবং আল্লাহর ঘর মসজিদ ও মাদ্রাসার অবকাঠামো নির্মাণ ও সংস্কার কাজ।", "en": "Building and repairing mosques and madrasas, and spreading religious education." },
+    "cover": {
+      "url": "https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=900&q=70",
+      "alt": { "bn": "মসজিদের দৃশ্য (নমুনা ছবি)", "en": "A mosque (sample photo)" },
+      "width": 900, "height": 1200
+    },
+    "fund": "sadaqah",
+    "is_featured": true,
+    "sort_order": 6
+  }
+]

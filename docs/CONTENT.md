@@ -20,8 +20,8 @@ Nothing marked 🟡 or ❌ may go live. The foundation must fill in and confirm 
 | Hero headline | সাদাকাহর আলোয় আলোকিত হোক প্রতিটি ঘর | TODO | 🟡 |
 | Hero subtext | এতিম, বিধবা ও অসহায় মানুষের পাশে দাঁড়াতে নূরে সাদাকাহ ফাউন্ডেশন কাজ করছে — আপনার দান আমাদের আমানত। | TODO | 🟡 |
 | Year founded | TODO (the design says "৫+ বছরের সেবা") | | ❌ |
-| Logo | TODO: SVG, light and dark versions (the design uses a ☪ placeholder) | | ❌ |
-| Favicon / app icon | TODO: 512×512 PNG + SVG | | ❌ |
+| Logo | ✅ PNG received (`design/brand/logo-source.png`), used on the site. TODO: SVG and a one-colour version for dark backgrounds | | 🟡 |
+| Favicon / app icon | Made from the logo (`frontend/src/app/icon.png`, `apple-icon.png`); redo from the SVG when it arrives | | 🟡 |
 | Open Graph image | TODO: 1200×630 | | ❌ |
 
 ## 2. Legal registration (shown on /about, /transparency, receipts)

@@ -82,6 +82,7 @@ class SiteSetting(TimeStamped):
 | `zakat_enabled` | `true` / `false`: turns on the zakat calculator and fitra form after ZAKAT_POLICY sign-off | Admin |
 | `recurring_modes` | `{"bkash": "reminder", "sslcommerz": "reminder"}`: AUTO only once the gateway enables it (DONATION_FLOW.md) | Admin |
 | `payment_methods` | `["bkash", "sslcommerz"]`: online methods currently live | Admin |
+| `home_images` | `{hero, about_main, about_small, quote, volunteer, footer}`, each an image with `alt_bn`/`alt_en` | Admin, Editor |
 
 Each key has a JSON schema validated in the admin form (`apps/core/schemas.py`), so a typo can't break the site.
 

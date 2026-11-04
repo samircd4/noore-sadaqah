@@ -21,4 +21,77 @@
   body {
     @apply bg-sand-50 font-sans text-base leading-relaxed text-em-950 antialiased;
   }
+
+  /* While a menu or modal is open the page behind it must not scroll. */
+  body[data-overlay="open"] {
+    overflow: hidden;
+  }
+
+  /* Anchor targets land below the fixed header (h-16 on phones, h-20 from sm). */
+  [id] {
+    scroll-margin-top: 4.5rem;
+  }
+  @media (min-width: 40rem) {
+    [id] {
+      scroll-margin-top: 5.5rem;
+    }
+  }
+
+  #main:focus {
+    outline: none;
+  }
+}
+
+/*
+ * Language switch animation (View Transitions API, started in LanguageSwitch.jsx; full page loads use the
+ * cross-document version). The page fades out and rises back in; the header cross-fades in place; the gold
+ * highlight in the বাং/EN switch slides to the new language. Off for people who prefer reduced motion.
+ */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: 160ms ease-in both lang-page-out;
+}
+::view-transition-new(root) {
+  animation: 300ms cubic-bezier(0.2, 0.8, 0.2, 1) 60ms both lang-page-in;
+}
+::view-transition-group(site-header) {
+  animation-duration: 260ms;
+}
+::view-transition-group(lang-indicator) {
+  animation-duration: 340ms;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes lang-page-out {
+  to {
+    opacity: 0;
+    filter: blur(2px);
+  }
+}
+@keyframes lang-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/*
+ * Sticky donate bar (docs/RESPONSIVE.md §9): hidden while a menu or modal is open, and while a form field
+ * has focus (the phone keyboard is up). Route and section rules live in MobileDonateBar.jsx.
+ */
+body[data-overlay="open"] [data-mobile-donate-bar],
+body:has(:is(input, select, textarea):focus) [data-mobile-donate-bar] {
+  translate: 0 100%;
 }

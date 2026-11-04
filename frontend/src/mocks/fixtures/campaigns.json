@@ -1,0 +1,23 @@
+[
+  {
+    "_note": "Placeholder (CONTENT.md §11). offline_raised/offline_donors stand in for offline donations until Django exists; the API returns raised_amount and donor_count.",
+    "slug": "orphan-smile",
+    "title": { "bn": "একজন এতিমের মুখে হাসি ফোটান", "en": "Bring a smile to an orphan's face" },
+    "summary": { "bn": "মাত্র মাসিক ১,০০০ টাকায় একজন এতিমের খাবার, পড়াশোনা ও চিকিৎসার দায়িত্ব নিন।", "en": "For just ৳1,000 a month, take care of an orphan's food, education and health care." },
+    "body": { "bn": "নমুনা লেখা: ক্যাম্পেইনের বিস্তারিত গল্প পরে যোগ করা হবে।", "en": "Sample text: the campaign story will be added later." },
+    "cover": {
+      "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=2000&q=70",
+      "alt": { "bn": "হাসিমুখে শিশুরা (নমুনা ছবি)", "en": "Smiling children (sample photo)" },
+      "width": 2000, "height": 1333
+    },
+    "goal_amount": 500000,
+    "offline_raised": 320000,
+    "offline_donors": 211,
+    "monthly_options": [500, 1000, 2000],
+    "highlighted_option": 1000,
+    "starts_at": "2026-10-01T00:00:00Z",
+    "ends_at": null,
+    "fund": "orphan",
+    "is_featured": true
+  }
+]

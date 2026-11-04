@@ -4,14 +4,137 @@
     "titleTemplate": "%s | Noore Sadaqah Foundation",
     "description": "Noore Sadaqah Foundation stands beside orphans, widows and people in need. Your donation is our trust."
   },
+  "brand": {
+    "line1": "Noore Sadaqah",
+    "line2": "Foundation"
+  },
   "common": {
     "skipToContent": "Skip to main content",
     "loading": "Loading…",
-    "comingSoon": "Coming soon"
+    "comingSoon": "Coming soon",
+    "required": "required",
+    "close": "Close"
   },
-  "setup": {
-    "title": "Noore Sadaqah Foundation",
-    "body": "The website is being built."
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "programs": "Programmes",
+    "gallery": "Gallery",
+    "news": "News",
+    "contact": "Contact",
+    "donate": "Donate",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "menuTitle": "Menu",
+    "mainNav": "Main menu",
+    "language": "Choose language",
+    "homeLink": "Noore Sadaqah Foundation, home page"
+  },
+  "hero": {
+    "title": "Let the light of sadaqah <highlight>brighten</highlight><br></br> every home",
+    "subtitle": "Noore Sadaqah Foundation stands beside orphans, widows and people in need. Your donation is our trust.",
+    "donateNow": "Donate now",
+    "watchVideo": "Watch video"
+  },
+  "video": {
+    "title": "A video about our work",
+    "comingSoon": "The video will be added soon."
+  },
+  "quickDonate": {
+    "heading": "Donate to Noore Sadaqah Foundation",
+    "fund": "Fund",
+    "fundPlaceholder": "Choose",
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "mobile": "Mobile",
+    "mobilePlaceholder": "01XXXXXXXXX",
+    "amountLegend": "Amount",
+    "or": "or",
+    "customAmount": "Another amount (taka)",
+    "customAmountPlaceholder": "Enter amount",
+    "submit": "Donate",
+    "footnote": "Share in the reward by giving to Noore Sadaqah Foundation.",
+    "footnoteLink": "Learn more."
+  },
+  "stats": {
+    "heading": "Our work in numbers"
+  },
+  "about": {
+    "eyebrow": "About us",
+    "title": "Serving people with sincerity and trust",
+    "body": "Noore Sadaqah Foundation is a non-profit organisation guided by the Quran and Sunnah. We believe even a small donation can bring a big change to someone's life.",
+    "yearsValue": "5+",
+    "yearsLabel": "years of service",
+    "transparencyTitle": "Transparency",
+    "transparencyText": "Every taka accounted for",
+    "trustTitle": "Trust",
+    "trustText": "Straight to the recipient",
+    "shariahTitle": "Shariah",
+    "shariahText": "Guided by scholars",
+    "cta": "Learn about us"
+  },
+  "programs": {
+    "eyebrow": "Our programmes",
+    "title": "Where your donation goes",
+    "details": "Details"
+  },
+  "campaign": {
+    "badge": "Urgent campaign",
+    "raised": "{amount} raised",
+    "goal": "Goal {amount}",
+    "progress": "{percent}% of the goal raised",
+    "sponsor": "Sponsor",
+    "details": "Details",
+    "perMonth": "taka / month",
+    "monthlyOptions": "Monthly amounts"
+  },
+  "gallery": {
+    "eyebrow": "Gallery",
+    "title": "Moments in frame",
+    "viewAll": "See all photos"
+  },
+  "quote": {
+    "label": "Quote"
+  },
+  "news": {
+    "eyebrow": "News",
+    "title": "Latest updates",
+    "read": "Read"
+  },
+  "volunteer": {
+    "eyebrow": "Get involved",
+    "title": "Be part of this caravan",
+    "body": "Give your time as a volunteer, or become a monthly donor and keep the sadaqah going.",
+    "volunteer": "Volunteer",
+    "monthly": "Monthly donor"
+  },
+  "footer": {
+    "tagline": "A humble effort to spread light in society through sadaqah and service to people.",
+    "links": "Links",
+    "support": "Support",
+    "contact": "Contact",
+    "updates": "Get updates",
+    "initiatives": "Our initiatives",
+    "stories": "Success stories",
+    "beVolunteer": "Volunteer",
+    "emailLabel": "Your email",
+    "emailPlaceholder": "Enter your email",
+    "subscribe": "Join",
+    "subscribed": "Thank you! News will reach your inbox.",
+    "paymentMethods": "Ways to give",
+    "copyright": "© {year} Noore Sadaqah Foundation. All rights reserved.",
+    "photoCredit": "Photos: Unsplash (design samples)",
+    "social": "Social media",
+    "facebook": "Facebook",
+    "youtube": "YouTube",
+    "linkedin": "LinkedIn",
+    "instagram": "Instagram",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email"
+  },
+  "donateBar": {
+    "label": "Donate"
   },
   "errors": {
     "required": "Please fill in this field",
@@ -20,7 +143,7 @@
     "minAmount": "The minimum amount is ৳{min}",
     "maxAmount": "The maximum amount is ৳{max}",
     "amountInvalid": "Enter a valid amount (whole numbers only)",
-    "fundInactive": "This fund is not accepting donations right now",
+    "fundInactive": "Please choose a fund",
     "recurringNotAllowed": "Monthly giving isn't available for this fund",
     "campaignEnded": "This campaign has ended",
     "onBehalfPermission": "Please confirm you have permission from the person you are giving for",

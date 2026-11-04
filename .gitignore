@@ -38,3 +38,6 @@ Thumbs.db
 *.log
 *.dump
 *.sql.gz
+
+# Playwright MCP screenshots and logs (local testing)
+.playwright-mcp/

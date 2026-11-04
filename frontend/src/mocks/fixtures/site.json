@@ -1,0 +1,73 @@
+{
+  "_note": "Placeholder content from design/reference/home.html and docs/CONTENT.md. Every value marked 🟡/❌ in CONTENT.md must be replaced before launch.",
+  "stats": [
+    { "value": 12500, "suffix": "+", "label": { "bn": "উপকারভোগী পরিবার", "en": "Families supported" } },
+    { "value": 50000, "suffix": "+", "label": { "bn": "খাদ্য প্যাকেট", "en": "Food packs" } },
+    { "value": 3200, "suffix": "+", "label": { "bn": "এতিম শিশু", "en": "Orphans supported" } },
+    { "value": 100000, "suffix": "+", "label": { "bn": "রোপণকৃত গাছ", "en": "Trees planted" } }
+  ],
+  "contact": {
+    "address": { "bn": "ঢাকা, বাংলাদেশ", "en": "Dhaka, Bangladesh" },
+    "phone": "+880 1XXX-XXXXXX",
+    "whatsapp": "",
+    "email": "info@nooresadaqah.org",
+    "hours": { "bn": "", "en": "" },
+    "map_embed_url": ""
+  },
+  "social": {
+    "facebook": "https://www.facebook.com/",
+    "youtube": "https://www.youtube.com/",
+    "instagram": "",
+    "linkedin": "https://www.linkedin.com/"
+  },
+  "quote": {
+    "text": { "bn": "সাদাকাহ সম্পদ কমায় না — বরং বরকত বাড়ায়।", "en": "Charity does not decrease wealth; it brings blessing." },
+    "source": { "bn": "হাদীসের মর্মার্থ · সহীহ মুসলিম", "en": "Meaning of a hadith · Sahih Muslim" }
+  },
+  "registration": {
+    "authority": { "bn": "", "en": "" },
+    "number": "",
+    "date": null,
+    "certificate_url": null
+  },
+  "mobile_banking": [
+    { "service": "bkash", "number": "", "type": "merchant" }
+  ],
+  "payment_methods": ["bkash", "sslcommerz"],
+  "promo_video": { "youtube_id": "" },
+  "nisab": { "silver_price_per_gram": 0, "gold_price_per_gram": 0, "karat": "22K", "updated_at": null },
+  "fitra": { "year": 2027, "rates": [], "cutoff": null, "open": false },
+  "zakat_enabled": false,
+  "home_images": {
+    "hero": {
+      "url": "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=2000&q=70",
+      "alt": { "bn": "সাহায্য বিতরণের সময় একদল মানুষ (নমুনা ছবি)", "en": "People during an aid distribution (sample photo)" },
+      "width": 2000, "height": 1333
+    },
+    "about_main": {
+      "url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=1200&q=70",
+      "alt": { "bn": "স্বেচ্ছাসেবকেরা ত্রাণসামগ্রী গুছিয়ে রাখছেন (নমুনা ছবি)", "en": "Volunteers packing relief goods (sample photo)" },
+      "width": 1200, "height": 1500
+    },
+    "about_small": {
+      "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=800&q=70",
+      "alt": { "bn": "হাসিমুখে শিশুরা (নমুনা ছবি)", "en": "Smiling children (sample photo)" },
+      "width": 800, "height": 800
+    },
+    "quote": {
+      "url": "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=2000&q=70",
+      "alt": { "bn": "", "en": "" },
+      "width": 2000, "height": 1333
+    },
+    "volunteer": {
+      "url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=2000&q=70",
+      "alt": { "bn": "", "en": "" },
+      "width": 2000, "height": 1333
+    },
+    "footer": {
+      "url": "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=2000&q=70",
+      "alt": { "bn": "", "en": "" },
+      "width": 2000, "height": 1333
+    }
+  }
+}

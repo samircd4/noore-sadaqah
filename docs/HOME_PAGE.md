@@ -78,6 +78,28 @@ All photos are Unsplash placeholders. Replace them with the foundation's own pho
 
 Every section's phone layout (320 / 768 / 1440) is in **RESPONSIVE.md §14**; build each section from that table.
 
+## Built in F1: small changes beyond the fix list
+
+All 17 fixes are applied. These visual details also differ from `home.html`, each for a reason:
+
+| Where | Change | Why |
+|---|---|---|
+| Hero headline | `leading-[1.3]`; `lg:text-6xl xl:text-7xl`; text container `xl:max-w-6xl` | Bengali conjuncts need the line height; "সাদাকাহর" is longer than the design's sample word, so the first line must still fit on two lines |
+| Header at 1024–1279 | Nav `text-base`, tighter padding | Six Bengali nav items + switch + Donate don't fit at 1024 with the design's sizes |
+| Stats | Gold numbers use `gold-600` | `gold-500` on white is 2.2:1 (DESIGN_SYSTEM.md "Stat card") |
+| About badge, campaign badge | `text-em-950` on gold | CLAUDE.md rule 5 |
+| Quote band | Dark `em-950` text plus an extra light gold wash | White on gold fails contrast (rule 5) |
+| Volunteer banner | Emerald gradient from the palette | The design's overlay used off-palette greens and left the white text hard to read |
+| Gallery mosaic | Tile 5 spans two rows | The design leaves an empty cell in the 4×3 grid |
+| Campaign "parallax" | Only from `lg` | `background-attachment: fixed` doesn't work on iOS (RESPONSIVE.md §11) |
+| Icons | lucide-react; social links keep the design's "f", ▶, "in" glyphs | lucide 1.x has no brand icons |
+| Quick-donate amounts | Bengali digits (৳১০০) instead of "৳ 100" | CLAUDE.md rule 7 |
+| Fund list in quick-donate | Fitra hidden while `zakat_enabled` is false | The fitra form needs ZAKAT_POLICY.md sign-off |
+
+Until phase F3, "দান করুন" links scroll to the quick-donate panel (`DONATE_HREF` in `src/lib/nav.js`), and submitting the
+panel goes to `/donate/checkout`, which doesn't exist yet. The video modal shows "শীঘ্রই" until `promo_video.youtube_id`
+is set (CONTENT.md §7).
+
 ## Acceptance checklist
 
 - [ ] At 1440px the page looks like `design/reference/home.html` opened in a browser

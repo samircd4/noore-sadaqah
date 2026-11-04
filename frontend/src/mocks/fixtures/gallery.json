@@ -1,0 +1,57 @@
+[
+  {
+    "_note": "Placeholder photos from the design (Unsplash).",
+    "id": 1, "kind": "photo", "category": "relief", "youtube_id": "",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=1200&q=70",
+      "alt": { "bn": "সহায়তা গ্রহণকারী পরিবার (নমুনা ছবি)", "en": "A family receiving support (sample photo)" },
+      "width": 1200, "height": 1200
+    },
+    "caption": { "bn": "ত্রাণ বিতরণ", "en": "Relief distribution" }
+  },
+  {
+    "id": 2, "kind": "photo", "category": "relief", "youtube_id": "",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=900&q=70",
+      "alt": { "bn": "স্বেচ্ছাসেবকেরা ত্রাণসামগ্রী গুছিয়ে রাখছেন (নমুনা ছবি)", "en": "Volunteers packing relief goods (sample photo)" },
+      "width": 900, "height": 900
+    },
+    "caption": { "bn": "স্বেচ্ছাসেবকদের কাজ", "en": "Volunteers at work" }
+  },
+  {
+    "id": 3, "kind": "photo", "category": "relief", "youtube_id": "",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=900&q=70",
+      "alt": { "bn": "সাহায্য বিতরণের সময় একদল মানুষ (নমুনা ছবি)", "en": "People during an aid distribution (sample photo)" },
+      "width": 900, "height": 900
+    },
+    "caption": { "bn": "খাদ্য বিতরণ", "en": "Food distribution" }
+  },
+  {
+    "id": 4, "kind": "photo", "category": "education", "youtube_id": "",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=900&q=70",
+      "alt": { "bn": "হাসিমুখে শিশুরা (নমুনা ছবি)", "en": "Smiling children (sample photo)" },
+      "width": 900, "height": 1200
+    },
+    "caption": { "bn": "শিক্ষা কার্যক্রম", "en": "Education programme" }
+  },
+  {
+    "id": 5, "kind": "photo", "category": "relief", "youtube_id": "",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=900&q=70",
+      "alt": { "bn": "খাদ্যসামগ্রী বিতরণ (নমুনা ছবি)", "en": "Food distribution (sample photo)" },
+      "width": 900, "height": 900
+    },
+    "caption": { "bn": "রমযান প্যাকেজ", "en": "Ramadan packages" }
+  },
+  {
+    "id": 6, "kind": "photo", "category": "health", "youtube_id": "",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1200&q=70",
+      "alt": { "bn": "চারাগাছ রোপণ (নমুনা ছবি)", "en": "Planting a sapling (sample photo)" },
+      "width": 1200, "height": 600
+    },
+    "caption": { "bn": "বৃক্ষরোপণ", "en": "Tree planting" }
+  }
+]

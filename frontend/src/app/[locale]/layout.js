@@ -3,7 +3,11 @@ import { getTranslations } from "next-intl/server";
 import { Noto_Sans_Bengali, Noto_Serif_Bengali } from "next/font/google";
 import { notFound } from "next/navigation";
 import { locale as rootLocale } from "next/root-params";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
+import MobileDonateBar from "@/components/layout/MobileDonateBar";
 import { routing } from "@/i18n/routing";
+import { apiGet } from "@/lib/api";
 import { THEME_COLOR } from "@/lib/theme";
 import "../globals.css";
 
@@ -45,13 +49,29 @@ export async function generateMetadata() {
 }
 
 export default async function LocaleLayout({ children }) {
-  const locale = await rootLocale();
-  if (!hasLocale(routing.locales, locale)) notFound();
+  const raw = await rootLocale();
+  if (!hasLocale(routing.locales, raw)) notFound();
+  const locale = raw === "en" ? "en" : "bn";
+
+  const [t, site] = await Promise.all([getTranslations("common"), apiGet("/site/", { locale, tags: ["site"] })]);
 
   return (
     <html lang={locale} className={`${notoSans.variable} ${notoSerif.variable}`}>
       <body>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-(--z-toast) focus:rounded-lg focus:bg-gold-500 focus:px-4 focus:py-3 focus:font-bold focus:text-em-950"
+          >
+            {t("skipToContent")}
+          </a>
+          <Header phone={site.contact?.phone} />
+          <main id="main" tabIndex={-1}>
+            {children}
+          </main>
+          <Footer site={site} locale={locale} />
+          <MobileDonateBar />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

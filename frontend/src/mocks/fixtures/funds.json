@@ -1,0 +1,78 @@
+[
+  {
+    "_note": "Placeholder (CONTENT.md §9). Bank details are TODO.",
+    "slug": "sadaqah",
+    "title": { "bn": "সাদাকাহ", "en": "Sadaqah" },
+    "summary": { "bn": "আপনার সাধারণ দান অসহায় মানুষের খাদ্য, চিকিৎসা ও জরুরি সহায়তায় ব্যয় হয়।", "en": "General giving for food, medical care and emergency help for people in need." },
+    "body": { "bn": "নমুনা লেখা: এই তহবিলের বিস্তারিত পরিচিতি পরে যোগ করা হবে।", "en": "Sample text: the full story of this fund will be added later." },
+    "cover": {
+      "url": "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=1200&q=70",
+      "alt": { "bn": "খাদ্যসামগ্রী বিতরণ (নমুনা ছবি)", "en": "Food distribution (sample photo)" },
+      "width": 1200, "height": 800
+    },
+    "preset_amounts": [100, 200, 500, 1000],
+    "min_amount": 10,
+    "is_zakat_eligible": false,
+    "is_fitra": false,
+    "allow_recurring": true,
+    "bank_details": [],
+    "sort_order": 1
+  },
+  {
+    "_note": "Placeholder. Zakat texts need Shariah advisor approval (ZAKAT_POLICY.md §5).",
+    "slug": "zakat",
+    "title": { "bn": "যাকাত", "en": "Zakat" },
+    "summary": { "bn": "যাকাত শুধু যাকাত গ্রহণের যোগ্য মানুষের কাছে পৌঁছে দেওয়া হয়।", "en": "Zakat is given only to people eligible to receive it." },
+    "body": { "bn": "নমুনা লেখা: শরীয়াহ উপদেষ্টার অনুমোদনের পর চূড়ান্ত লেখা যোগ হবে।", "en": "Sample text: the final text will be added after the Shariah advisor approves it." },
+    "cover": {
+      "url": "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=1200&q=70",
+      "alt": { "bn": "সহায়তা গ্রহণকারী পরিবার (নমুনা ছবি)", "en": "A family receiving support (sample photo)" },
+      "width": 1200, "height": 800
+    },
+    "preset_amounts": [100, 200, 500, 1000],
+    "min_amount": 10,
+    "is_zakat_eligible": true,
+    "is_fitra": false,
+    "allow_recurring": true,
+    "bank_details": [],
+    "sort_order": 2
+  },
+  {
+    "_note": "Placeholder. The fitra form is built only after ZAKAT_POLICY.md sign-off.",
+    "slug": "fitra",
+    "title": { "bn": "ফিতরা", "en": "Fitra" },
+    "summary": { "bn": "ঈদের নামাজের আগে সাদাকাতুল ফিতর পৌঁছে দেওয়া হয়।", "en": "Sadaqatul Fitr delivered before the Eid prayer." },
+    "body": { "bn": "নমুনা লেখা।", "en": "Sample text." },
+    "cover": {
+      "url": "https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=1200&q=70",
+      "alt": { "bn": "মসজিদের দৃশ্য (নমুনা ছবি)", "en": "A mosque (sample photo)" },
+      "width": 1200, "height": 800
+    },
+    "preset_amounts": [],
+    "min_amount": 10,
+    "is_zakat_eligible": false,
+    "is_fitra": true,
+    "allow_recurring": false,
+    "bank_details": [],
+    "sort_order": 3
+  },
+  {
+    "_note": "Placeholder. Whether zakat may fund orphan support: ZAKAT_POLICY.md Z12.",
+    "slug": "orphan",
+    "title": { "bn": "এতিম সহায়তা", "en": "Orphan support" },
+    "summary": { "bn": "এতিম শিশুদের খাবার, পড়াশোনা ও চিকিৎসার দায়িত্ব নিন।", "en": "Take care of an orphan's food, education and health care." },
+    "body": { "bn": "নমুনা লেখা।", "en": "Sample text." },
+    "cover": {
+      "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1200&q=70",
+      "alt": { "bn": "হাসিমুখে শিশুরা (নমুনা ছবি)", "en": "Smiling children (sample photo)" },
+      "width": 1200, "height": 800
+    },
+    "preset_amounts": [500, 1000, 2000],
+    "min_amount": 10,
+    "is_zakat_eligible": false,
+    "is_fitra": false,
+    "allow_recurring": true,
+    "bank_details": [],
+    "sort_order": 4
+  }
+]

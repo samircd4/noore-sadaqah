@@ -45,10 +45,11 @@ These take weeks. The site can't launch without them.
 
 ### F1: Home page
 
-- [ ] `src/components/ui/*` (Button, Badge, SectionHeader, StatCard, ProgressBar, Input, Select)
-- [ ] Header + mobile menu + Footer + LanguageSwitch in `[locale]/layout.jsx`
-- [ ] Fixtures + handlers for `GET /site/`, `/funds/`, `/programs/?featured=1`, `/campaigns/?featured=1`, `/gallery/?limit=6`, `/posts/`
-- [ ] Every home section from `HOME_PAGE.md`; all fixes applied · QA §1–2
+- [x] `src/components/ui/*` (Button, Badge, SectionHeader, StatCard, ProgressBar, Input, Select)
+- [x] Header + mobile menu + Footer + LanguageSwitch in `[locale]/layout.jsx`
+- [x] Fixtures + handlers for `GET /site/`, `/funds/`, `/programs/?featured=1`, `/campaigns/?featured=1`, `/gallery/?limit=6`, `/posts/`
+- [x] Every home section from `HOME_PAGE.md`; all fixes applied · QA §1–2
+- [ ] Real-device check (cheap Android, iPhone, link opened from Messenger/WhatsApp)
 
 > **Prompt:** "Build the home page at `frontend/src/app/[locale]/page.jsx` so it matches `design/reference/home.html` exactly. Split it into the components listed in `docs/HOME_PAGE.md`. Load all content through `src/lib/api.js`; add the mock fixtures and handlers for every endpoint the home page uses, with the exact JSON shapes from `docs/API.md` and the seed content from HOME_PAGE.md / CONTENT.md (translatable fields as `{bn, en}`). Apply every fix in HOME_PAGE.md. Build each section **phone-first** from the table in `docs/RESPONSIVE.md` §14, including the phone header (§8) and the sticky donate bar (§9). UI labels go in `messages/bn.json` and `en.json`. Check it at 320, 375, 768 and 1440px against RESPONSIVE.md §18."
 

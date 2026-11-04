@@ -31,11 +31,12 @@ Tailwind CSS v4 with `../design/tokens.css` · next-intl · Zod + react-hook-for
 9. **Reuse `src/components/ui/*`** (Button, Badge, SectionHeader, StatCard, ProgressBar, Input, Select, EmptyState,
    Pagination, Accordion, Tabs, Breadcrumb) before writing new markup. One component per file, PascalCase.
 10. **Styling:** only palette tokens (`em-*`, `sand-*`, `gold-*`); `rounded-lg` everywhere; headings `font-head`.
+    Clickable things are real `<a>`/`<button>` elements: they get the pointer cursor globally (DESIGN_SYSTEM.md "Interaction").
     Text on gold is `text-em-950`. See `../docs/DESIGN_SYSTEM.md`.
 11. **Text:** every UI label in `messages/bn.json` **and** `messages/en.json` (same keys). Numbers with `bnNumber()`,
     money with `taka()`, dates with `bnDate()` from `src/lib/format.js`. Convert input digits with `toLatinDigits()` before Zod.
 12. **Images:** `next/image` with Bengali `alt` (from the API's `alt` field) and a **`sizes` value from `../docs/RESPONSIVE.md` §12**; the R2 host is in `images.remotePatterns`.
-    The hero image uses `priority`.
+    The hero image uses `preload` (Next 16 replaced `priority`).
 13. **HTML from the API** (`body_html`) is already sanitized by Django; render it only in the prose component. Never
     inject any other HTML.
 14. **Each page** has `generateMetadata` (SEO_ANALYTICS.md) and handles a 404 from the API with `notFound()`.

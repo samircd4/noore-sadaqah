@@ -183,8 +183,8 @@ Only these values (variables in `design/tokens.css`; use `z-(--z-header)` etc. i
 
 | Component | `sizes` | Notes |
 |---|---|---|
-| Hero | `100vw` | `priority`; on phones `object-position` keeps faces/subject in frame; ≤ 200 KB at 800w |
-| PageHero | `100vw` | `priority` |
+| Hero | `100vw` | `preload` (Next 16 name for the old `priority`); on phones `object-position` keeps faces/subject in frame; ≤ 200 KB at 800w |
+| PageHero | `100vw` | `preload` |
 | ProgramCard / FundCard | `(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw` | |
 | NewsCard | `(min-width: 768px) 33vw, 100vw` | |
 | Gallery mosaic, large tile | `(min-width: 768px) 50vw, 100vw` | |
@@ -214,14 +214,14 @@ Reference: `design/reference/home.html`. "320" means the phone layout (320–639
 
 | # | Section | 320 (phone) | 768 | 1440 |
 |---|---|---|---|---|
-| 1 | Header | §8 phone header, `h-16`, drawer | logo, switch, Donate, menu | design |
+| 1 | Header | §8 phone header, `h-16`, drawer | logo, switch, Donate, menu | design from `xl`; at `lg` (1024–1279) nav `text-base` with tighter padding so it fits |
 | 2 | Hero | `pt-24 pb-16` (design `pt-32 pb-32` is too tall), h1 per §5, buttons stacked full width, Bismillah chip may wrap to 2 lines | buttons side by side | design |
 | 3 | Quick-donate | **In normal flow** under the hero, `-mt-8` overlap at most (HOME_PAGE fix 3); fields stacked; amount chips in a **2×2 grid**, free amount on its own row (full width), submit full width; heading `text-xl` | 3 fields in a row, chips in one row | design (`absolute` overlap) |
 | 4 | Stats | 2×2 grid, numbers `text-3xl`, labels may wrap to 2 lines; `pt-8` (no 120px gap, since the panel isn't absolute) | 2×2 | 4 in a row |
 | 5 | About | Collage first, full width, the small overlapping photo stays inside the gutter (design uses `-right-4`, which can overflow: use `right-2`); "৫+ বছরের সেবা" badge inside the photo; 3 value cards stacked | value cards 3 in a row | design |
 | 6 | Programs | 1 column; cards `min-h-80` instead of fixed `h-96`, so long titles never clip | 2 columns | 3 columns |
 | 7 | Campaign banner | Text first, then progress bar, then the 3 monthly options as **3 compact cards** (`p-3`, amount `text-2xl`, label `text-xs`; they must fit at 320: about 85px each) or a vertical list below 360; buttons stacked full width; no fixed background (§11) | options beside the text from `lg` | design |
-| 8 | Gallery mosaic | 2 columns, `auto-rows-[120px]` (design 170px), large tile `col-span-2 row-span-2`; 4 tiles on phones instead of 6 | 4 columns, 170px | design |
+| 8 | Gallery mosaic | 2 columns, `auto-rows-[120px]` (design 170px), large tile `col-span-2 row-span-2`; 4 tiles on phones instead of 6 (big, two small, one wide) | 4 columns, 170px | design, except tile 5 spans 2 rows so the 4×3 grid has no empty cell (the design leaves one) |
 | 9 | Quote band | `text-2xl`, `px-4`, source on its own line | | design |
 | 10 | News | 1 column, horizontal-scroll is **not** used; 3 cards stacked (or 2 + "সব সংবাদ" link) | 3 columns from `md` | design |
 | 11 | Volunteer CTA | `px-5 py-10`, buttons stacked full width | | design |
