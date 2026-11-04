@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { localizedPath, pageMetadata, shortDescription } from "./seo";
+import { localizedPath, pageMetadata, shortDescription, textFromHtml } from "./seo";
 
 describe("localizedPath", () => {
   it("leaves Bengali unprefixed and puts English under /en", () => {
@@ -44,5 +44,12 @@ describe("pageMetadata", () => {
     const meta = pageMetadata({ path: "/programs", locale: "bn", title: "কার্যক্রম" });
     expect(meta.openGraph.images).toBeUndefined();
     expect(meta.twitter.card).toBe("summary");
+  });
+});
+
+describe("textFromHtml", () => {
+  it("strips tags and decodes basic entities", () => {
+    expect(textFromHtml("<h2>1. Who</h2><p>Say &quot;hi&quot; &amp; <strong>go</strong></p>")).toBe('1. Who Say "hi" & go');
+    expect(textFromHtml(undefined)).toBe("");
   });
 });

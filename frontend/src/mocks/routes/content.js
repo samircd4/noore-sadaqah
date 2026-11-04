@@ -9,6 +9,7 @@ import postsFixture from "../fixtures/posts.json";
 import programsFixture from "../fixtures/programs.json";
 import siteFixture from "../fixtures/site.json";
 import { errors, localize, ok, paginate } from "../helpers";
+import { markdownToHtml } from "../markdown";
 import { route } from "../router";
 
 /** Removes fixture-only keys ("_note" …) so responses match API.md exactly. */
@@ -24,15 +25,8 @@ function clean(value) {
   return value;
 }
 
-/** Markdown-ish text → safe HTML paragraphs (Django will render real markdown and sanitize it). */
-function toHtml(text) {
-  const escape = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  return String(text ?? "")
-    .split(/\n{2,}/)
-    .filter((p) => p.trim())
-    .map((p) => `<p>${escape(p.trim())}</p>`)
-    .join("");
-}
+/** Markdown → safe HTML (Django will render real markdown and sanitize it). */
+const toHtml = markdownToHtml;
 
 const bySort = (a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0);
 

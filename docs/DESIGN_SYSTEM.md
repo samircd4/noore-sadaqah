@@ -117,6 +117,8 @@ Defined as CSS variables in `tokens.css`. Always put text on photos over one of 
   pointer. Don't add `cursor-pointer` to components by hand; if something clickable isn't covered (e.g. a clickable
   `<div>`), make it a real `<button>` or `<a>` instead.
 - Every clickable element also has a visible hover or `active:` state and the gold focus ring (dark `em-950` ring on gold backgrounds).
+  **Text fields** (inputs, selects, textareas) use a thin focus edge instead (owner request): a 1px `gold-600`
+  outline over the field's own border, set globally in `tokens.css`. Checkboxes and radios keep the bold ring.
 - **Language switch animation:** choosing বাং / EN runs a View Transition (`LanguageSwitch.jsx`, styles in
   `globals.css`): the page fades out and rises back in (about 0.35 s), the header cross-fades in place, and the gold
   highlight slides to the chosen language. Nav links have a fixed height (40px) so nothing jumps between languages.

@@ -1,9 +1,9 @@
 /**
- * Form endpoints (docs/API.md "Forms"). F1: newsletter. F2 adds contact and volunteers.
+ * Form endpoints (docs/API.md "Forms"): newsletter, contact and volunteers.
  * Throttle: 5 per 10 minutes per IP (scope "forms").
  */
 
-import { subscriberSchema } from "@/lib/validation/forms";
+import { contactSchema, subscriberSchema, volunteerSchema } from "@/lib/validation/forms";
 import { errors, ok, throttle, zodToFields } from "../helpers";
 import { route } from "../router";
 
@@ -23,3 +23,25 @@ route("POST", "/subscribers/", ({ body, ip, store }) => {
   }
   return ok({}, 201);
 });
+
+/**
+ * POST /contact/ and POST /volunteers/: validate with the shared schema, store, 201 {}.
+ * The same "forms" throttle bucket as the newsletter (one scope in API.md).
+ * @param {"contact" | "volunteer"} type
+ * @param {import("zod").ZodType} schema
+ */
+function formRoute(type, schema) {
+  return ({ body, ip, store }) => {
+    const wait = throttle(store.throttles, `forms:${ip ?? "unknown"}`, FORMS_LIMIT, FORMS_WINDOW_MS);
+    if (wait !== null) return errors.throttled(wait);
+
+    const parsed = schema.safeParse(body ?? {});
+    if (!parsed.success) return errors.validation(zodToFields(parsed.error));
+
+    store.submissions.push({ type, ...parsed.data, created_at: new Date().toISOString() });
+    return ok({}, 201);
+  };
+}
+
+route("POST", "/contact/", formRoute("contact", contactSchema));
+route("POST", "/volunteers/", formRoute("volunteer", volunteerSchema));

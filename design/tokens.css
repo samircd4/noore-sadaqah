@@ -72,9 +72,21 @@
 html {
   scroll-behavior: smooth;
 }
-:where(a, button, input, select, textarea):focus-visible {
-  outline: 3px solid var(--color-gold-500);
-  outline-offset: 3px;
+/*
+ * Focus rings, in @layer base so component utilities (e.g. the em-950 ring on gold panels,
+ * [&_:focus-visible]:outline-em-950) can still change them.
+ */
+@layer base {
+  :where(a, button, input, select, textarea):focus-visible {
+    outline: 3px solid var(--color-gold-500);
+    outline-offset: 3px;
+  }
+  /* Text fields: a thin 1px gold-600 edge drawn over the field's own border instead of the bold ring (owner request). */
+  :where(input:not([type="checkbox"], [type="radio"]), select, textarea):focus-visible {
+    outline-width: 1px;
+    outline-offset: -1px;
+    outline-color: var(--color-gold-600);
+  }
 }
 ::selection {
   background: var(--color-gold-500);

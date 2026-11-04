@@ -1,0 +1,12 @@
+{
+  "_note": "SAMPLE yearly totals by fund, standing in for PAID donations before Django exists. Mock donations marked PAID are added on top. Not real figures.",
+  "offline_totals": [
+    { "year": 2025, "fund": "sadaqah", "total": 1845000 },
+    { "year": 2025, "fund": "orphan", "total": 960000 },
+    { "year": 2025, "fund": "zakat", "total": 2310000 },
+    { "year": 2025, "fund": "fitra", "total": 185000 },
+    { "year": 2026, "fund": "sadaqah", "total": 1420000 },
+    { "year": 2026, "fund": "orphan", "total": 1130000 },
+    { "year": 2026, "fund": "zakat", "total": 1675000 }
+  ]
+}

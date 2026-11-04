@@ -23,7 +23,7 @@ export default async function HomePage() {
     apiGet("/funds/", { locale, tags: ["funds"] }),
     apiGet("/programs/", { locale, query: { featured: 1 }, tags: ["programs"] }),
     apiGet("/campaigns/", { locale, query: { featured: 1 }, tags: ["campaigns"] }),
-    apiGet("/gallery/", { locale, query: { limit: 6 }, tags: ["gallery"] }),
+    apiGet("/gallery/", { locale, query: { limit: 6, kind: "photo" }, tags: ["gallery"] }),
     apiGet("/posts/", { locale, query: { limit: 3 }, tags: ["posts"] }),
   ]);
 

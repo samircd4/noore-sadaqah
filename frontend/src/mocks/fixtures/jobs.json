@@ -1,0 +1,43 @@
+[
+  {
+    "_note": "SAMPLE jobs for the careers tab. Not real vacancies.",
+    "slug": "field-officer-relief",
+    "title": { "bn": "মাঠ কর্মকর্তা, ত্রাণ (নমুনা)", "en": "Field officer, relief (sample)" },
+    "location": { "bn": "কুড়িগ্রাম", "en": "Kurigram" },
+    "body": {
+      "bn": "নমুনা বিবরণ: ত্রাণ বিতরণের সময় উপকারভোগী যাচাই, তালিকা তৈরি ও বিতরণ তদারকি।\n\nযোগ্যতা: স্নাতক, মোটরসাইকেল চালাতে পারলে অগ্রাধিকার।",
+      "en": "Sample description: verify beneficiaries, prepare lists and supervise relief distributions.\n\nRequirements: a bachelor's degree; riding a motorbike is a plus."
+    },
+    "apply_email": "jobs@nooresadaqah.org", "apply_url": "",
+    "closes_at": "2026-12-31", "is_open": true
+  },
+  {
+    "slug": "accounts-assistant",
+    "title": { "bn": "হিসাব সহকারী (নমুনা)", "en": "Accounts assistant (sample)" },
+    "location": { "bn": "ঢাকা", "en": "Dhaka" },
+    "body": {
+      "bn": "নমুনা বিবরণ: দৈনিক হিসাব সংরক্ষণ, রসিদ মেলানো ও মাসিক প্রতিবেদন তৈরিতে সহায়তা।\n\nযোগ্যতা: হিসাববিজ্ঞানে স্নাতক, কম্পিউটারে দক্ষতা।",
+      "en": "Sample description: keep daily accounts, match receipts and help prepare monthly reports.\n\nRequirements: a degree in accounting and computer skills."
+    },
+    "apply_email": "jobs@nooresadaqah.org", "apply_url": "",
+    "closes_at": null, "is_open": true
+  },
+  {
+    "_note": "Closed sample: must NOT be returned (is_open false).",
+    "slug": "closed-sample",
+    "title": { "bn": "বন্ধ পদ (নমুনা)", "en": "Closed position (sample)" },
+    "location": { "bn": "ঢাকা", "en": "Dhaka" },
+    "body": { "bn": "নমুনা।", "en": "Sample." },
+    "apply_email": "", "apply_url": "",
+    "closes_at": null, "is_open": false
+  },
+  {
+    "_note": "Expired sample: must NOT be returned (closes_at is in the past).",
+    "slug": "expired-sample",
+    "title": { "bn": "মেয়াদোত্তীর্ণ পদ (নমুনা)", "en": "Expired position (sample)" },
+    "location": { "bn": "ঢাকা", "en": "Dhaka" },
+    "body": { "bn": "নমুনা।", "en": "Sample." },
+    "apply_email": "", "apply_url": "",
+    "closes_at": "2025-01-31", "is_open": true
+  }
+]

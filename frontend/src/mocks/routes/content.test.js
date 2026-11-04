@@ -148,14 +148,33 @@ describe("content endpoints (docs/API.md shapes)", () => {
   });
 
   it("GET /gallery/ and /posts/ paginate", async () => {
-    const gallery = await get("/gallery/", { limit: "6" });
-    expect(gallery.body).toEqual(expect.objectContaining({ count: 6, page: 1, pages: 1 }));
+    const gallery = await get("/gallery/", { limit: "6", kind: "photo" });
+    expect(gallery.body.results).toHaveLength(6);
+    expect(gallery.body.results.every((g) => g.kind === "photo")).toBe(true);
     expect(gallery.body.results[0].category).toEqual({ slug: "relief", name: "ত্রাণ" });
 
     const posts = await get("/posts/", { limit: "3" });
     expect(posts.body.results.map((p) => p.published_at)).toEqual([...posts.body.results.map((p) => p.published_at)].sort().reverse());
     expect((await get("/posts/", { page: "9" })).status).toBe(404);
     expect((await get("/posts/school-supplies-500-students/")).body.related).toHaveLength(3);
+  });
+
+  it("GET /gallery/ pages 12 at a time and filters by kind and category", async () => {
+    const all = await get("/gallery/");
+    expect(all.body).toEqual(expect.objectContaining({ count: 23, page: 1, pages: 2 }));
+    expect(all.body.results).toHaveLength(12);
+    expect(Object.keys(all.body.results[0]).sort()).toEqual(["caption", "category", "id", "image", "kind", "youtube_id"]);
+    expect(hasPrivateKeys(all.body)).toBe(false);
+    expect((await get("/gallery/", { page: "2" })).body.results).toHaveLength(11);
+    expect((await get("/gallery/", { page: "3" })).status).toBe(404);
+
+    const videos = (await get("/gallery/", { kind: "video" })).body;
+    expect(videos.count).toBe(3);
+    expect(videos.results.every((g) => g.kind === "video" && typeof g.youtube_id === "string")).toBe(true);
+    const health = (await get("/gallery/", { category: "health" })).body.results;
+    expect(health.length).toBeGreaterThan(0);
+    expect(health.every((g) => g.category.slug === "health")).toBe(true);
+    expect((await get("/gallery/", {}, "en")).body.results[0].caption).not.toMatch(/[ঀ-৿]/);
   });
 
   it("GET /posts/ pages 12 at a time, filters by category, hides drafts", async () => {

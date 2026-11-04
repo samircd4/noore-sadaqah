@@ -1,0 +1,33 @@
+[
+  {
+    "_note": "SAMPLE reports (CONTENT.md §15 is TODO). Every file is the placeholder PDF in public/samples/.",
+    "id": 1, "kind": "registration", "year": null,
+    "title": { "bn": "নিবন্ধন সনদ (নমুনা)", "en": "Registration certificate (sample)" },
+    "file_url": "/samples/sample-document.pdf", "published_at": "2021-03-20"
+  },
+  {
+    "id": 2, "kind": "annual", "year": 2024,
+    "title": { "bn": "বার্ষিক প্রতিবেদন ২০২৪ (নমুনা)", "en": "Annual report 2024 (sample)" },
+    "file_url": "/samples/sample-document.pdf", "published_at": "2025-02-15"
+  },
+  {
+    "id": 3, "kind": "audit", "year": 2024,
+    "title": { "bn": "নিরীক্ষা প্রতিবেদন ২০২৪ (নমুনা)", "en": "Audit report 2024 (sample)" },
+    "file_url": "/samples/sample-document.pdf", "published_at": "2025-04-10"
+  },
+  {
+    "id": 4, "kind": "annual", "year": 2025,
+    "title": { "bn": "বার্ষিক প্রতিবেদন ২০২৫ (নমুনা)", "en": "Annual report 2025 (sample)" },
+    "file_url": "/samples/sample-document.pdf", "published_at": "2026-02-12"
+  },
+  {
+    "id": 5, "kind": "audit", "year": 2025,
+    "title": { "bn": "নিরীক্ষা প্রতিবেদন ২০২৫ (নমুনা)", "en": "Audit report 2025 (sample)" },
+    "file_url": "/samples/sample-document.pdf", "published_at": "2026-04-05"
+  },
+  {
+    "id": 6, "kind": "other", "year": 2025,
+    "title": { "bn": "রমযান খাদ্য বিতরণের হিসাব ২০২৫ (নমুনা)", "en": "Ramadan food distribution accounts 2025 (sample)" },
+    "file_url": "/samples/sample-document.pdf", "published_at": "2025-05-20"
+  }
+]
