@@ -190,6 +190,7 @@ Only these values (variables in `design/tokens.css`; use `z-(--z-header)` etc. i
 | Gallery mosaic, large tile | `(min-width: 768px) 50vw, 100vw` | |
 | Gallery mosaic, small tile / gallery grid | `(min-width: 768px) 25vw, 50vw` | |
 | About collage | `(min-width: 1024px) 40vw, 100vw` | |
+| Program gallery strip (`/programs/[slug]`) | `(min-width: 1024px) 22vw, (min-width: 640px) 40vw, 75vw` | Phones show one photo and the edge of the next (§15) |
 | Person card | `(min-width: 1024px) 25vw, 50vw` | |
 | Lightbox | `100vw` | Load the full image only when opened |
 

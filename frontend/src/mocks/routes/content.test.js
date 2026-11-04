@@ -52,6 +52,47 @@ describe("content endpoints (docs/API.md shapes)", () => {
     );
   });
 
+  it("GET /programs/ (no filter) returns a plain array in sort_order, list fields only", async () => {
+    const res = await get("/programs/");
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.map((p) => p.slug)).toEqual(["food", "education", "water", "health", "trees", "mosque"]);
+    expect(Object.keys(res.body[0]).sort()).toEqual(["badge", "cover", "fund", "slug", "summary", "title"]);
+  });
+
+  it("GET /programs/{slug}/ returns the API.md detail shape in both languages", async () => {
+    const bn = await get("/programs/education/");
+    expect(bn.status).toBe(200);
+    expect(hasPrivateKeys(bn.body)).toBe(false);
+    expect(hasUnresolvedText(bn.body)).toBe(false);
+    expect(Object.keys(bn.body).sort()).toEqual(
+      [
+        "area", "badge", "beneficiary", "body_html", "cover", "duration", "faq", "fund", "goals", "images",
+        "impact", "related", "slug", "summary", "title",
+      ].sort(),
+    );
+    expect(bn.body.body_html).toMatch(/^<p>/);
+    expect(bn.body.goals.every((g) => typeof g === "string")).toBe(true);
+    expect(bn.body.faq[0]).toEqual({ q: expect.any(String), a: expect.any(String) });
+    expect(bn.body.impact[0]).toEqual({ year: expect.any(Number), metric: expect.any(String), value: expect.any(Number) });
+    expect(bn.body.images[0]).toEqual(expect.objectContaining({ url: expect.any(String), alt: expect.any(String) }));
+    expect(bn.body.fund).toEqual({ slug: "orphan", title: "এতিম সহায়তা", preset_amounts: [500, 1000, 2000] });
+
+    const en = await get("/programs/education/", {}, "en");
+    expect(en.body.title).toBe("Orphan care and education");
+    expect(en.body.fund.title).toBe("Orphan support");
+  });
+
+  it("GET /programs/{slug}/ lists 3 related programs, never itself", async () => {
+    const { body } = await get("/programs/food/");
+    expect(body.related).toHaveLength(3);
+    expect(body.related.map((p) => p.slug)).not.toContain("food");
+    expect(body.related[0]).not.toHaveProperty("body_html");
+  });
+
+  it("GET /programs/{slug}/ is 404 notFound for an unknown slug", async () => {
+    expect(await get("/programs/nope/")).toEqual({ status: 404, body: { error: { code: "notFound" } } });
+  });
+
   it("GET /campaigns/ computes raised, percent and donors, never personal data", async () => {
     resetStore();
     const [campaign] = (await get("/campaigns/", { featured: "1" })).body;

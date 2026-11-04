@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bnDate, bnNumber, shortNumber, taka, toLatinDigits } from "./format";
+import { bnDate, bnDigits, bnNumber, shortNumber, taka, toLatinDigits } from "./format";
 
 describe("bnNumber", () => {
   it("uses Bengali digits and lakh grouping", () => {
@@ -72,5 +72,13 @@ describe("toLatinDigits", () => {
     expect(toLatinDigits("")).toBe("");
     expect(toLatinDigits(null)).toBe("");
     expect(toLatinDigits(undefined)).toBe("");
+  });
+});
+
+describe("bnDigits", () => {
+  it("converts digits without grouping (years, ids)", () => {
+    expect(bnDigits(2026)).toBe("২০২৬");
+    expect(bnDigits(2026, "en")).toBe("2026");
+    expect(bnDigits("NS-0042")).toBe("NS-০০৪২");
   });
 });

@@ -91,6 +91,29 @@ route("GET", "/programs/", ({ query, locale }) => {
   return ok(list.map((p) => programOut(p, locale)));
 });
 
+route("GET", "/programs/:slug/", ({ params, locale }) => {
+  const all = [...programsFixture].sort(bySort);
+  const p = all.find((x) => x.slug === params.slug);
+  if (!p) return errors.notFound();
+
+  const f = fundsFixture.find((x) => x.slug === p.fund);
+  const detail = {
+    ...programOut(p, locale),
+    body_html: toHtml(localize(p.body, locale)),
+    goals: p.goals ?? [],
+    beneficiary: p.beneficiary ?? "",
+    area: p.area ?? "",
+    duration: p.duration ?? "",
+    faq: p.faq ?? [],
+    impact: p.impact ?? [],
+    images: p.images ?? [],
+    // The detail's fund adds preset_amounts for the sidebar donate box (API.md); null when no fund is linked.
+    fund: f ? { slug: f.slug, title: f.title, preset_amounts: f.preset_amounts } : null,
+    related: all.filter((x) => x.slug !== p.slug).slice(0, 3).map((x) => programOut(x, locale)),
+  };
+  return ok(clean(localize(detail, locale)));
+});
+
 // --- /campaigns/ --------------------------------------------------------------------------------------
 function campaignOut(c, locale, store) {
   const paid = [...store.donations.values()].filter((d) => d.campaign === c.slug && d.status === "paid");

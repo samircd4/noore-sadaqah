@@ -32,6 +32,16 @@ export function bnNumber(value, locale = "bn") {
 }
 
 /**
+ * Digits only, no grouping, for years and identifiers: bn → "২০২৬", en → "2026".
+ * @param {number | string} value
+ * @param {string} [locale="bn"]
+ */
+export function bnDigits(value, locale = "bn") {
+  const s = String(value);
+  return pick(locale) === "en" ? s : s.replace(/[0-9]/g, (d) => BENGALI_DIGITS[Number(d)]);
+}
+
+/**
  * Amount in taka with the sign in front: bn → "৳১,০০০", en → "৳1,000".
  * @param {number} amount integer taka
  * @param {string} [locale="bn"]
