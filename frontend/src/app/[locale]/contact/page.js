@@ -7,7 +7,7 @@ import Accordion from "@/components/ui/Accordion";
 import { apiGet } from "@/lib/api";
 import { currentLocale } from "@/lib/locale";
 import { pageMetadata } from "@/lib/seo";
-import { normalizeBdMobile } from "@/lib/validation/common";
+import { telDigits, whatsappDigits } from "@/lib/phone";
 
 /**
  * /contact (PAGES.md): contact details and the form (→ POST /contact/), then a tap-to-load map and the FAQ.
@@ -20,23 +20,6 @@ export async function generateMetadata() {
   return pageMetadata({ path: "/contact", locale, title: t("title"), description: t("metaDescription") });
 }
 
-/** Digits for tel: / wa.me, or null while the number is still a placeholder ("+880 1XXX-XXXXXX"). */
-function dialable(number) {
-  const digits = String(number ?? "").replace(/[^\d+]/g, "");
-  return digits.replace(/\D/g, "").length >= 11 ? digits : null;
-}
-
-/**
- * Digits for a wa.me link, which needs the country code: a BD mobile in any form (01…, +880…, Bengali digits)
- * becomes 8801XXXXXXXXX; another number must already start with "+". Otherwise null (no link).
- */
-function whatsappDigits(number) {
-  const mobile = normalizeBdMobile(number);
-  if (mobile) return `88${mobile}`;
-  const digits = dialable(number);
-  return digits?.startsWith("+") ? digits.replace(/\D/g, "") : null;
-}
-
 export default async function ContactPage() {
   const locale = await currentLocale();
   const [t, tFooter, site] = await Promise.all([
@@ -45,7 +28,7 @@ export default async function ContactPage() {
     apiGet("/site/", { locale, tags: ["site"] }),
   ]);
   const c = site.contact;
-  const phone = dialable(c.phone);
+  const phone = telDigits(c.phone);
   const whatsapp = whatsappDigits(c.whatsapp);
   const social = ["facebook", "youtube", "instagram", "linkedin"].filter((k) => site.social?.[k]);
 

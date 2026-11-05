@@ -2,9 +2,10 @@
 
 import { HandHeart, Menu, Phone, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef } from "react";
+import { useModalDialog } from "@/components/ui/useModalDialog";
 import { Link } from "@/i18n/navigation";
 import { DONATE_HREF, MAIN_NAV } from "@/lib/nav";
+import { telDigits } from "@/lib/phone";
 import LanguageSwitch from "./LanguageSwitch";
 
 /**
@@ -15,21 +16,8 @@ import LanguageSwitch from "./LanguageSwitch";
  */
 export default function MobileMenu({ phone }) {
   const t = useTranslations("nav");
-  const dialogRef = useRef(/** @type {HTMLDialogElement | null} */ (null));
-
-  const open = () => {
-    dialogRef.current?.showModal();
-    document.body.dataset.overlay = "open";
-  };
-  const close = () => dialogRef.current?.close();
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return undefined;
-    const onClose = () => delete document.body.dataset.overlay;
-    dialog.addEventListener("close", onClose);
-    return () => dialog.removeEventListener("close", onClose);
-  }, []);
+  const { ref: dialogRef, open, close } = useModalDialog();
+  const tel = telDigits(phone);
 
   return (
     <>
@@ -89,8 +77,8 @@ export default function MobileMenu({ phone }) {
             <HandHeart aria-hidden="true" className="size-5" />
             {t("donate")}
           </Link>
-          {phone && (
-            <a href={`tel:${phone.replace(/[^+\d]/g, "")}`} className="flex min-h-11 items-center gap-2 text-sand-200 hover:text-gold-400">
+          {phone && tel && (
+            <a href={`tel:${tel}`} className="flex min-h-11 items-center gap-2 text-sand-200 hover:text-gold-400">
               <Phone aria-hidden="true" className="size-4" />
               <span dir="ltr">{phone}</span>
             </a>

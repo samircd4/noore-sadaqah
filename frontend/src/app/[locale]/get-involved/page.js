@@ -32,13 +32,19 @@ export async function generateMetadata() {
   return pageMetadata({ path: "/get-involved", locale, title: t("title"), description: t("metaDescription") });
 }
 
-/** The orphan fund, or null if it doesn't exist (404). Any other API error goes to the error page. */
+/**
+ * The orphan fund, or null. A 404 means the fund doesn't exist. Any other failure (API down, 5xx) is logged and also
+ * gives null: the monthly panel then shows its text and button without amounts, and the volunteer form and careers
+ * tab, which don't need the fund, keep working. The log has the path and status only (no donor data, rule 13).
+ */
 async function monthlyFund(locale) {
   try {
     return await apiGet(`/funds/${MONTHLY_FUND}/`, { locale, tags: ["funds"] });
   } catch (error) {
-    if (error instanceof ApiError && error.status === 404) return null;
-    throw error;
+    if (!(error instanceof ApiError && error.status === 404)) {
+      console.error(`[get-involved] GET /funds/${MONTHLY_FUND}/ failed:`, error instanceof ApiError ? error.status : error);
+    }
+    return null;
   }
 }
 

@@ -2,7 +2,8 @@
 
 import { Play, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { useModalDialog } from "@/components/ui/useModalDialog";
 
 /**
  * "ভিডিও দেখুন" button with a modal player (HOME_PAGE.md fix 8). The YouTube iframe only exists while
@@ -11,30 +12,13 @@ import { useEffect, useRef, useState } from "react";
  */
 export default function VideoButton({ youtubeId, label }) {
   const t = useTranslations();
-  const dialogRef = useRef(/** @type {HTMLDialogElement | null} */ (null));
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return undefined;
-    const onClose = () => {
-      setOpen(false);
-      delete document.body.dataset.overlay;
-    };
-    dialog.addEventListener("close", onClose);
-    return () => {
-      dialog.removeEventListener("close", onClose);
-      // Leaving the page with the player open (back gesture): Next may keep the page hidden for back/forward, and a
-      // hidden open modal would make the next page inert. Close it and drop the iframe (stops the video).
-      if (dialog.open) dialog.close();
-      onClose();
-    };
-  }, []);
+  // The iframe exists only while open, so closing (or leaving the page) stops the video.
+  const { ref: dialogRef, open: openDialog, close } = useModalDialog(() => setOpen(false));
 
   const show = () => {
     setOpen(true);
-    dialogRef.current?.showModal();
-    document.body.dataset.overlay = "open";
+    openDialog();
   };
 
   return (
@@ -52,14 +36,14 @@ export default function VideoButton({ youtubeId, label }) {
       <dialog
         ref={dialogRef}
         aria-label={t("video.title")}
-        onClick={(event) => event.target === dialogRef.current && dialogRef.current?.close()}
+        onClick={(event) => event.target === dialogRef.current && close()}
         className="w-[calc(100%-2rem)] max-w-4xl rounded-lg bg-em-950 p-0 text-white backdrop:bg-em-950/80"
       >
         <div className="flex items-center justify-between gap-4 px-4 py-2">
           <p className="font-head font-bold">{t("video.title")}</p>
           <button
             type="button"
-            onClick={() => dialogRef.current?.close()}
+            onClick={close}
             aria-label={t("common.close")}
             className="grid size-11 place-items-center rounded-lg bg-white/10 hover:bg-white/20"
           >

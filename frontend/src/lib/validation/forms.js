@@ -12,7 +12,8 @@ export const subscriberSchema = z.object({
 });
 
 /** The same email rule as `emailField` (z.email), for fields where an email is optional or one of two choices. */
-const isEmail = (value) => z.email().safeParse(value).success;
+const emailSchema = z.email();
+const isEmail = (value) => emailSchema.safeParse(value).success;
 
 /** A BD mobile (normalised to 01XXXXXXXXX) or an email (lower-cased), else `contactInvalid`. */
 const phoneOrEmailField = requiredText(120).transform((value, ctx) => {

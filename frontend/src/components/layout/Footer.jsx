@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { bnDigits } from "@/lib/format";
 import { DONATE_HREF } from "@/lib/nav";
+import { telDigits } from "@/lib/phone";
 import { currentYear } from "@/lib/time";
 import Logo from "./Logo";
 import NewsletterForm from "./NewsletterForm";
@@ -97,11 +98,19 @@ export default async function Footer({ site, locale }) {
             )}
             {contact.phone && (
               <li>
-                <a href={`tel:${contact.phone.replace(/[^+\d]/g, "")}`} className={`${linkClass} gap-2`}>
-                  <Phone aria-hidden="true" className="size-4 shrink-0 text-gold-400" />
-                  <span className="sr-only">{t("phone")}: </span>
-                  <span dir="ltr">{contact.phone}</span>
-                </a>
+                {telDigits(contact.phone) ? (
+                  <a href={`tel:${telDigits(contact.phone)}`} className={`${linkClass} gap-2`}>
+                    <Phone aria-hidden="true" className="size-4 shrink-0 text-gold-400" />
+                    <span className="sr-only">{t("phone")}: </span>
+                    <span dir="ltr">{contact.phone}</span>
+                  </a>
+                ) : (
+                  <span className="inline-flex min-h-11 items-center gap-2">
+                    <Phone aria-hidden="true" className="size-4 shrink-0 text-gold-400" />
+                    <span className="sr-only">{t("phone")}: </span>
+                    <span dir="ltr">{contact.phone}</span>
+                  </span>
+                )}
               </li>
             )}
             {contact.email && (
