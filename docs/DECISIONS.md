@@ -129,6 +129,17 @@ Partial Prefetching. Public content is cached with `"use cache"` + `cacheTag`; t
 **Consequences:** `src/lib/api.js` has two functions, `apiGet()` (cached, no request headers) and `apiRequest()`
 (uncached). Next.js must run with `HOSTNAME=localhost` in production (DEPLOYMENT.md).
 
+
+## D16. Every URL carries its language: `/bn/...` and `/en/...` (2026-11-05, Decided)
+
+**Decision:** next-intl `localePrefix: "always"`. Bengali pages live under `/bn/...`; `/` and any unprefixed URL
+(old links, typed addresses) redirect to the Bengali page. Still no redirect by browser language (`localeDetection: false`).
+**Why:** with `"as-needed"` (Bengali without a prefix) Next.js 16 link prefetching took one-part URLs such as
+`/about` for the home route with `locale = "about"` and got 404s (about 6 per page view, F2 QA). Changing URLs costs
+nothing before launch.
+**Consequences:** `localizedPath()` (SEO) returns `/bn/...`; canonical and `x-default` point to `/bn/...`. Django
+redirects donors back to `/{locale}/donate/...` (API.md "Payments"). Links built with next-intl's `<Link>` need no change.
+
 ---
 
 ## Open decisions (foundation must answer; don't guess)

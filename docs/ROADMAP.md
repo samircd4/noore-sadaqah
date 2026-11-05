@@ -37,11 +37,11 @@ These take weeks. The site can't launch without them.
 
 - [ ] `git init`, root `.gitignore`, private remote; docs and design at the root
 - [ ] `frontend/`: Next.js 16, JavaScript, App Router, Tailwind v4 with `design/tokens.css`, `src/`, `@/*` alias,
-      next-intl (`bn` default, `localePrefix: "as-needed"`), `src/proxy.js`, ESLint, Vitest
+      next-intl (`bn` default, `localePrefix: "always"` since D16), `src/proxy.js`, ESLint, Vitest
 - [ ] `src/lib/api.js` with the three API modes, `src/mocks/` skeleton, `src/lib/format.js` (+ tests)
 - [ ] CI skeleton: lint, Vitest, build, i18n check, palette grep
 
-> **Prompt:** "Set up `frontend/` as described in `docs/ARCHITECTURE.md` and `frontend/CLAUDE.md`: Next.js 16 in JavaScript (no TypeScript) with App Router, Tailwind v4, `src/` and the `@/*` alias. Wire `design/tokens.css` into `src/app/globals.css`; load Noto Sans Bengali and Noto Serif Bengali with next/font as `--font-sans` and `--font-head`; set up next-intl with `bn` default and `localePrefix: 'as-needed'` and `src/proxy.js`. Add the root `viewport` export and use the z-index tokens from `tokens.css` as described in `docs/RESPONSIVE.md` §10–11. Create `src/lib/api.js` with `API_MODE=mock|static|live` exactly as ARCHITECTURE.md 'API modes' describes, an empty `src/mocks/` (fixtures, handlers, store), and `src/lib/format.js` with Vitest tests. Add `frontend/.env.example`, a root `.gitignore`, and a GitHub Actions job for lint, test and build. No pages yet."
+> **Prompt:** "Set up `frontend/` as described in `docs/ARCHITECTURE.md` and `frontend/CLAUDE.md`: Next.js 16 in JavaScript (no TypeScript) with App Router, Tailwind v4, `src/` and the `@/*` alias. Wire `design/tokens.css` into `src/app/globals.css`; load Noto Sans Bengali and Noto Serif Bengali with next/font as `--font-sans` and `--font-head`; set up next-intl with `bn` default and `localePrefix: 'always'` and `src/proxy.js`. Add the root `viewport` export and use the z-index tokens from `tokens.css` as described in `docs/RESPONSIVE.md` §10–11. Create `src/lib/api.js` with `API_MODE=mock|static|live` exactly as ARCHITECTURE.md 'API modes' describes, an empty `src/mocks/` (fixtures, handlers, store), and `src/lib/format.js` with Vitest tests. Add `frontend/.env.example`, a root `.gitignore`, and a GitHub Actions job for lint, test and build. No pages yet."
 
 ### F1: Home page
 
