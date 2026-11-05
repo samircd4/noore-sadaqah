@@ -18,7 +18,9 @@ export default async function Header({ phone }) {
     <header className="fixed inset-x-0 top-0 z-(--z-header) bg-em-900/90 backdrop-blur-md [view-transition-name:site-header]">
       {/* At lg (1024–1279) the nav is a little tighter than the design so everything fits; design sizes from xl. */}
       <div className="flex h-16 w-full items-center gap-3 px-4 sm:h-20 sm:px-6 lg:px-4 xl:px-6">
-        <Link href="/" aria-label={t("homeLink")} className="shrink-0 rounded-lg">
+        {/* min-w-0 + overflow-hidden: with a very large browser text size the name is cut off rather than pushing
+            the menu button off screen (QA §1). At normal sizes it always fits. */}
+        <Link href="/" aria-label={t("homeLink")} className="min-w-0 overflow-hidden rounded-lg">
           <Logo />
         </Link>
 
@@ -28,7 +30,7 @@ export default async function Header({ phone }) {
             <Link
               key={item.key}
               href={item.href}
-              className="flex h-10 items-center rounded-lg px-2.5 leading-none whitespace-nowrap text-white hover:bg-white/15 xl:px-4"
+              className="flex h-11 items-center rounded-lg px-2.5 leading-none whitespace-nowrap text-white hover:bg-white/15 xl:px-4"
             >
               {t(item.key)}
             </Link>

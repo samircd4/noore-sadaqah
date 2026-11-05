@@ -22,7 +22,7 @@ export default function MonthlyOptions({ options, highlighted = null, locale, pe
   return (
     <ul
       aria-label={listLabel}
-      className={linked ? "grid grid-cols-1 gap-2 min-[360px]:grid-cols-3" : "grid grid-cols-3 gap-2 min-[360px]:gap-3 sm:gap-4"}
+      className={linked ? "grid grid-cols-1 gap-2 min-[22.5rem]:grid-cols-3" : "grid grid-cols-3 gap-2 min-[22.5rem]:gap-3 sm:gap-4"}
     >
       {options.map((option) => {
         const isHighlighted = option === highlighted;
@@ -32,7 +32,7 @@ export default function MonthlyOptions({ options, highlighted = null, locale, pe
         const content = (
           <>
             <span className="block font-head text-2xl font-bold sm:text-3xl">{bnNumber(option, locale)}</span>
-            <span className={`block text-xs leading-5 ${linked ? "min-[360px]:mt-1" : "mt-1"} ${isHighlighted ? "" : "text-sand-100/80"}`}>{perMonthLabel}</span>
+            <span className={`block text-xs leading-5 ${linked ? "min-[22.5rem]:mt-1" : "mt-1"} ${isHighlighted ? "" : "text-sand-100/80"}`}>{perMonthLabel}</span>
           </>
         );
 
@@ -48,7 +48,7 @@ export default function MonthlyOptions({ options, highlighted = null, locale, pe
             <Link
               href={hrefFor(option)}
               aria-label={ariaFor?.(option)}
-              className={`flex min-h-11 items-center justify-between gap-3 rounded-lg px-4 py-2 transition hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0 min-[360px]:block min-[360px]:p-3 min-[360px]:text-center ${tone} ${isHighlighted ? "hover:bg-gold-400" : "hover:border-gold-400"}`}
+              className={`flex min-h-11 items-center justify-between gap-3 rounded-lg px-4 py-2 transition hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0 min-[22.5rem]:block min-[22.5rem]:p-3 min-[22.5rem]:text-center ${tone} ${isHighlighted ? "hover:bg-gold-400" : "hover:border-gold-400"}`}
             >
               {content}
             </Link>

@@ -16,7 +16,7 @@ export default function ErrorPage({ reset }) {
     <section role="alert" aria-labelledby="error-title" className="bg-sand-50 px-4 pt-32 pb-20 text-center sm:pt-40 sm:pb-28">
       <div className="mx-auto max-w-xl">
         <TriangleAlert aria-hidden="true" className="mx-auto size-16 text-gold-600" strokeWidth={1.5} />
-        <h1 id="error-title" className="mt-4 font-head text-[1.75rem] leading-snug font-bold text-em-900 min-[360px]:text-3xl sm:text-4xl">
+        <h1 id="error-title" className="mt-4 font-head text-[1.75rem] leading-snug font-bold text-em-900 min-[22.5rem]:text-3xl sm:text-4xl">
           {t("title")}
         </h1>
         <p className="mt-4 text-base leading-relaxed text-em-900/80 sm:text-lg">{t("text")}</p>

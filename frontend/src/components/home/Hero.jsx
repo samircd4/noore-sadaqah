@@ -30,7 +30,7 @@ export default async function Hero({ image, youtubeId }) {
 
         <h1
           id="hero-title"
-          className="mt-6 font-head text-[2rem] font-extrabold leading-[1.3] min-[360px]:text-4xl sm:text-5xl lg:text-6xl xl:text-7xl"
+          className="mt-6 font-head text-[2rem] font-extrabold leading-[1.3] min-[22.5rem]:text-4xl sm:text-5xl lg:text-6xl xl:text-7xl"
         >
           {t.rich("title", {
             highlight: (chunks) => <span className="text-gold-400">{chunks}</span>,
@@ -40,7 +40,7 @@ export default async function Hero({ image, youtubeId }) {
 
         <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-sand-100/90 sm:text-xl">{t("subtitle")}</p>
 
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
+        <div className="mt-4 mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
           <Button href={DONATE_HREF} size="lg" blockOnPhone className="shadow-xl shadow-gold-500/25">
             <HandHeart aria-hidden="true" className="size-5" />
             {t("donateNow")}

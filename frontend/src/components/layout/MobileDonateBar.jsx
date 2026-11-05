@@ -25,13 +25,19 @@ export default function MobileDonateBar() {
     const targets = document.querySelectorAll("[data-hides-donate-bar]");
     if (targets.length === 0) return undefined;
     const visible = new Set();
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) visible.add(entry.target);
-        else visible.delete(entry.target);
-      }
-      setBlockedBySection(visible.size > 0);
-    });
+    // rootMargin: a section counts as "on screen" from 64px below the viewport (bar height 56px + a little), so the
+    // bar is already gone when the last lines above the footer reach the bottom and never covers them (RESPONSIVE.md
+    // §9), without padding <main> and leaving an empty strip above the footer.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) visible.add(entry.target);
+          else visible.delete(entry.target);
+        }
+        setBlockedBySection(visible.size > 0);
+      },
+      { rootMargin: "0px 0px 64px 0px" },
+    );
     targets.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, [pathname]);

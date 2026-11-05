@@ -90,6 +90,8 @@ These take weeks. The site can't launch without them.
 - [ ] Playwright e2e flows from TESTING.md against `API_MODE=mock`, at 320, 375, 768 and 1440 px, plus axe
 - [ ] Real-device pass (RESPONSIVE.md §17) and the mobile performance budgets (§12)
 - [ ] Lighthouse targets · QA §1, §11
+- [ ] JS budget (RESPONSIVE.md §12, 150 KB gzipped per page): F2 QA measured ~200 KB, almost all React + Next.js
+      runtime. Trim what we own (icons, next-intl client messages) and decide whether the budget needs to change.
 
 ### Optional: pre-launch site (if a gateway asks for a live site)
 

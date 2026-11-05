@@ -5,19 +5,12 @@
 
 import { z } from "zod";
 import { toLatinDigits } from "@/lib/format";
+import { normalizeBdMobile } from "@/lib/phone";
+
+// Lives in lib/phone.js so client code (the mobile menu's phone link) can use it without loading Zod.
+export { normalizeBdMobile };
 
 export const MAX_AMOUNT = 10_000_000;
-
-/**
- * Normalises a Bangladeshi mobile number to 01XXXXXXXXX, or returns null if it isn't one.
- * Accepts Bengali digits, spaces, dashes and the +880 / 880 prefix.
- * @param {unknown} input
- */
-export function normalizeBdMobile(input) {
-  const s = toLatinDigits(String(input ?? "")).replace(/[\s\-().]/g, "");
-  const match = s.match(/^(?:\+?88)?(01[3-9]\d{8})$/);
-  return match ? match[1] : null;
-}
 
 /**
  * Parses a whole-taka amount typed by a person ("১,০০০", "500"), or returns null if it isn't a whole number.

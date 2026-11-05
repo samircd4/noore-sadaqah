@@ -35,7 +35,7 @@ export default function PageHero({ title, eyebrow, subtitle, image = null, bread
         )}
         <h1
           id="page-title"
-          className={`${eyebrow ? "mt-2" : badge ? "mt-3" : "mt-6"} max-w-4xl font-head text-[1.75rem] leading-snug font-bold min-[360px]:text-3xl sm:text-4xl lg:text-5xl`}
+          className={`${eyebrow ? "mt-2" : badge ? "mt-3" : "mt-6"} max-w-4xl font-head text-[1.75rem] leading-snug font-bold min-[22.5rem]:text-3xl sm:text-4xl lg:text-5xl`}
         >
           {title}
         </h1>

@@ -40,10 +40,10 @@ Nothing marked 🟡 or ❌ may go live. The foundation must fill in and confirm 
 
 | Field | Value | Status |
 |---|---|---|
-| Office address (Bengali) | TODO (the design says "ঢাকা, বাংলাদেশ") | 🟡 |
-| Office address (English) | TODO | ❌ |
-| Google Maps link / embed | TODO | ❌ |
-| Phone | TODO (the design has +880 1XXX-XXXXXX) | 🟡 |
+| Office address (Bengali) | গাজীপুর, ঢাকা, বাংলাদেশ (provided 2026-11-05) | ✅ |
+| Office address (English) | Gazipur, Dhaka, Bangladesh (provided 2026-11-05) | ✅ |
+| Google Maps link / embed | TODO: exact office location (the sample map searches "Gazipur, Dhaka, Bangladesh") | 🟡 |
+| Phone | +8801781355377 (provided 2026-11-05; also used for the phone links in the footer, menu and /contact) | ✅ |
 | WhatsApp | TODO | ❌ |
 | Email | info@nooresadaqah.org (confirm the mailbox exists) | 🟡 |
 | Office hours | TODO | ❌ |
@@ -75,7 +75,10 @@ Nothing marked 🟡 or ❌ may go live. The foundation must fill in and confirm 
 | Nagad | TODO | must be merchant | ❌ |
 | Rocket | TODO | | ❌ |
 
-The footer lists **bKash · Nagad · Rocket · Visa · Mastercard**. Only show the methods that really work at launch.
+The footer shows logos for every method the live gateways carry: bKash, Nagad, Rocket, upay, tap, Visa, Mastercard,
+American Express, DBBL Nexus, UnionPay (`frontend/src/lib/payment-methods.js`; the files are placeholders until the
+official logos are added, see `frontend/public/payments/README.md`). Only show the methods that really work at launch:
+confirm the list with the SSLCommerz account.
 
 ### Payment gateway accounts
 

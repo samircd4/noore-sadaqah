@@ -99,8 +99,8 @@ async function GalleryList({ searchParams, locale, categories }) {
             keep={{ kind: kind || undefined }}
           />
         </div>
-        <nav aria-label={t("kindLabel")} className="shrink-0">
-          <ul className="inline-flex rounded-lg border border-sand-300 bg-white p-1">
+        <nav aria-label={t("kindLabel")} className="max-w-full shrink-0">
+          <ul className="inline-flex max-w-full flex-wrap rounded-lg border border-sand-300 bg-white p-1">
             {[
               { key: "", label: t("kindAll") },
               { key: "photo", label: t("kindPhoto") },

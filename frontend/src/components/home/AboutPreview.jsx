@@ -17,9 +17,9 @@ export default async function AboutPreview({ mainImage, smallImage }) {
   return (
     <section id="about" aria-labelledby="about-title" className="py-12 lg:py-16">
       <div className="mx-auto grid max-w-7xl items-center gap-14 px-4 lg:grid-cols-12 lg:gap-10">
-        <AboutCollage mainImage={mainImage} smallImage={smallImage} className="mb-4 lg:col-span-5 lg:mb-0" />
+        <AboutCollage mainImage={mainImage} smallImage={smallImage} className="mb-4 min-w-0 lg:col-span-5 lg:mb-0" />
 
-        <div className="lg:col-span-7">
+        <div className="min-w-0 lg:col-span-7">
           <SectionHeader id="about-title" eyebrow={t("eyebrow")} title={t("title")} align="left" />
           <p className="mt-4 text-lg leading-relaxed text-em-900/80">{t("body")}</p>
 

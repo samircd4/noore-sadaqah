@@ -13,7 +13,7 @@ export default async function AboutCollage({ mainImage, smallImage, className = 
       <div className="relative aspect-[4/5] overflow-hidden rounded-lg shadow-2xl">
         <Image src={mainImage.url} alt={mainImage.alt} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
       </div>
-      <div className="absolute right-2 -bottom-6 aspect-square w-36 overflow-hidden rounded-lg border-8 border-sand-50 shadow-xl min-[360px]:w-44 sm:-right-3 sm:w-56">
+      <div className="absolute right-2 -bottom-6 aspect-square w-36 overflow-hidden rounded-lg border-8 border-sand-50 shadow-xl min-[22.5rem]:w-44 sm:-right-3 sm:w-56">
         <Image src={smallImage.url} alt={smallImage.alt} fill sizes="(min-width: 640px) 224px, 176px" className="object-cover" />
       </div>
       <div className="absolute top-6 left-2 rounded-lg bg-gold-500 px-5 py-4 text-em-950 shadow-xl sm:-left-3">
