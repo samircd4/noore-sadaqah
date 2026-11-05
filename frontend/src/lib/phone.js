@@ -1,10 +1,21 @@
 /**
- * Links for the foundation's phone numbers from GET /site/ (contact page, footer, mobile menu). The admin may type
- * a number in Bengali or Latin digits, with spaces, dashes or the +880 prefix.
+ * Phone numbers: normalising a Bangladeshi mobile, and links for the foundation's numbers from GET /site/ (contact
+ * page, footer, mobile menu). People type numbers in Bengali or Latin digits, with spaces, dashes or the +880 prefix.
+ * No Zod here: the mobile menu (on every page) imports this file, so it must stay small.
  */
 
 import { toLatinDigits } from "@/lib/format";
-import { normalizeBdMobile } from "@/lib/validation/common";
+
+/**
+ * Normalises a Bangladeshi mobile number to 01XXXXXXXXX, or returns null if it isn't one.
+ * Accepts Bengali digits, spaces, dashes and the +880 / 880 prefix.
+ * @param {unknown} input
+ */
+export function normalizeBdMobile(input) {
+  const s = toLatinDigits(String(input ?? "")).replace(/[\s\-().]/g, "");
+  const match = s.match(/^(?:\+?88)?(01[3-9]\d{8})$/);
+  return match ? match[1] : null;
+}
 
 /**
  * The number for a tel: link (digits and a leading "+"), or null while it is still a placeholder

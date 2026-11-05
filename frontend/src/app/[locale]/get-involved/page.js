@@ -137,12 +137,12 @@ function MonthlyPanel({ fund, locale, t }) {
         <h3 className="mt-3 font-head text-xl font-bold">{t("monthlyAmounts")}</h3>
         {fund && <p className="mt-1 text-sm text-sand-200">{t("monthlyFund", { fund: fund.title })}</p>}
         {amounts.length > 0 && (
-          <ul className="mt-4 grid grid-cols-1 gap-2 min-[360px]:grid-cols-3">
+          <ul className="mt-4 grid grid-cols-1 gap-2 min-[22.5rem]:grid-cols-3">
             {amounts.map((amount) => (
               <li key={amount}>
                 <Link
                   href={fundDonateHref(MONTHLY_FUND, { amount, monthly: true })}
-                  className="flex min-h-11 items-center justify-between gap-2 rounded-lg border border-white/20 bg-white/10 px-4 py-2 font-bold transition hover:border-gold-400 motion-reduce:transition-none min-[360px]:block min-[360px]:p-3 min-[360px]:text-center"
+                  className="flex min-h-11 items-center justify-between gap-2 rounded-lg border border-white/20 bg-white/10 px-4 py-2 font-bold transition hover:border-gold-400 motion-reduce:transition-none min-[22.5rem]:block min-[22.5rem]:p-3 min-[22.5rem]:text-center"
                 >
                   <span className="block font-head text-xl">{taka(amount, locale)}</span>
                   <span className="block text-xs font-normal text-sand-100/80">{t("perMonth")}</span>

@@ -97,6 +97,9 @@ All 17 fixes are applied. These visual details also differ from `home.html`, eac
 | Fund list in quick-donate | Fitra hidden while `zakat_enabled` is false | The fitra form needs ZAKAT_POLICY.md sign-off |
 | Program cards (F2, owner request) | "বিস্তারিত →" is a gold button-style label (`bg-gold-500 text-em-950`) in the bottom-right corner, always visible; the whole card stays one link | The design showed it only on hover, which phones can't do (RESPONSIVE.md §6: no hover-only content) |
 | News cards (F2, owner request) | The whole card is clickable (pointer cursor, hover lift) through the "পড়ুন" link's stretched `::after`; still one link per card | Matches the program cards; a bigger tap target on phones |
+| Footer, ways to give (F2, owner request) | Ten payment logos on white tiles, two rows of five filling the column, under a "দানের মাধ্যম" label, instead of the "bKash · Nagad · Rocket · Visa · Mastercard" text. Which logos show follows `site.payment_methods` (`src/lib/payment-methods.js`) | Easier to recognise than names; files and placeholder note in `frontend/public/payments/README.md` |
+| Header nav at lg, footer links (F2 QA) | Desktop nav links 44px tall (were 40px); footer links at least 44px wide | 44px touch targets (RESPONSIVE.md §18), e.g. an iPad held sideways shows the desktop nav |
+| Header logo link (F2 QA) | Can shrink and clips the name when the browser text size is very large | At 200% text size the name pushed the menu button off screen |
 
 Until phase F3, "দান করুন" links scroll to the quick-donate panel (`DONATE_HREF` in `src/lib/nav.js`), and submitting the
 panel goes to `/donate/checkout`, which doesn't exist yet. The video modal shows "শীঘ্রই" until `promo_video.youtube_id`

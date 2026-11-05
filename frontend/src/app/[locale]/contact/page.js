@@ -32,7 +32,7 @@ export default async function ContactPage() {
   const whatsapp = whatsappDigits(c.whatsapp);
   const social = ["facebook", "youtube", "instagram", "linkedin"].filter((k) => site.social?.[k]);
 
-  const rowLink = "font-semibold break-words text-em-700 underline-offset-4 hover:text-em-500 hover:underline";
+  const rowLink = "max-w-full font-semibold wrap-anywhere text-em-700 underline-offset-4 hover:text-em-500 hover:underline";
   const details = [
     c.address && { Icon: MapPin, label: t("address"), value: <span>{c.address}</span> },
     c.phone && {

@@ -36,17 +36,17 @@
   ],
   "contact": {
     "address": {
-      "bn": "ঢাকা, বাংলাদেশ",
-      "en": "Dhaka, Bangladesh"
+      "bn": "গাজীপুর, ঢাকা, বাংলাদেশ",
+      "en": "Gazipur, Dhaka, Bangladesh"
     },
-    "phone": "+880 1XXX-XXXXXX",
+    "phone": "+8801781355377",
     "whatsapp": "",
     "email": "info@nooresadaqah.org",
     "hours": {
       "bn": "শনি – বৃহস্পতিবার, সকাল ১০টা – বিকেল ৫টা (নমুনা)",
       "en": "Saturday – Thursday, 10 am – 5 pm (sample)"
     },
-    "map_embed_url": "https://www.google.com/maps?q=Dhaka%2C%20Bangladesh&output=embed"
+    "map_embed_url": "https://www.google.com/maps?q=Gazipur%2C%20Dhaka%2C%20Bangladesh&output=embed"
   },
   "social": {
     "facebook": "https://www.facebook.com/",

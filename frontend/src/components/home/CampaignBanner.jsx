@@ -34,7 +34,7 @@ export default async function CampaignBanner({ campaign, locale }) {
           </Badge>
           <h2
             id="campaign-title"
-            className="mt-4 font-head text-[1.75rem] leading-snug font-bold min-[360px]:text-3xl sm:text-4xl lg:text-5xl"
+            className="mt-4 font-head text-[1.75rem] leading-snug font-bold min-[22.5rem]:text-3xl sm:text-4xl lg:text-5xl"
           >
             {campaign.title}
           </h2>

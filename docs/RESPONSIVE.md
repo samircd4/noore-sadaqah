@@ -71,7 +71,9 @@ Tailwind defaults; no custom breakpoints.
 | Hero `h1` | `text-[2rem]` at 320, `text-4xl` from 360 | `sm:text-5xl lg:text-7xl` | Max 4 lines at 320; line-height ≥ 1.3 (the design's `leading-[1.2]` may clip conjuncts: check ক্ষ, ন্ত, র্থ, স্ব and raise to `leading-[1.3]` if they touch) |
 | Buttons | `text-base font-bold` | | Label never wraps to 3 lines; shorten the label instead |
 
-- Use `min-[360px]:` for the 320→360 step (e.g. `text-[2rem] min-[360px]:text-4xl`).
+- Use `min-[22.5rem]:` (360px at the default text size) for the 320→360 step (e.g. `text-[2rem] min-[22.5rem]:text-4xl`).
+  Write custom breakpoints in `rem`, never `px`: like Tailwind's own breakpoints they then follow the browser's text-size
+  setting, so a phone with a very large font gets the narrower layout instead of a sideways scroll (QA §1, 200% text).
 - Never truncate a heading with an ellipsis; summaries may use `line-clamp-3` on cards.
 - Numbers in Bengali digits (`bnNumber`) are wider than Latin ones: test stat numbers and amounts at 320.
 - The English version (`/en`) is usually shorter; always test the Bengali version first.
@@ -136,7 +138,9 @@ Design addition, approved (DECISIONS.md D14). Component `MobileDonateBar` (clien
   the footer is on screen (IntersectionObserver); while the drawer, a modal or the lightbox is open; while the cookie
   banner is showing; while an input has focus (the keyboard is open).
 - Slides in/out (`translate-y`), no layout shift; respects `prefers-reduced-motion`.
-- The layout adds `pb-[calc(56px+env(safe-area-inset-bottom))] lg:pb-0` to `<main>` so the bar never covers content.
+- The bar never covers content: it counts the footer (and the quick-donate panel) as "on screen" from 64px below
+  the viewport (`IntersectionObserver` `rootMargin: "0px 0px 64px 0px"`), so it is already hidden when the last lines
+  above the footer reach the bottom. (No bottom padding on `<main>`: that left an empty strip above the footer.)
 - Tracked as the analytics event `donate_start` source `sticky_bar` (SEO_ANALYTICS.md).
 
 ## 10. Fixed layers (z-index scale)
@@ -232,7 +236,7 @@ Reference: `design/reference/home.html`. "320" means the phone layout (320–639
 
 | Page | Phone layout |
 |---|---|
-| PageHero (all pages) | `py-14`, h1 `text-[1.75rem] min-[360px]:text-3xl`, breadcrumb one line with `truncate` on the last item only |
+| PageHero (all pages) | `py-14`, h1 `text-[1.75rem] min-[22.5rem]:text-3xl`, breadcrumb one line with `truncate` on the last item only |
 | `/about` | Story text then photos; mission/vision cards stacked; board grid 2 columns; registration card full width with full-width download button |
 | `/programs` | 1 column of cards |
 | `/programs/[slug]` | Sidebar (info + donate box) comes **right after the hero summary**, not at the end; not sticky on phones; goals list; gallery strip scrolls sideways (snap) with visible next item; impact table → cards (§13); FAQ accordion full width |

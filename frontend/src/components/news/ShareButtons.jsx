@@ -42,7 +42,7 @@ export default function ShareButtons({ url, title }) {
   return (
     <div className="flex flex-wrap items-center gap-3">
       <span className="font-semibold text-em-900">{t("share")}:</span>
-      <ul className="flex items-center gap-2">
+      <ul className="flex flex-wrap items-center gap-2">
         <li>
           <a
             href={`https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}`}

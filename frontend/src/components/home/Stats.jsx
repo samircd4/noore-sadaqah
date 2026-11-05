@@ -13,7 +13,7 @@ export default async function Stats({ stats, locale, className = "" }) {
       <h2 id="stats-title" className="sr-only">
         {t("heading")}
       </h2>
-      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-4 sm:gap-6 lg:grid-cols-4">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-3 px-4 min-[20rem]:grid-cols-2 sm:gap-6 lg:grid-cols-4">
         {stats.map((stat, i) => (
           <StatCard key={stat.label} value={stat.value} suffix={stat.suffix} label={stat.label} locale={locale} accent={i % 2 === 1} />
         ))}

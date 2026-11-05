@@ -23,7 +23,7 @@ export default function SectionHeader({ eyebrow, title, id, align = "center", to
       </p>
       <h2
         id={id}
-        className={`mt-2 font-head text-[1.75rem] font-bold leading-snug min-[360px]:text-3xl sm:text-4xl lg:text-5xl ${titleColor}`}
+        className={`mt-2 font-head text-[1.75rem] font-bold leading-snug min-[22.5rem]:text-3xl sm:text-4xl lg:text-5xl ${titleColor}`}
       >
         {title}
       </h2>

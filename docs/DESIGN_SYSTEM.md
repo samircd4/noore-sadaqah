@@ -157,6 +157,12 @@ The design mixes Font Awesome 5, emoji (🛡️ 🤝 📖 🔥 📍) and text gl
 Pick **one** icon set for the build: `lucide-react` is recommended (tree-shaken, works with Tailwind).
 Keep ☪ only if it is the real logo; replace it with an SVG logo file when you have one.
 
+## Third-party marks
+
+Payment logos in the footer (bKash, Nagad, Visa, …) are the brands' own artwork and keep their own colours: they
+are the only images allowed outside the palette. Show them on white tiles (`bg-white rounded-lg`), never recoloured,
+stretched or animated. Files live in `frontend/public/payments/` (see its README).
+
 ## Language
 
 - Default language Bengali (`<html lang="bn">`), English as a second locale (the header has বাং / EN).

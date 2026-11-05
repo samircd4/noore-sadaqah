@@ -8,12 +8,7 @@ import { telDigits } from "@/lib/phone";
 import { currentYear } from "@/lib/time";
 import Logo from "./Logo";
 import NewsletterForm from "./NewsletterForm";
-
-/** What each online method covers, as printed in the design's footer (CONTENT.md §5: show only live methods). */
-const METHOD_LABELS = {
-  bkash: "bKash",
-  sslcommerz: "Nagad · Rocket · Visa · Mastercard",
-};
+import PaymentLogos from "./PaymentLogos";
 
 /**
  * Site footer (HOME_PAGE.md §12). Phone: one column, with the two link lists side by side (RESPONSIVE.md §14).
@@ -33,7 +28,7 @@ export default async function Footer({ site, locale }) {
     { key: "linkedin", href: social.linkedin, icon: <span className="text-sm font-bold">in</span> },
   ].filter((s) => s.href);
 
-  const linkClass = "inline-flex min-h-11 items-center rounded-lg hover:text-gold-400";
+  const linkClass = "inline-flex min-h-11 min-w-11 items-center rounded-lg hover:text-gold-400";
 
   return (
     <footer data-hides-donate-bar="" className="relative isolate overflow-hidden border-t border-em-600 text-sand-200/85">
@@ -128,12 +123,8 @@ export default async function Footer({ site, locale }) {
         <div className="col-span-2 lg:col-span-1">
           <h2 className="mb-3 font-bold text-white">{t("updates")}</h2>
           <NewsletterForm />
-          {site.payment_methods?.length > 0 && (
-            <p className="mt-4 text-xs leading-6 text-sand-200/70">
-              <span className="sr-only">{t("paymentMethods")}: </span>
-              <span lang="en">{site.payment_methods.map((m) => METHOD_LABELS[m]).filter(Boolean).join(" · ")}</span>
-            </p>
-          )}
+          {/* HOME_PAGE.md fix 19: logos instead of the design's "bKash · Nagad · …" text line. */}
+          <PaymentLogos gateways={site.payment_methods} label={t("paymentMethods")} />
         </div>
       </div>
 
@@ -145,9 +136,9 @@ export default async function Footer({ site, locale }) {
           {/* POLICIES.md: all three policies are linked from the footer (payment gateways check for them). */}
           <nav aria-label={t("legal")}>
             <ul className="flex flex-wrap gap-x-4">
-              <li><Link href="/privacy" className="inline-flex min-h-11 items-center hover:text-gold-400">{t("privacy")}</Link></li>
-              <li><Link href="/terms" className="inline-flex min-h-11 items-center hover:text-gold-400">{t("terms")}</Link></li>
-              <li><Link href="/refund-policy" className="inline-flex min-h-11 items-center hover:text-gold-400">{t("refund")}</Link></li>
+              <li><Link href="/privacy" className="inline-flex min-h-11 min-w-11 items-center hover:text-gold-400">{t("privacy")}</Link></li>
+              <li><Link href="/terms" className="inline-flex min-h-11 min-w-11 items-center hover:text-gold-400">{t("terms")}</Link></li>
+              <li><Link href="/refund-policy" className="inline-flex min-h-11 min-w-11 items-center hover:text-gold-400">{t("refund")}</Link></li>
             </ul>
           </nav>
           <p>{t("photoCredit")}</p>

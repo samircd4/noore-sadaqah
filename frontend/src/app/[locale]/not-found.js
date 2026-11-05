@@ -19,7 +19,7 @@ export default async function NotFound() {
         <p aria-hidden="true" className="mt-4 font-head text-6xl font-extrabold text-gold-600">
           {bnDigits(404, locale)}
         </p>
-        <h1 id="not-found-title" className="mt-3 font-head text-[1.75rem] leading-snug font-bold text-em-900 min-[360px]:text-3xl sm:text-4xl">
+        <h1 id="not-found-title" className="mt-3 font-head text-[1.75rem] leading-snug font-bold text-em-900 min-[22.5rem]:text-3xl sm:text-4xl">
           {t("title")}
         </h1>
         <p className="mt-4 text-base leading-relaxed text-em-900/80 sm:text-lg">{t("text")}</p>

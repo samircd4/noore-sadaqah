@@ -22,6 +22,12 @@
     @apply bg-sand-50 font-sans text-base leading-relaxed text-em-950 antialiased;
   }
 
+  /* A word wider than its line (a long Bengali word or a big taka amount at a very large browser text size) breaks
+     instead of making the page scroll sideways (QA §1). It changes nothing when the word fits. */
+  :where(h1, h2, h3, h4, p, li, dt, dd, blockquote, figcaption) {
+    overflow-wrap: break-word;
+  }
+
   /* While a menu or modal is open the page behind it must not scroll. */
   body[data-overlay="open"] {
     overflow: hidden;
