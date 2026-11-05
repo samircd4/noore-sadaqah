@@ -9,6 +9,7 @@ import Prose from "@/components/ui/Prose";
 import Tabs from "@/components/ui/Tabs";
 import { Link } from "@/i18n/navigation";
 import { apiGet } from "@/lib/api";
+import { ApiError } from "@/lib/api-errors";
 import { bnDate, taka } from "@/lib/format";
 import { currentLocale } from "@/lib/locale";
 import { fundDonateHref } from "@/lib/nav";
@@ -19,10 +20,10 @@ import { pageMetadata } from "@/lib/seo";
  *  - monthly: benefits, the fund's monthly amounts, button to the monthly donate form (orphan fund, PAGES.md)
  *  - volunteer: the volunteer form → POST /volunteers/
  *  - careers: GET /jobs/, or EmptyState "এই মুহূর্তে কোনো পদ খালি নেই"
- * The tab comes from searchParams, so the tabs render per request inside <Suspense> (frontend/CLAUDE.md rule 7).
+ * The data and panels are part of the prerendered page; only <Tabs> reads `?tab=` (useSearchParams), so it alone
+ * renders per request inside <Suspense> (frontend/CLAUDE.md rule 7).
  */
 
-const TABS = ["monthly", "volunteer", "careers"];
 /** PAGES.md: the monthly tab sends people to the orphan fund's monthly form. */
 const MONTHLY_FUND = "orphan";
 
@@ -31,8 +32,29 @@ export async function generateMetadata() {
   return pageMetadata({ path: "/get-involved", locale, title: t("title"), description: t("metaDescription") });
 }
 
-export default async function GetInvolvedPage({ searchParams }) {
-  const [locale, t] = await Promise.all([currentLocale(), getTranslations("getInvolvedPage")]);
+/**
+ * The orphan fund, or null. A 404 means the fund doesn't exist. Any other failure (API down, 5xx) is logged and also
+ * gives null: the monthly panel then shows its text and button without amounts, and the volunteer form and careers
+ * tab, which don't need the fund, keep working. The log has the path and status only (no donor data, rule 13).
+ */
+async function monthlyFund(locale) {
+  try {
+    return await apiGet(`/funds/${MONTHLY_FUND}/`, { locale, tags: ["funds"] });
+  } catch (error) {
+    if (!(error instanceof ApiError && error.status === 404)) {
+      console.error(`[get-involved] GET /funds/${MONTHLY_FUND}/ failed:`, error instanceof ApiError ? error.status : error);
+    }
+    return null;
+  }
+}
+
+export default async function GetInvolvedPage() {
+  const locale = await currentLocale();
+  const [t, fund, jobs] = await Promise.all([
+    getTranslations("getInvolvedPage"),
+    monthlyFund(locale),
+    apiGet("/jobs/", { locale, tags: ["jobs"] }),
+  ]);
 
   return (
     <>
@@ -45,7 +67,25 @@ export default async function GetInvolvedPage({ searchParams }) {
       <div className="bg-sand-50 py-10 sm:py-14 lg:py-20">
         <div className="mx-auto max-w-5xl px-4">
           <Suspense fallback={<TabsSkeleton />}>
-            <GetInvolvedTabs searchParams={searchParams} locale={locale} />
+            <Tabs
+              label={t("tabsLabel")}
+              fallback="monthly"
+              tabs={[
+                { key: "monthly", label: t("tabMonthly"), content: <MonthlyPanel fund={fund} locale={locale} t={t} /> },
+                {
+                  key: "volunteer",
+                  label: t("tabVolunteer"),
+                  content: (
+                    <div className="rounded-lg border border-sand-200 bg-white p-5 sm:p-8">
+                      <h2 className="font-head text-2xl leading-snug font-bold text-em-900 sm:text-3xl">{t("volunteerTitle")}</h2>
+                      <p className="mt-3 mb-6 text-base leading-relaxed text-em-900/80">{t("volunteerIntro")}</p>
+                      <VolunteerForm />
+                    </div>
+                  ),
+                },
+                { key: "careers", label: t("tabCareers"), content: <CareersPanel jobs={jobs} locale={locale} t={t} /> },
+              ]}
+            />
           </Suspense>
         </div>
       </div>
@@ -63,41 +103,6 @@ function TabsSkeleton() {
       </div>
       <div className="mt-8 h-72 rounded-lg bg-sand-100 motion-safe:animate-pulse" />
     </div>
-  );
-}
-
-/** @param {{ searchParams: Promise<Record<string, string | string[] | undefined>>, locale: "bn" | "en" }} props */
-async function GetInvolvedTabs({ searchParams, locale }) {
-  const params = await searchParams;
-  const requested = Array.isArray(params.tab) ? params.tab[0] : params.tab;
-  const initial = TABS.includes(requested ?? "") ? /** @type {string} */ (requested) : "monthly";
-
-  const [t, fund, jobs] = await Promise.all([
-    getTranslations("getInvolvedPage"),
-    apiGet(`/funds/${MONTHLY_FUND}/`, { locale, tags: ["funds"] }).catch(() => null),
-    apiGet("/jobs/", { locale, tags: ["jobs"] }),
-  ]);
-
-  return (
-    <Tabs
-      label={t("tabsLabel")}
-      initial={initial}
-      tabs={[
-        { key: "monthly", label: t("tabMonthly"), content: <MonthlyPanel fund={fund} locale={locale} t={t} /> },
-        {
-          key: "volunteer",
-          label: t("tabVolunteer"),
-          content: (
-            <div className="rounded-lg border border-sand-200 bg-white p-5 sm:p-8">
-              <h2 className="font-head text-2xl leading-snug font-bold text-em-900 sm:text-3xl">{t("volunteerTitle")}</h2>
-              <p className="mt-3 mb-6 text-base leading-relaxed text-em-900/80">{t("volunteerIntro")}</p>
-              <VolunteerForm />
-            </div>
-          ),
-        },
-        { key: "careers", label: t("tabCareers"), content: <CareersPanel jobs={jobs} locale={locale} t={t} /> },
-      ]}
-    />
   );
 }
 

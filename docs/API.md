@@ -143,12 +143,12 @@ Sum of PAID donations by year (Asia/Dhaka) and fund; zakat funds listed separate
 |---|---|---|
 | `POST /contact/` | `name, contact, subject, message` | `201 {}` |
 | `POST /volunteers/` | `name, phone, email?, district, skills?, availability?` | `201 {}` |
+| `POST /subscribers/` | `email` | `201 {}`. Existing emails also get `201` (no enumeration). |
+| `POST /subscribers/unsubscribe/` | `token` | `200 {}` |
 
 Field rules (the same Zod schemas in `frontend/src/lib/validation/forms.js`):
 - contact: `name` ≤ 120, `contact` a BD mobile (`01XXXXXXXXX`, stored normalised) **or** an email (`contactInvalid` otherwise), `subject` ≤ 150, `message` ≤ 2000 (`tooLong`).
 - volunteers: `name` ≤ 120, `phone` BD mobile, `email` optional, `district` one of the 64 district slugs (`frontend/src/lib/districts.js`, `districtInvalid`), `skills` ≤ 500, `availability` `""|weekdays|weekends|flexible`.
-| `POST /subscribers/` | `email` | `201 {}`. Existing emails also get `201` (no enumeration). |
-| `POST /subscribers/unsubscribe/` | `token` | `200 {}` |
 
 ---
 

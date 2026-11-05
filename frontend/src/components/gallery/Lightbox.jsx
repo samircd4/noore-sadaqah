@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
+import { useModalDialog } from "@/components/ui/useModalDialog";
 import { bnNumber } from "@/lib/format";
 
 /**
@@ -20,35 +21,18 @@ export default function Lightbox({ items, index, onChange }) {
   const t = useTranslations("galleryPage");
   const tAll = useTranslations();
   const locale = useLocale();
-  const dialogRef = useRef(/** @type {HTMLDialogElement | null} */ (null));
   const start = useRef(/** @type {{ x: number, y: number } | null} */ (null));
 
   const open = index !== null;
   const count = items.length;
   const item = open ? items[index] : null;
 
-  // Open/close the native dialog with the index; tell the layout an overlay is open (hides the sticky bar).
+  // The dialog follows `index`; however it closes (button, Esc, swipe down, leaving the page), index goes to null.
+  const { ref: dialogRef, open: openDialog, close } = useModalDialog(() => onChange(null));
   useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-    if (open && !dialog.open) {
-      dialog.showModal();
-      document.body.dataset.overlay = "open";
-    } else if (!open && dialog.open) {
-      dialog.close();
-    }
-  }, [open]);
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return undefined;
-    const onClose = () => {
-      delete document.body.dataset.overlay;
-      onChange(null);
-    };
-    dialog.addEventListener("close", onClose);
-    return () => dialog.removeEventListener("close", onClose);
-  }, [onChange]);
+    if (open) openDialog();
+    else close();
+  }, [open, openDialog, close]);
 
   const go = (step) => {
     if (index === null || count < 2) return;
@@ -71,7 +55,7 @@ export default function Lightbox({ items, index, onChange }) {
     const dx = event.clientX - s.x;
     const dy = event.clientY - s.y;
     if (Math.abs(dx) >= 50 && Math.abs(dx) > Math.abs(dy)) go(dx < 0 ? 1 : -1);
-    else if (dy >= 80 && dy > Math.abs(dx)) dialogRef.current?.close();
+    else if (dy >= 80 && dy > Math.abs(dx)) close();
   };
 
   const control =
@@ -94,7 +78,7 @@ export default function Lightbox({ items, index, onChange }) {
             <p className="text-sm font-semibold text-sand-200" aria-live="polite">
               {t("counter", { current: bnNumber(index + 1, locale), total: bnNumber(count, locale) })}
             </p>
-            <button type="button" onClick={() => dialogRef.current?.close()} aria-label={tAll("common.close")} className={control}>
+            <button type="button" onClick={() => close()} aria-label={tAll("common.close")} className={control}>
               <X aria-hidden="true" className="size-6" />
             </button>
           </div>

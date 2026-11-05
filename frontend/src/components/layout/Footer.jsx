@@ -2,8 +2,9 @@ import { Mail, MapPin, Phone, Play } from "lucide-react";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { bnNumber } from "@/lib/format";
+import { bnDigits } from "@/lib/format";
 import { DONATE_HREF } from "@/lib/nav";
+import { telDigits } from "@/lib/phone";
 import { currentYear } from "@/lib/time";
 import Logo from "./Logo";
 import NewsletterForm from "./NewsletterForm";
@@ -97,11 +98,19 @@ export default async function Footer({ site, locale }) {
             )}
             {contact.phone && (
               <li>
-                <a href={`tel:${contact.phone.replace(/[^+\d]/g, "")}`} className={`${linkClass} gap-2`}>
-                  <Phone aria-hidden="true" className="size-4 shrink-0 text-gold-400" />
-                  <span className="sr-only">{t("phone")}: </span>
-                  <span dir="ltr">{contact.phone}</span>
-                </a>
+                {telDigits(contact.phone) ? (
+                  <a href={`tel:${telDigits(contact.phone)}`} className={`${linkClass} gap-2`}>
+                    <Phone aria-hidden="true" className="size-4 shrink-0 text-gold-400" />
+                    <span className="sr-only">{t("phone")}: </span>
+                    <span dir="ltr">{contact.phone}</span>
+                  </a>
+                ) : (
+                  <span className="inline-flex min-h-11 items-center gap-2">
+                    <Phone aria-hidden="true" className="size-4 shrink-0 text-gold-400" />
+                    <span className="sr-only">{t("phone")}: </span>
+                    <span dir="ltr">{contact.phone}</span>
+                  </span>
+                )}
               </li>
             )}
             {contact.email && (
@@ -131,7 +140,7 @@ export default async function Footer({ site, locale }) {
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-x-6 gap-y-2 px-4 py-5 text-xs leading-6 text-sand-200/70">
           <p>
-            {t("copyright", { year: bnNumber(year, locale).replace(/,/g, "") })}
+            {t("copyright", { year: bnDigits(year, locale) })}
           </p>
           {/* POLICIES.md: all three policies are linked from the footer (payment gateways check for them). */}
           <nav aria-label={t("legal")}>

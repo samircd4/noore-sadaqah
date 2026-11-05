@@ -15,8 +15,10 @@ import { pageMetadata } from "@/lib/seo";
 
 /**
  * /news (PAGES.md): PageHero, category chips (?category=), NewsCard grid, Pagination (?page=, 12 per page).
- * The hero is prerendered; the list reads searchParams, so it renders per request inside <Suspense>
- * (frontend/CLAUDE.md rule 7). A page past the end is a 404 from the API → notFound().
+ * The hero and the category list are prerendered; the posts read searchParams, so they render per request inside
+ * <Suspense> (frontend/CLAUDE.md rule 7). A page past the end is a 404 from the API → notFound(): the not-found UI
+ * replaces the list, but as the page has already started streaming the status stays 200 (Next adds a noindex
+ * meta tag instead). Accepted: getting a real 404 would mean fetching the page count before the shell streams.
  */
 
 export async function generateMetadata() {
@@ -25,7 +27,11 @@ export async function generateMetadata() {
 }
 
 export default async function NewsPage({ searchParams }) {
-  const [locale, t] = await Promise.all([currentLocale(), getTranslations("newsPage")]);
+  const locale = await currentLocale();
+  const [t, categories] = await Promise.all([
+    getTranslations("newsPage"),
+    apiGet("/post-categories/", { locale, tags: ["posts"] }),
+  ]);
 
   return (
     <>
@@ -37,7 +43,7 @@ export default async function NewsPage({ searchParams }) {
             {t("listTitle")}
           </h2>
           <Suspense fallback={<NewsGridSkeleton />}>
-            <NewsList searchParams={searchParams} locale={locale} />
+            <NewsList searchParams={searchParams} locale={locale} categories={categories} />
           </Suspense>
         </div>
       </section>
@@ -47,16 +53,17 @@ export default async function NewsPage({ searchParams }) {
   );
 }
 
-/** @param {{ searchParams: Promise<Record<string, string | string[] | undefined>>, locale: "bn" | "en" }} props */
-async function NewsList({ searchParams, locale }) {
+/**
+ * @param {{ searchParams: Promise<Record<string, string | string[] | undefined>>, locale: "bn" | "en", categories: Array<{ slug: string, name: string }> }} props
+ */
+async function NewsList({ searchParams, locale, categories }) {
   const params = await searchParams;
   const category = parseSlug(params.category);
   const page = parsePage(params.page);
 
-  const [t, tNews, categories, posts] = await Promise.all([
+  const [t, tNews, posts] = await Promise.all([
     getTranslations("newsPage"),
     getTranslations("news"),
-    apiGet("/post-categories/", { locale, tags: ["posts"] }),
     apiGetOrNotFound("/posts/", { locale, query: { category, page }, tags: ["posts"] }),
   ]);
 

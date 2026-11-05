@@ -43,6 +43,7 @@ export default function NewsletterForm() {
           autoComplete="email"
           required
           placeholder={t("emailPlaceholder")}
+          defaultValue={state?.ok === false ? state.values?.email : undefined}
           aria-invalid={message ? true : undefined}
           aria-describedby={message ? "newsletter-error" : undefined}
           className="h-11 min-w-0 flex-1 rounded-lg bg-transparent px-3 text-base text-white placeholder:text-sand-200/60"

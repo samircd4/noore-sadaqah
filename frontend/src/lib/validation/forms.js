@@ -11,13 +11,15 @@ export const subscriberSchema = z.object({
   email: emailField,
 });
 
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+/** The same email rule as `emailField` (z.email), for fields where an email is optional or one of two choices. */
+const emailSchema = z.email();
+const isEmail = (value) => emailSchema.safeParse(value).success;
 
 /** A BD mobile (normalised to 01XXXXXXXXX) or an email (lower-cased), else `contactInvalid`. */
 const phoneOrEmailField = requiredText(120).transform((value, ctx) => {
   const mobile = normalizeBdMobile(value);
   if (mobile) return mobile;
-  if (EMAIL.test(value)) return value.toLowerCase();
+  if (isEmail(value)) return value.toLowerCase();
   ctx.addIssue({ code: "custom", message: "errors.contactInvalid" });
   return z.NEVER;
 });
@@ -42,7 +44,7 @@ export const volunteerSchema = z.object({
     .trim()
     .optional()
     .default("")
-    .refine((v) => v === "" || EMAIL.test(v), "errors.emailInvalid")
+    .refine((v) => v === "" || isEmail(v), "errors.emailInvalid")
     .transform((v) => v.toLowerCase()),
   district: z
     .string("errors.required")

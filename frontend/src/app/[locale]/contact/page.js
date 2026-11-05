@@ -7,6 +7,7 @@ import Accordion from "@/components/ui/Accordion";
 import { apiGet } from "@/lib/api";
 import { currentLocale } from "@/lib/locale";
 import { pageMetadata } from "@/lib/seo";
+import { telDigits, whatsappDigits } from "@/lib/phone";
 
 /**
  * /contact (PAGES.md): contact details and the form (→ POST /contact/), then a tap-to-load map and the FAQ.
@@ -19,12 +20,6 @@ export async function generateMetadata() {
   return pageMetadata({ path: "/contact", locale, title: t("title"), description: t("metaDescription") });
 }
 
-/** Digits for tel: / wa.me, or null while the number is still a placeholder ("+880 1XXX-XXXXXX"). */
-function dialable(number) {
-  const digits = String(number ?? "").replace(/[^\d+]/g, "");
-  return digits.replace(/\D/g, "").length >= 11 ? digits : null;
-}
-
 export default async function ContactPage() {
   const locale = await currentLocale();
   const [t, tFooter, site] = await Promise.all([
@@ -33,8 +28,8 @@ export default async function ContactPage() {
     apiGet("/site/", { locale, tags: ["site"] }),
   ]);
   const c = site.contact;
-  const phone = dialable(c.phone);
-  const whatsapp = dialable(c.whatsapp);
+  const phone = telDigits(c.phone);
+  const whatsapp = whatsappDigits(c.whatsapp);
   const social = ["facebook", "youtube", "instagram", "linkedin"].filter((k) => site.social?.[k]);
 
   const rowLink = "font-semibold break-words text-em-700 underline-offset-4 hover:text-em-500 hover:underline";
@@ -55,7 +50,7 @@ export default async function ContactPage() {
       Icon: MessageCircle,
       label: t("whatsapp"),
       value: (
-        <a href={`https://wa.me/${whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" className={`inline-flex min-h-11 items-center ${rowLink}`} dir="ltr">
+        <a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer" className={`inline-flex min-h-11 items-center ${rowLink}`} dir="ltr">
           {c.whatsapp}
         </a>
       ),
