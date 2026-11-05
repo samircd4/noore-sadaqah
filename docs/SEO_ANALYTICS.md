@@ -6,7 +6,7 @@
   description from the content (first 155 characters of the summary), Open Graph and Twitter card.
 - `metadataBase` = `NEXT_PUBLIC_SITE_URL`.
 - OG image: the page's cover photo (1200×630 crop through `next/image` loader or a stored crop); fallback `public/og.png`.
-- `alternates`: `canonical` for the current language plus `languages: { bn: "/…", en: "/en/…", "x-default": "/…" }`.
+- `alternates`: `canonical` for the current language plus `languages: { bn: "/bn/…", en: "/en/…", "x-default": "/bn/…" }`.
 - Donation result pages (`/donate/checkout`, `/success`, `/failed`), `/login` and `/account/*`: `robots: { index: false }`.
 
 ## Structured data (JSON-LD)

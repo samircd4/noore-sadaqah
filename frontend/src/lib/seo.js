@@ -35,13 +35,13 @@ export function textFromHtml(html) {
 }
 
 /**
- * The URL of a page in one language: Bengali has no prefix, English lives under /en (I18N.md).
+ * The URL of a page in one language: /bn/... or /en/... (I18N.md).
  * @param {string} path  e.g. "/programs/water" ("/" for home)
  * @param {"bn" | "en"} locale
  */
 export function localizedPath(path, locale) {
-  if (locale === "bn") return path;
-  return path === "/" ? "/en" : `/en${path}`;
+  const prefix = locale === "en" ? "/en" : "/bn";
+  return path === "/" ? prefix : `${prefix}${path}`;
 }
 
 /**

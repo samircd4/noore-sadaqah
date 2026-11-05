@@ -2,8 +2,9 @@ import { describe, expect, it } from "vitest";
 import { localizedPath, pageMetadata, shortDescription, textFromHtml } from "./seo";
 
 describe("localizedPath", () => {
-  it("leaves Bengali unprefixed and puts English under /en", () => {
-    expect(localizedPath("/programs/water", "bn")).toBe("/programs/water");
+  it("puts every page under its language: /bn or /en", () => {
+    expect(localizedPath("/programs/water", "bn")).toBe("/bn/programs/water");
+    expect(localizedPath("/", "bn")).toBe("/bn");
     expect(localizedPath("/programs/water", "en")).toBe("/en/programs/water");
     expect(localizedPath("/", "en")).toBe("/en");
   });
@@ -34,7 +35,7 @@ describe("pageMetadata", () => {
     });
     expect(meta.alternates).toEqual({
       canonical: "/en/programs/water",
-      languages: { bn: "/programs/water", en: "/en/programs/water", "x-default": "/programs/water" },
+      languages: { bn: "/bn/programs/water", en: "/en/programs/water", "x-default": "/bn/programs/water" },
     });
     expect(meta.openGraph.images[0].url).toBe("https://example.com/a.jpg");
     expect(meta.twitter.card).toBe("summary_large_image");
