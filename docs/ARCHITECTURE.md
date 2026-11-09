@@ -80,7 +80,7 @@ Rules:
    Celery task that POSTs the changed tags to Next's `/internal/revalidate` (header `X-Revalidate-Secret`), which
    calls `revalidateTag(tag, "max")`. Nginx blocks `/internal/` from outside.
 7. **Gateway callbacks go to Django.** After validation Django **303-redirects** the browser to
-   `/donate/success?id=…` or `/donate/failed?id=…` on the Next.js side (`DONATION_FLOW.md`).
+   `/{locale}/donate/success?id=…` or `/{locale}/donate/failed?id=…` on the Next.js side (`locale` = the donation's `locale`) (`DONATION_FLOW.md`).
 8. **Client components** (`"use client"`) only where there is interaction: quick-donate form, donate form, mobile menu,
    language switch, gallery lightbox, video modal, zakat calculator, tabs, success-page polling.
 

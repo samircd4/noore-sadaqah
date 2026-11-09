@@ -4,6 +4,8 @@
  * Pure module: the caller passes the locale and the translated text.
  */
 
+import { routing } from "@/i18n/routing";
+
 const DESCRIPTION_MAX = 155;
 
 /**
@@ -40,7 +42,8 @@ export function textFromHtml(html) {
  * @param {"bn" | "en"} locale
  */
 export function localizedPath(path, locale) {
-  const prefix = locale === "en" ? "/en" : "/bn";
+  // Locales come from the routing config (localePrefix "always"), so these URLs follow the real routes.
+  const prefix = `/${routing.locales.includes(locale) ? locale : routing.defaultLocale}`;
   return path === "/" ? prefix : `${prefix}${path}`;
 }
 
@@ -61,7 +64,7 @@ export function pageMetadata({ path, locale, title, description, image = null })
     description: desc || undefined,
     alternates: {
       canonical: localizedPath(path, locale),
-      languages: { bn: localizedPath(path, "bn"), en: localizedPath(path, "en"), "x-default": localizedPath(path, "bn") },
+      languages: { bn: localizedPath(path, "bn"), en: localizedPath(path, "en"), "x-default": localizedPath(path, routing.defaultLocale) },
     },
     openGraph: {
       title,

@@ -200,10 +200,10 @@ All of them log a `GatewayEvent`, are **idempotent**, and never trust the parame
 | `POST /payments/sslcommerz/ipn/` | SSLCommerz server | Validate `val_id` with the Validation API, check `tran_id == gateway_ref`, `amount` and `currency == BDT`, then `mark_paid()`. Always answers `200` once the event is stored. |
 | `POST /payments/sslcommerz/success/` | Donor's browser (form POST from SSLCommerz) | Same validation as the IPN (whichever arrives first wins), then **303** → `/{locale}/donate/success?id=` (`locale` = the donation's `locale`, `bn` or `en`; I18N.md). Exempt from CSRF; nothing is trusted without validation. |
 | `POST /payments/sslcommerz/fail/` · `cancel/` | Browser | Query by `tran_id`; set FAILED/CANCELLED only if the gateway agrees; 303 → `/{locale}/donate/failed?id=`. |
-| `GET /payments/bkash/callback/?paymentID=&status=` | Browser (redirect from bKash) | `status=success` → Execute Payment once, then Query Payment; `transactionStatus == "Completed"` and amount match → `mark_paid()`. Otherwise FAILED/CANCELLED. 303 to the success or failed page. |
-| `GET /payments/bkash/agreement-callback/?paymentID=&status=` | Browser | Execute Agreement → store `agreementID` on the Subscription, then create the first payment. |
+| `GET /payments/bkash/callback/?paymentID=&status=` | Browser (redirect from bKash) | `status=success` → Execute Payment once, then Query Payment; `transactionStatus == "Completed"` and amount match → `mark_paid()`. Otherwise FAILED/CANCELLED. 303 → `/{locale}/donate/success?id=` or `/{locale}/donate/failed?id=`. |
+| `GET /payments/bkash/agreement-callback/?paymentID=&status=` | Browser | Execute Agreement → store `agreementID` on the Subscription, then create the first payment. Failure or cancel: 303 → `/{locale}/donate/failed?id=`. |
 
-Locale for the redirect: Django adds `/en` when `donation.locale == "en"`.
+Locale for the redirect: every URL carries its language (D16), so Django always builds `/{donation.locale}/donate/...` (`/bn/...` or `/en/...`), never an unprefixed path.
 
 ---
 

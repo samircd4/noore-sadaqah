@@ -30,7 +30,7 @@ If the gateway confirms status, tran_id/paymentID, amount and BDT:
    mark_paid() → one transaction: PAID, paid_at, receipt_no, gateway_txn_id
    on commit → Celery send_receipt (SMS + email with signed PDF link)
    ▼
-Django 303 → /donate/success?id=…   (page reads GET /donations/{id}/status/ — never query params)
+Django 303 → /{locale}/donate/success?id=…   (page reads GET /donations/{id}/status/ — never query params)
 ```
 
 ### Rules

@@ -12,4 +12,7 @@ export const routing = defineRouting({
   // No redirect based on browser language or cookie: many phones in Bangladesh are set to
   // English, but the site is Bengali first. The URL alone decides the language.
   localeDetection: false,
+  // pageMetadata (src/lib/seo.js) already writes canonical + hreflang into the HTML. The proxy's automatic
+  // `Link` header would add a second set whose x-default is the unprefixed (redirecting) URL.
+  alternateLinks: false,
 });

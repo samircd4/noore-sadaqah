@@ -55,11 +55,11 @@ These take weeks. The site can't launch without them.
 
 ### F2: Content pages
 
-- [ ] `/about`, `/programs`, `/programs/[slug]`, `/campaigns/[slug]`, `/news`, `/news/[slug]`, `/gallery`, `/contact`,
+- [x] `/about`, `/programs`, `/programs/[slug]`, `/campaigns/[slug]`, `/news`, `/news/[slug]`, `/gallery`, `/contact`,
       `/get-involved`, `/transparency`, `/privacy`, `/terms`, `/refund-policy`, `not-found`, `error` (PAGES.md)
-- [ ] Shared parts: PageHero, DonateCta, EmptyState, Pagination, Accordion, Tabs, Breadcrumb, Lightbox, VideoModal
-- [ ] Forms (contact, volunteer, newsletter) as server actions → `POST /contact/`, `/volunteers/`, `/subscribers/` (mocked, with validation errors and throttling)
-- [ ] Fixtures + handlers for every endpoint these pages use · QA §1, §3, §11
+- [x] Shared parts: PageHero, DonateCta, EmptyState, Pagination, Accordion, Tabs, Breadcrumb, Lightbox, VideoModal
+- [x] Forms (contact, volunteer, newsletter) as server actions → `POST /contact/`, `/volunteers/`, `/subscribers/` (mocked, with validation errors and throttling)
+- [x] Fixtures + handlers for every endpoint these pages use · QA §1, §3, §11
 
 > **Prompt (one page at a time):** "Create `/programs/[slug]` as specified in `docs/PAGES.md`, using only components from `src/components/ui` and the patterns in `docs/DESIGN_SYSTEM.md`. Load data with `apiGet('/programs/{slug}/')`; add the fixture and handler with the exact shape from `docs/API.md`, including the 404 case. Build the phone layout first from `docs/RESPONSIVE.md` §15 and check at 320, 375, 768 and 1440px. Add `generateMetadata` and `generateStaticParams`, and all labels in both message files."
 
