@@ -43,7 +43,7 @@ The final wording of every Bengali template needs the foundation's approval befo
 
 | Name | When | Subject (`bn`) | Content |
 |---|---|---|---|
-| `receipt` | PAID, if an email was given | `দানের রসিদ {receipt_no}` | Thanks, amount, fund, date, PDF **attached**, link to `/account` |
+| `receipt` | PAID, if an email was given | `দানের রসিদ {receipt_no}` | Thanks, amount, fund, date, PDF **attached**, link to `/{locale}/account` |
 | `otp` | Email login | `লগইন কোড: {code}` | Code, validity, "if this wasn't you, ignore this email" |
 | `monthly_reminder` | REMINDER plan due | `আপনার মাসিক দান` | Amount, fund, pay button, link to manage the plan |
 | `monthly_failed` | Plan FAILED | `মাসিক দান বন্ধ হয়েছে` | What happened, how to restart |

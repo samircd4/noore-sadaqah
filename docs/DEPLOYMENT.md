@@ -118,7 +118,8 @@ cd /srv/noore/app && git fetch && git checkout --detach "${1:-origin/master}"
 # frontend
 cd frontend && npm ci && npm run build:standalone && cd ..
 sudo systemctl restart noore-api noore-worker noore-beat noore-web
-curl -fsS -o /dev/null http://localhost:3000/ && curl -fsS -o /dev/null http://localhost:3000/en   # no redirect loop
+curl -fsS -o /dev/null http://localhost:3000/bn && curl -fsS -o /dev/null http://localhost:3000/en   # both languages render (/ only redirects)
+curl -fsSL --max-redirs 3 -o /dev/null http://localhost:3000/   # / redirects to /bn without a loop
 curl -fsS https://nooresadaqah.org/api/v1/health/ && echo "$(date -Is) $(git rev-parse --short HEAD)" >> ../releases.log
 ```
 - Migrations must be backward compatible with the running code for the few seconds of a restart (add columns first, remove them in a later release).

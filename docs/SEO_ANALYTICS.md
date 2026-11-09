@@ -20,7 +20,8 @@
 
 - `src/app/sitemap.js` builds both language versions of every public page, programs, campaigns, news posts, using the API.
   Revalidate every hour.
-- `src/app/robots.js`: allow everything except `/account`, `/donate/checkout`, `/donate/success`, `/donate/failed`, `/login`;
+- `src/app/robots.js`: allow everything except, for each locale (`/bn` and `/en`), `/{locale}/account`, `/{locale}/donate/checkout`,
+  `/{locale}/donate/success`, `/{locale}/donate/failed`, `/{locale}/login` (robots rules are prefix matches from the root);
   link the sitemap. **Staging:** `Disallow: /` and the `X-Robots-Tag: noindex` header (Nginx), plus basic auth.
 
 ## Analytics (only with consent)
