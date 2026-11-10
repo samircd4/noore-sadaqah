@@ -15,7 +15,7 @@ The contract between `frontend/` and `backend/`. **Change this file first**, the
 | Client IP | Next.js sends `X-Forwarded-For: <visitor IP>`; Django trusts it only from `127.0.0.1`. |
 | Pagination | Only `/posts/` and `/gallery/` are paginated: `?page=N`, 12 per page (or `?limit=N` for a single short page, e.g. the home page), returning `{ "count", "page", "pages", "results": [...] }`; a page past the end is 404. Every other list (`/funds/`, `/programs/`, `/campaigns/`, `/post-categories/`, `/people/`, `/reports/`, `/jobs/`) returns a plain array. |
 | Images | `{ "url", "alt", "width", "height" }`. `url` is on `NEXT_PUBLIC_MEDIA_HOST`. |
-| Mock | `frontend/src/mocks/` implements this whole contract for frontend-first work (ARCHITECTURE.md "API modes") and must change in the same commit as this file. Mock-only behaviour: `POST /donations/` returns `redirect_url: "/donate/mock-gateway?id=…"`; the OTP code is always `123456`; in `static` mode every write returns `503 comingSoon`. |
+| Mock | `frontend/src/mocks/` implements this whole contract for frontend-first work (ARCHITECTURE.md "API modes") and must change in the same commit as this file. Mock-only behaviour: `POST /donations/` returns `redirect_url: "/donate/mock-gateway?id=…"` (the server action adds the language prefix), and answers `502 gatewayUnavailable` while `MOCK_GATEWAY_DOWN=1`; the OTP code is always `123456`; in `static` mode every write returns `503 comingSoon`. |
 | Caching | Public GETs send `Cache-Control: public, max-age=60`. Next.js caches them with `"use cache"` + `cacheTag` (tags listed per endpoint); Django triggers `/internal/revalidate` on admin saves, which calls `revalidateTag(tag, "max")`. |
 
 ### Errors

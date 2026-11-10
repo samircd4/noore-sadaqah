@@ -7,6 +7,7 @@
  */
 
 import "./routes/content";
+import "./routes/donations";
 import "./routes/forms";
 import "./routes/org";
 
