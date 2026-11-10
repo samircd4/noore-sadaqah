@@ -2,6 +2,7 @@ import { HandHeart } from "lucide-react";
 import Image from "next/image";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
+import { fundDonateHref } from "@/lib/nav";
 
 /**
  * One fund on /donate (PAGES.md): cover, title, summary and a gold "দান করুন" button to /donate/[fund].
@@ -31,7 +32,7 @@ export default function FundCard({ fund, donateLabel, zakatLabel, note = null })
         <h3 className="font-head text-2xl leading-snug font-bold text-em-900">{fund.title}</h3>
         <p className="mt-2 flex-1 text-base leading-relaxed text-em-900/80">{fund.summary}</p>
         {note && <p className="mt-3 text-sm font-semibold text-em-700">{note}</p>}
-        <Button href={`/donate/${fund.slug}`} className="mt-5 w-full">
+        <Button href={fundDonateHref(fund.slug)} className="mt-5 w-full">
           <HandHeart aria-hidden="true" className="size-5" />
           {donateLabel}
         </Button>

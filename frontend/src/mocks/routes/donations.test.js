@@ -123,6 +123,23 @@ describe("mock gateway outcomes", () => {
     expect((await post(`/donations/${c}/refresh/`)).body.status).toBe("pending");
   });
 
+  it("a late success turns FAILED into PAID; CANCELLED never changes", async () => {
+    const a = (await post("/donations/", valid)).body.id;
+    settleMockDonation(a, "fail");
+    expect(settleMockDonation(a, "success")).toBe(`/bn/donate/success?id=${a}`);
+    expect((await get(`/donations/${a}/status/`)).body).toMatchObject({ status: "paid", fail_reason: null, receipt_no: expect.any(String) });
+    // Other outcomes don't move a FAILED donation.
+    const b = (await post("/donations/", valid)).body.id;
+    settleMockDonation(b, "fail");
+    settleMockDonation(b, "cancel");
+    expect((await get(`/donations/${b}/status/`)).body.status).toBe("failed");
+
+    const c = (await post("/donations/", valid)).body.id;
+    settleMockDonation(c, "cancel");
+    expect(settleMockDonation(c, "success")).toBe(`/bn/donate/failed?id=${c}`);
+    expect((await get(`/donations/${c}/status/`)).body.status).toBe("cancelled");
+  });
+
   it("monthly creates a subscription that becomes active after the first payment", async () => {
     const { body } = await post("/donations/", { ...valid, kind: "monthly" });
     expect((await get(`/donations/${body.id}/status/`)).body.kind).toBe("monthly");

@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form";
+import Button from "@/components/ui/Button";
 import FieldError from "@/components/ui/FieldError";
 import Input from "@/components/ui/Input";
 import { Link, useRouter } from "@/i18n/navigation";
@@ -278,14 +279,10 @@ export default function DonateForm({ fund, methods }) {
         })}
       </p>
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-gold-500 px-8 py-3 text-lg font-bold text-em-950 shadow-md transition hover:bg-gold-400 active:bg-gold-600 disabled:opacity-60 motion-reduce:transition-none sm:w-auto"
-      >
+      <Button type="submit" variant="gold" size="cta" blockOnPhone className="shadow-md" disabled={isSubmitting}>
         {t("submit")}
         <ArrowRight aria-hidden="true" className="size-5" />
-      </button>
+      </Button>
     </form>
   );
 }

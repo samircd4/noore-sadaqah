@@ -79,7 +79,8 @@ export function mockGatewayDonation(id) {
 /**
  * Settles a mock donation like the gateway callback would, and returns where Django would 303 the browser:
  * `/{locale}/donate/success?id=` or `/{locale}/donate/failed?id=` (API.md "Payment gateway callbacks").
- * Only a PENDING donation changes; repeating a callback is harmless.
+ * A PENDING donation takes any outcome. A FAILED one can still be confirmed by "success" (a late confirmation,
+ * DONATION_FLOW.md rule 4); PAID and CANCELLED never change. Repeating a callback is harmless.
  * @param {string} id
  * @param {MockOutcome} outcome
  * @returns {string | null} redirect path, or null for an unknown id
@@ -87,7 +88,8 @@ export function mockGatewayDonation(id) {
 export function settleMockDonation(id, outcome) {
   const d = store.donations.get(id);
   if (!d) return null;
-  if (d.status === "pending") {
+  if (d.status === "failed" && outcome === "success") markPaid(d);
+  else if (d.status === "pending") {
     if (outcome === "success") markPaid(d);
     else if (outcome === "fail") {
       d.status = "failed";

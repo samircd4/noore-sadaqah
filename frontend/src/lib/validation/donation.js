@@ -13,6 +13,14 @@ export const PAYMENT_METHODS = /** @type {const} */ (["bkash", "sslcommerz"]);
 export const DONATION_KINDS = /** @type {const} */ (["one_time", "monthly"]);
 
 /**
+ * A donation id as it may appear in a URL or a server-action argument (a UUID; hex and hyphens only, so it can't
+ * change the API path it is put into).
+ * @param {unknown} id
+ * @returns {id is string}
+ */
+export const isDonationId = (id) => typeof id === "string" && /^[0-9a-f-]{8,64}$/i.test(id);
+
+/**
  * @typedef {{ slug: string, min_amount: number, allow_recurring?: boolean }} FundRule
  */
 

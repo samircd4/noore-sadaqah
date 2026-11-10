@@ -10,10 +10,7 @@
 import { redirect } from "next/navigation";
 import { apiGet, apiRequest } from "@/lib/api";
 import { ApiError, errorKey, fromZodError, toFieldErrors } from "@/lib/api-errors";
-import { donationSchema } from "@/lib/validation/donation";
-
-/** Donation ids are UUIDs; anything else never reaches the API path. */
-const ID_PATTERN = /^[0-9a-f-]{8,64}$/i;
+import { donationSchema, isDonationId } from "@/lib/validation/donation";
 
 /** @param {unknown} value */
 const localeOf = (value) => (value === "en" ? "en" : "bn");
@@ -66,7 +63,7 @@ export async function createDonation(input) {
  * @param {"bn" | "en"} locale
  */
 export async function refreshDonation(id, locale) {
-  if (typeof id !== "string" || !ID_PATTERN.test(id)) return { error: "errors.notFound" };
+  if (!isDonationId(id)) return { error: "errors.notFound" };
   try {
     return await apiRequest(`/donations/${encodeURIComponent(id)}/refresh/`, { method: "POST", locale: localeOf(locale) });
   } catch (error) {

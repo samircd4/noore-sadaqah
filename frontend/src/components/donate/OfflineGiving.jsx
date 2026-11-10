@@ -62,9 +62,9 @@ export default async function OfflineGiving({ banks, mobileBanking, locale, head
               <dl className="min-w-0 flex-1 space-y-2">
                 {row(t("bank"), b.bank)}
                 {row(t("accountName"), b.account_name)}
-                {row(t("accountNumber"), b.number)}
+                {row(t("accountNumber"), bnDigits(b.number, locale))}
                 {row(t("branch"), b.branch)}
-                {row(t("routing"), b.routing)}
+                {row(t("routing"), b.routing && bnDigits(b.routing, locale))}
                 {row(t("swift"), b.swift)}
               </dl>
               <CopyButton value={b.number} label={t("copyAria", { label: b.bank })} copiedLabel={t("copied")} />
