@@ -4,11 +4,16 @@ The three donation endpoints the website calls (docs/API.md "Donations"):
     POST /api/v1/donations/               create a PENDING donation, answer with the SSLCommerz payment page URL
     GET  /api/v1/donations/<id>/status/   the donation's status for the success / failed page (no personal data)
     POST /api/v1/donations/<id>/refresh/  same, but after 2 minutes we also ask SSLCommerz once
+
+and the receipt PDF behind the signed link from the success page, SMS and email:
+
+    GET  /r/<ref>-<signature>  (also /api/v1/receipts/<ref>-<signature>/)
 """
 
 from datetime import timedelta
 
 from django.core.cache import cache
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework.decorators import api_view, throttle_classes
@@ -20,8 +25,8 @@ from payments import sslcommerz
 from payments.models import GatewayEvent
 
 from .models import FAIL_REASONS, Donation, Status
+from .receipts import donation_for_link, receipt_pdf, receipt_url
 from .serializers import DonationSerializer
-from .services import receipt_url
 
 
 class TenPerTenMinutes(SimpleRateThrottle):
@@ -120,3 +125,22 @@ def status_json(donation, language):
     if donation.status == Status.PAID:
         body["receipt_url"] = receipt_url(donation.gateway_ref)
     return body
+
+
+def download_receipt(request, token):
+    """The receipt PDF for a signed link. A wrong, expired or unpaid link is a plain 404 (never says which)."""
+    # At most 30 receipts per visitor IP in 10 minutes: links can't be guessed, this just stops scripted tries.
+    key = f"receipt_downloads_{client_ip(request)}"
+    cache.add(key, 0, 10 * 60)
+    if cache.incr(key) > 30:
+        return HttpResponse("Too many requests", status=429, content_type="text/plain")
+
+    donation = donation_for_link(token)
+    if donation is None:
+        raise Http404
+
+    response = HttpResponse(receipt_pdf(donation), content_type="application/pdf")
+    response["Content-Disposition"] = f'attachment; filename="receipt-{donation.receipt_no}.pdf"'
+    response["Cache-Control"] = "private, no-store"  # it shows the donor's name
+    response["X-Robots-Tag"] = "noindex"
+    return response

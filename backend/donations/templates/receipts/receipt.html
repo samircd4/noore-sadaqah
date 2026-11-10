@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Donation receipt {{ rows.0.1 }}</title>
+<style>
+  /* The receipt is in English. Fonts are embedded from backend/static/fonts (Noto, SIL Open Font License);
+     the Bengali one is there for donor names typed in Bengali. */
+  @font-face { font-family: "Noto Sans Bengali"; src: url("fonts/NotoSansBengali-Regular.ttf"); font-weight: 400; }
+  @font-face { font-family: "Noto Sans Bengali"; src: url("fonts/NotoSansBengali-Bold.ttf"); font-weight: 700; }
+  @font-face { font-family: "Noto Sans"; src: url("fonts/NotoSans-Regular.ttf"); font-weight: 400; }
+  @font-face { font-family: "Noto Sans"; src: url("fonts/NotoSans-Bold.ttf"); font-weight: 700; }
+
+  /* Colours from design/tokens.css: em-950, em-900, em-700, gold-600, gold-500, sand-50, sand-200. */
+  @page { size: A4; margin: 18mm 16mm; }
+  html { font-family: "Noto Sans", "Noto Sans Bengali", sans-serif; color: #041c13; font-size: 11pt; line-height: 1.55; }
+  body { margin: 0; }
+
+  .head { display: flex; align-items: center; gap: 12pt; padding-bottom: 10pt; border-bottom: 2pt solid #d6a83f; }
+  .head img { width: 54pt; height: 54pt; }
+  .head h1 { margin: 0; font-size: 18pt; color: #072e20; }
+  .head p { margin: 2pt 0 0; font-size: 9pt; color: #0f5a3f; }
+
+  .title { display: flex; justify-content: space-between; align-items: baseline; margin: 18pt 0 10pt; }
+  .title h2 { margin: 0; font-size: 15pt; color: #072e20; }
+  .title span { font-size: 9pt; color: #b88725; font-weight: 700; letter-spacing: .5pt; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 7pt 0; border-bottom: .75pt solid #eadfc8; text-align: left; vertical-align: top; }
+  th { width: 38%; font-weight: 400; color: #0f5a3f; font-size: 10pt; }
+  td { font-weight: 700; }
+
+  .amount { margin-top: 16pt; padding: 12pt 14pt; background: #fbf8f2; border: .75pt solid #eadfc8; border-radius: 6pt; }
+  .amount .figure { font-size: 20pt; font-weight: 700; color: #072e20; }
+  .amount .words { margin-top: 2pt; font-size: 10.5pt; }
+
+  .thanks { margin-top: 20pt; font-size: 11pt; color: #0f5a3f; }
+  .footer { position: fixed; bottom: 0; left: 0; right: 0; font-size: 8.5pt; color: #0f5a3f; border-top: .75pt solid #eadfc8; padding-top: 6pt; }
+
+  .refunded { position: fixed; top: 42%; left: 0; right: 0; text-align: center; transform: rotate(-24deg);
+              font-size: 64pt; font-weight: 700; color: rgba(184, 135, 37, .25); }
+</style>
+</head>
+<body>
+  {% if refunded %}<div class="refunded">REFUNDED</div>{% endif %}
+
+  <div class="head">
+    <img src="receipts/logo.png" alt="">
+    <div>
+      <h1>Noore Sadaqah Foundation</h1>
+      {% for line in foundation.lines %}<p>{{ line }}</p>{% endfor %}
+      {% if foundation.registration %}<p>Registration: {{ foundation.registration }}</p>{% endif %}
+    </div>
+  </div>
+
+  <div class="title">
+    <h2>Donation receipt</h2>
+    {% if refunded %}<span>REFUNDED</span>{% endif %}
+  </div>
+
+  <table>
+    {% for label, value in rows %}
+    <tr><th>{{ label }}</th><td>{{ value }}</td></tr>
+    {% endfor %}
+  </table>
+
+  <div class="amount">
+    <div>Amount</div>
+    <div class="figure">{{ amount }}</div>
+    <div class="words">In words: {{ amount_words }}</div>
+  </div>
+
+  <p class="thanks">Jazakallahu khairan. Your gift is a trust (amanah) with us.</p>
+
+  <div class="footer">This receipt is computer generated and needs no signature.</div>
+</body>
+</html>

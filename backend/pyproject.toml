@@ -14,6 +14,7 @@ dependencies = [
     "python-dotenv>=1.1",
     "redis>=5.2",
     "requests>=2.32",
+    "weasyprint>=66",
 ]
 
 [dependency-groups]
@@ -41,6 +42,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
+"donations/receipts.py" = ["E501"] # the Bengali number table keeps ten words per row
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings"

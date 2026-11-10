@@ -55,3 +55,10 @@ uv run celery -A config worker -B -l info           # dev only (worker + beat in
 uv run pytest
 uv run ruff check . && uv run ruff format .
 ```
+
+**Receipt PDFs need Pango** (WeasyPrint's text library):
+- Windows: `winget install MSYS2.MSYS2`, then in the MSYS2 shell `pacman -S mingw-w64-ucrt-x86_64-pango`,
+  and set `WEASYPRINT_DLL_DIRECTORIES=C:\msys64\ucrt64\bin` in `.env`.
+- Ubuntu: `apt install libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz0b`.
+
+Without it everything else works; only the receipt download fails, and its PDF test is skipped.

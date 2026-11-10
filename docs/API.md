@@ -219,7 +219,7 @@ Locale for the redirect: every URL carries its language (D16), so Django always 
 Public receipt link for SMS/email, short enough for one Bengali SMS part (NOTIFICATIONS.md).
 `sig` = first 10 characters of base32(HMAC-SHA256(`RECEIPT_TOKEN_SECRET`, `gateway_ref`)), lower-case.
 Valid while the donation is PAID or REFUNDED and for **90 days after `paid_at`**. Wrong signature, unknown ref or
-expired → 404 (not 403). Returns `application/pdf` rendered by WeasyPrint. Throttled per IP.
+expired → 404 (not 403). Returns `application/pdf` rendered by WeasyPrint (`Content-Disposition: attachment`, `Cache-Control: private, no-store`). Throttled: 30 downloads per IP per 10 minutes, then `429`.
 
 `/api/v1/receipts/` is kept as the same handler for links in emails (`/api/v1/receipts/{gateway_ref}-{sig}/`).
 

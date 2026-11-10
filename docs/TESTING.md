@@ -33,7 +33,7 @@ Rules:
 - Permissions: for each group, each ModelAdmin view/add/change and each custom action → allowed or 403 as in ADMIN.md.
 - OTP: expiry, attempts, throttles, staff refused, enumeration-safe responses, donation linking.
 - JWT: rotation, blacklist, reuse rejected.
-- `amount_in_words_bn` table test.
+- `amount_in_words` table test (receipt PDFs are English, D17).
 - Receipt PDF renders and `pdftotext` output contains the expected Bengali strings.
 
 ## Must-have e2e flows (Playwright)
