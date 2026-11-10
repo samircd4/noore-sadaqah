@@ -1,0 +1,26 @@
+# Local development services only (production runs Postgres and Redis on the VPS, DEPLOYMENT.md).
+#   docker compose -f docker-compose.dev.yml up -d
+# The database name, user and password come from backend/.env (Docker Compose reads it automatically).
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-noore}
+      POSTGRES_USER: ${DB_USER:-noore}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "127.0.0.1:6379:6379"
+
+volumes:
+  pgdata:

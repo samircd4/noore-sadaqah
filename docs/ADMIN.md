@@ -60,7 +60,7 @@ permission on Donation, Subscription, GatewayEvent, OutboundMessage or AuditLog.
 
 ## Audit log
 
-Write an `AuditLog` row (`apps/audit/helpers.py::audit(request, action, obj, before, after)`) for every change to:
+Write an `AuditLog` row (`audit/helpers.py::audit(request, action, obj, before, after)`) for every change to:
 donations (offline create, refund, resend), subscriptions (pause/cancel by staff), funds, campaigns (goal/dates/fund),
 SiteSetting, users/groups, and **every CSV export**. Store only the changed fields (`{before, after}`).
 Django's own `LogEntry` stays on as well. The audit admin is read-only.
@@ -117,7 +117,7 @@ Inline: charge history (Donations). Actions: pause, resume, cancel (with reason)
 List + "handled" toggle + filters. CSV export (Subscribers: Admin only).
 
 ### Settings (SiteSetting)
-One admin form per key, rendered from its JSON schema (`apps/core/schemas.py`), never a raw JSON textarea:
+One admin form per key, rendered from its JSON schema (`core/schemas.py`), never a raw JSON textarea:
 - **Stats** `{value, suffix, label_bn, label_en}` rows; **Contact**; **Social**; **Quote**; **Registration**;
   **Mobile banking** (merchant numbers only).
 - **Nisab** `{silver_price_per_gram, gold_price_per_gram, karat, source, updated_at}`, see ZAKAT_POLICY.md.

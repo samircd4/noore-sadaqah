@@ -49,14 +49,21 @@ Rules:
 Before the backend exists, e2e runs with `API_MODE=mock`: the fake gateway page is `/donate/mock-gateway` and the OTP
 is `123456`. The same Playwright specs later run against Django.
 
-Mock gateway for e2e in live mode: a test-only Django view (`apps/payments/testing.py`, only with `DEBUG` + `E2E=1`) that imitates
+Mock gateway for e2e in live mode: a test-only Django view (`payments/testing.py`, only with `DEBUG` + `E2E=1`) that imitates
 the gateway page and posts a valid-looking callback, while the Validation API is mocked on the server.
 
 ## Sandbox testing (manual, phase B2 and before launch)
 
-1. Start a tunnel: `cloudflared tunnel --url http://localhost:8080` (local Nginx, or point the tunnel at Next and Django with two hostnames).
-2. Set `SITE_URL` to the tunnel URL in `backend/.env` and restart Django and the worker.
-3. SSLCommerz sandbox panel: set the IPN URL to `<tunnel>/api/v1/payments/sslcommerz/ipn/`.
+Locally there is no Nginx: `next dev` forwards `/api/`, `/admin/` and `/r/` to Django (`frontend/next.config.mjs`),
+so the site and the callbacks share `http://localhost:3000`.
+
+1. `cd backend && docker compose -f docker-compose.dev.yml up -d && uv run python manage.py migrate && uv run python manage.py seed`,
+   then `uv run python manage.py runserver 8000`. `backend/.env` holds the sandbox store id and password.
+2. Frontend `.env.local`: `API_LIVE_GROUPS=donations`, `API_INTERNAL_URL=http://127.0.0.1:8000/api/v1`; restart `npm run dev`.
+   Content stays mocked; donations go to Django and the real sandbox.
+3. Without a tunnel, `SITE_URL=http://localhost:3000` is enough: the browser's success POST is validated
+   server-to-server. To test the IPN as well, run `cloudflared tunnel --url http://localhost:3000`, set `SITE_URL`
+   to the tunnel URL, restart Django, and set the IPN URL `<tunnel>/api/v1/payments/sslcommerz/ipn/` in the sandbox panel.
 4. Run QA_CHECKLIST.md §4–6 with the test cards and wallets from the SSLCommerz and bKash developer docs.
 5. Check `GatewayEvent` rows in the admin for every case.
 

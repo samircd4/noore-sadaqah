@@ -1,6 +1,6 @@
 # Data Model (Django)
 
-PostgreSQL through the Django ORM. One section per Django app (`backend/apps/<app>/models.py`).
+PostgreSQL through the Django ORM. One section per Django app (`backend/<app>/models.py`).
 
 **Conventions**
 - Money is **integer taka**: `models.PositiveIntegerField`. Never `FloatField` or `DecimalField`.
@@ -14,7 +14,7 @@ PostgreSQL through the Django ORM. One section per Django app (`backend/apps/<ap
   `blank=True`); `cover_image + cover_alt_bn/en` means the image field plus its two alt-text fields. Write them out in full in code.
 
 ```python
-# apps/core/models.py
+# core/models.py
 class TimeStamped(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -86,7 +86,7 @@ class SiteSetting(TimeStamped):
 | `about` | `{mission_bn, mission_en, vision_bn, vision_en}` (shown on `/about`) | Admin, Editor |
 | `contact_faq` | `[{q_bn, q_en, a_bn, a_en}]` (FAQ on `/contact`) | Admin, Editor |
 
-Each key has a JSON schema validated in the admin form (`apps/core/schemas.py`), so a typo can't break the site.
+Each key has a JSON schema validated in the admin form (`core/schemas.py`), so a typo can't break the site.
 
 ## content
 
@@ -228,7 +228,7 @@ class Donation(TimeStamped):
     campaign = models.ForeignKey(Campaign, null=True, blank=True, on_delete=models.PROTECT)
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)  # linked by phone/email on login
     kind = models.CharField(max_length=10, choices=Kind.choices, default=Kind.ONE_TIME)
-    subscription = models.ForeignKey("subscriptions.Subscription", null=True, blank=True, on_delete=models.PROTECT)
+    subscription = models.ForeignKey("subscriptions.Subscription", null=True, blank=True, on_delete=models.PROTECT)  # added in B4
     due_on = models.DateField(null=True, blank=True)        # monthly charges: the anchor date this charge is for
 
     donor_name = models.CharField(max_length=120)
@@ -250,7 +250,7 @@ class Donation(TimeStamped):
     gateway_session = models.CharField(max_length=120, blank=True)  # SSLCommerz sessionkey / bKash paymentID
     gateway_txn_id = models.CharField(max_length=80, unique=True, null=True, blank=True)  # bank_tran_id / trxID
     gateway_payload = models.JSONField(null=True, blank=True)       # last validation response (no secrets)
-    fail_reason = models.CharField(max_length=200, blank=True)
+    fail_reason = models.CharField(max_length=200, blank=True)     # a FAIL_REASONS key (declined, cancelled, expired) or staff text
 
     # offline entries (ADMIN.md)
     reference = models.CharField(max_length=120, blank=True)        # bank slip / transaction no.
@@ -283,7 +283,7 @@ class ReceiptCounter(models.Model):
 
 ### Marking a donation PAID (the only way)
 
-`apps/donations/services.py::mark_paid(donation_id, *, txn_id, payload, paid_at=None)` is the **only** function that
+`donations/services.py::mark_paid(donation_id, *, txn_id, payload, paid_at=None)` is the **only** function that
 sets `status = PAID`. It is called by gateway callbacks, the bKash/SSLCommerz query fallback, recurring charges and
 offline entry.
 

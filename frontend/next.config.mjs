@@ -12,6 +12,14 @@ const remotePatterns = [
   ...(apiMode !== "live" ? [{ protocol: "https", hostname: "images.unsplash.com" }] : []),
 ];
 
+/**
+ * `next dev` only: stand in for Nginx (docs/ARCHITECTURE.md) by forwarding Django's paths to API_INTERNAL_URL's
+ * server, so the gateway's callbacks and redirects work on http://localhost:3000 (or a tunnel to it).
+ * Production never uses this: Nginx routes /api/, /admin/ and /r/ to Django.
+ */
+const djangoOrigin =
+  process.env.NODE_ENV !== "production" && process.env.API_INTERNAL_URL ? new URL(process.env.API_INTERNAL_URL).origin : null;
+
 /** Baseline security headers. The full CSP comes later (docs/SECURITY.md §8). */
 const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
@@ -36,6 +44,23 @@ const nextConfig = {
         as: "*.css",
       },
     },
+  },
+  // Django's URLs end in "/": keep them as they are instead of Next's trailing-slash redirect.
+  skipTrailingSlashRedirect: Boolean(djangoOrigin),
+  async rewrites() {
+    if (!djangoOrigin) return [];
+    // Rewrites lose the trailing "/": put it back for Django's URL patterns; files and receipt links have none.
+    return [
+      { source: "/admin", destination: `${djangoOrigin}/admin/` },
+      ...["api", "admin"].map((prefix) => ({
+        source: `/${prefix}/:path+`,
+        destination: `${djangoOrigin}/${prefix}/:path+/`,
+      })),
+      ...["r", "dj-static"].map((prefix) => ({
+        source: `/${prefix}/:path+`,
+        destination: `${djangoOrigin}/${prefix}/:path+`,
+      })),
+    ];
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];

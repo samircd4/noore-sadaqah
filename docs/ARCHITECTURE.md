@@ -166,19 +166,19 @@ noore-sadaqah/
 └── backend/
     ├── CLAUDE.md
     ├── .env.example
-    ├── pyproject.toml              # deps (uv or pip-tools), ruff and pytest config
+    ├── pyproject.toml              # deps (uv; uv.lock pins them), ruff and pytest config
+    ├── docker-compose.dev.yml      # local Postgres + Redis
     ├── manage.py
-    ├── config/                     # settings/{base,dev,prod}.py, urls.py, celery.py, wsgi.py
-    ├── apps/
-    │   ├── core/                   # SiteSetting, health view, revalidate signal, format filters
-    │   ├── accounts/               # User, OtpCode, OTP + JWT views
-    │   ├── content/                # Fund, Program, ProgramImage, Campaign, Post, GalleryItem, Person, Report, Job
-    │   ├── donations/              # Donation, ReceiptCounter, receipt PDF, services.mark_paid()
-    │   ├── payments/               # sslcommerz.py, bkash.py clients, callback views, GatewayEvent
-    │   ├── subscriptions/          # Subscription, charge tasks
-    │   ├── engagement/             # ContactMessage, Volunteer, Subscriber
-    │   ├── notifications/          # providers.py (SMS, email), tasks, OutboundMessage, templates
-    │   └── audit/                  # AuditLog + helper audit(user, action, target, before, after)
+    ├── config/                     # settings.py (one file, values from .env), urls.py, celery.py, wsgi.py
+    ├── core/                       # SiteSetting, health view, revalidate signal, format filters
+    ├── accounts/                   # User, OtpCode, OTP + JWT views
+    ├── content/                    # Fund, Program, ProgramImage, Campaign, Post, GalleryItem, Person, Report, Job
+    ├── donations/                  # Donation, ReceiptCounter, receipt PDF, services.mark_paid()
+    ├── payments/                   # sslcommerz.py, bkash.py clients, callback views, GatewayEvent
+    ├── subscriptions/              # Subscription, charge tasks
+    ├── engagement/                 # ContactMessage, Volunteer, Subscriber
+    ├── notifications/              # providers.py (SMS, email), tasks, OutboundMessage, templates
+    ├── audit/                      # AuditLog + helper audit(user, action, target, before, after)
     ├── templates/                  # receipts/receipt.html, emails/*.html, admin overrides
     ├── static/fonts/               # Noto Sans/Serif Bengali TTF for WeasyPrint
     ├── locale/                     # bn/en .po files (admin, SMS, email)
@@ -227,11 +227,15 @@ SENTRY_DSN=                                        # optional
 ### `backend/.env.example`
 
 ```
-DJANGO_SETTINGS_MODULE=config.settings.prod
+DJANGO_DEBUG=false                                # true only on a developer's machine
 DJANGO_SECRET_KEY=
 DJANGO_ALLOWED_HOSTS=nooresadaqah.org,127.0.0.1
 DJANGO_CSRF_TRUSTED_ORIGINS=https://nooresadaqah.org
-DATABASE_URL=postgres://noore:***@127.0.0.1:5432/noore
+DB_NAME=noore
+DB_USER=noore
+DB_PASSWORD=
+DB_HOST=127.0.0.1
+DB_PORT=5432
 REDIS_URL=redis://127.0.0.1:6379/0
 
 SITE_URL=https://nooresadaqah.org                 # used to build callback and redirect URLs
@@ -245,6 +249,8 @@ FIELD_ENCRYPTION_KEY=                             # Fernet key; encrypts stored 
 SSLCOMMERZ_STORE_ID=
 SSLCOMMERZ_STORE_PASSWORD=
 SSLCOMMERZ_SANDBOX=true
+DONATION_FALLBACK_EMAIL=donations@nooresadaqah.org  # cus_email when the donor gave none; never shown
+TRUSTED_PROXY_IPS=127.0.0.1,::1                   # X-Forwarded-For is trusted only from these
 
 BKASH_APP_KEY=
 BKASH_APP_SECRET=

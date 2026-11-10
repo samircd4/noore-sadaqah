@@ -166,6 +166,11 @@ Creates a PENDING donation and starts the gateway session.
 }
 ```
 - `kind: "monthly"` creates the Subscription as well (requires `fund.allow_recurring`); see DONATION_FLOW.md for AUTO vs REMINDER.
+- `method` must be a gateway that can take payments now (listed in `site.payment_methods` and configured);
+  otherwise `method: ["choiceInvalid"]`. Checkout then offers the other methods.
+- **Temporary, Django only** (the mock already follows the final contract): until subscriptions exist (ROADMAP B4)
+  Django refuses `kind: "monthly"` with `recurringNotAllowed`, and until the bKash client is built (ROADMAP B2) it
+  accepts only `sslcommerz`.
 - Fitra funds: send `fitra_people` + `fitra_item`; the server computes `amount` from the current rates and ignores the
   client `amount`. Refused with `fitraClosed` after the cutoff.
 - The server normalises the phone (`+880…`, Bengali digits) and recomputes everything; it never trusts client totals.
@@ -184,6 +189,7 @@ Public, no auth. The UUID is unguessable; the response holds **no personal data*
  "receipt_no": "NSF-2026-000123", "paid_at": "…", "fail_reason": null, "receipt_url": "/r/NSD7K2M9QX4PA-k3j9x2m1qa"}
 ```
 `receipt_url` is present only when `status == "paid"`; it is the short signed link `/r/{gateway_ref}-{sig}` (see "Receipts").
+`fail_reason` is a sentence in the request's language for FAILED or CANCELLED donations, otherwise `null`.
 
 ### `POST /donations/{id}/refresh/`
 Used by the success page while PENDING (at most every 5 seconds, 12 times). If the donation is still PENDING after
@@ -197,7 +203,7 @@ All of them log a `GatewayEvent`, are **idempotent**, and never trust the parame
 
 | Endpoint | Caller | Does |
 |---|---|---|
-| `POST /payments/sslcommerz/ipn/` | SSLCommerz server | Validate `val_id` with the Validation API, check `tran_id == gateway_ref`, `amount` and `currency == BDT`, then `mark_paid()`. Always answers `200` once the event is stored. |
+| `POST /payments/sslcommerz/ipn/` | SSLCommerz server | Validate `val_id` with the Validation API, check `tran_id == gateway_ref`, `amount` and `currency == BDT`, then `mark_paid()`. Answers `200` once the event is stored, except `503` when the Validation API couldn't be reached, so SSLCommerz sends the IPN again. |
 | `POST /payments/sslcommerz/success/` | Donor's browser (form POST from SSLCommerz) | Same validation as the IPN (whichever arrives first wins), then **303** → `/{locale}/donate/success?id=` (`locale` = the donation's `locale`, `bn` or `en`; I18N.md). Exempt from CSRF; nothing is trusted without validation. |
 | `POST /payments/sslcommerz/fail/` · `cancel/` | Browser | Query by `tran_id`; set FAILED/CANCELLED only if the gateway agrees; 303 → `/{locale}/donate/failed?id=`. |
 | `GET /payments/bkash/callback/?paymentID=&status=` | Browser (redirect from bKash) | `status=success` → Execute Payment once, then Query Payment; `transactionStatus == "Completed"` and amount match → `mark_paid()`. Otherwise FAILED/CANCELLED. 303 → `/{locale}/donate/success?id=` or `/{locale}/donate/failed?id=`. |

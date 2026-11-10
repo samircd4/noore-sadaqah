@@ -109,7 +109,15 @@ The fixtures are the reference: every B phase adds the **contract test** (TESTIN
 
 ### B1: Django setup, content and admin
 
-- [ ] `backend/`: Django 5.2 project `config` (split settings), DRF, custom `accounts.User` **before the first migration**, Postgres, Redis, ruff, pytest, `GET /health/`
+Done early, as the base for SSLCommerz sandbox testing (branch `b2-sslcommerz-sandbox`):
+- [x] `backend/` with uv (`pyproject.toml`, `uv.lock`), one `config/settings.py`, apps next to `manage.py`, DRF, custom `accounts.User` before the first
+      migration, Postgres + Redis in `docker-compose.dev.yml`, ruff, pytest, `GET /health/`
+- [x] `core.SiteSetting`, `content.Fund` and `content.Campaign`; error format, `donation_create` throttle, client IP
+- [x] `manage.py seed` for funds, campaigns and site settings from the frontend fixtures
+
+Still to do:
+
+- [ ] `backend/`: Django 5.2 project `config`, DRF, custom `accounts.User` **before the first migration**, Postgres, Redis, ruff, pytest, `GET /health/`
 - [ ] Apps `core`, `content`, `engagement`, `audit`; Unfold admin, Groups and permissions (ADMIN.md); R2 storage
 - [ ] Public content + form endpoints, error format, throttles, language resolution
 - [ ] `manage.py seed` **from the frontend fixtures**; revalidate hook
@@ -118,6 +126,21 @@ The fixtures are the reference: every B phase adds the **contract test** (TESTIN
 > **Prompt:** "Create `backend/` as in `docs/ARCHITECTURE.md` and `backend/CLAUDE.md`, with the custom `accounts.User` from `docs/DATA_MODEL.md` before the first migration. Implement the `core`, `content`, `engagement` and `audit` apps, the public content and form endpoints exactly as in `docs/API.md`, and their Unfold admin as in `docs/ADMIN.md`, with media on R2. Write `manage.py seed` that loads `frontend/src/mocks/fixtures/*.json`. Add pytest tests for every endpoint and group permission, and a contract test that compares each response with its fixture's keys and types."
 
 ### B2: Donations (sandbox)
+
+Done (branch `b2-sslcommerz-sandbox`):
+- [x] `donations` and `payments` apps, `mark_paid()` with the Dhaka-year receipt counter, GatewayEvent log
+- [x] `POST /donations/`, `status/`, `refresh/`; SSLCommerz sandbox initiate, IPN, success, fail and cancel
+- [x] pytest: mark_paid, parallel receipt numbers, every IPN case in TESTING.md, create refusals, throttle, 502
+- [x] Frontend unchanged: `API_LIVE_GROUPS=donations`; `next dev` forwards `/api/`, `/admin/`, `/r/` to Django
+- [x] Sandbox click-through with the real store credentials: success, failed and cancelled (bn and en)
+- [ ] IPN through a cloudflared tunnel (TESTING.md "Sandbox testing"), then the rest of QA §4
+
+Still to do (donations are refused or limited until these land):
+- [ ] bKash sandbox (until then `method: "bkash"` is refused with `choiceInvalid`)
+- [ ] Receipt PDF (`/r/…`), Celery `send_receipt`, SMS + email (console providers first)
+- [ ] `cleanup_pending` beat task
+- [ ] When `GET /site/` moves to Django (B1): `payment_methods` lists only the methods Django can take now, so
+      donors never see a method that will be refused
 
 - [ ] `donations`, `payments`, `notifications` apps; `mark_paid()`; WeasyPrint receipts; Celery
 - [ ] SSLCommerz sandbox + IPN, bKash sandbox, SMS + email (console providers first)
