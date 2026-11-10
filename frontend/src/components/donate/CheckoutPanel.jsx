@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import Button from "@/components/ui/Button";
 import EmptyState from "@/components/ui/EmptyState";
 import FieldError from "@/components/ui/FieldError";
+import { Link } from "@/i18n/navigation";
 import { createDonation } from "@/lib/actions/donate";
 import { saveDraft, useDonationDraft } from "@/lib/donation-draft";
 import { bnDigits, taka } from "@/lib/format";
@@ -17,7 +18,8 @@ import MethodPicker from "./MethodPicker";
  * createDonation server action; on success the action redirects to the gateway. The quick-donate draft has no
  * payment method yet, so it is asked here. Loading state and a guard prevent a double submit (QA §3).
  * If Django refuses the campaign (ended, or not this fund's), the campaign is dropped from the draft so the next
- * "পেমেন্ট করুন" gives to the fund itself instead of failing again.
+ * "পেমেন্ট করুন" gives to the fund itself instead of failing again. If it refuses the payment method (not switched on
+ * yet), that method is removed and the method choices are shown again.
  * Phone: summary full width, buttons stacked with "পেমেন্ট করুন" on top (RESPONSIVE.md §15).
  * @param {object} props
  * @param {Record<string, string>} props.fundTitles slug → title, from GET /funds/
@@ -35,6 +37,7 @@ export default function CheckoutPanel({ fundTitles, methods, locale }) {
   const [pending, startTransition] = useTransition();
   const sending = useRef(false);
   const [campaignDropped, setCampaignDropped] = useState(false);
+  const [refusedMethods, setRefusedMethods] = useState(/** @type {string[]} */ ([]));
 
   // Back from the gateway page, the browser may restore this page from its cache with the button still "paying"
   // (the redirect never returned): load it fresh instead.
@@ -53,7 +56,8 @@ export default function CheckoutPanel({ fundTitles, methods, locale }) {
     return <EmptyState text={t("empty")} icon={HandCoins} action={{ href: "/donate", label: t("startAgain") }} />;
   }
 
-  const draftMethod = draft.method && methods.includes(draft.method) ? draft.method : "";
+  const usableMethods = methods.filter((m) => !refusedMethods.includes(m));
+  const draftMethod = draft.method && usableMethods.includes(draft.method) ? draft.method : "";
   const chosenMethod = draftMethod || method;
   const changeHref = fundDonateHref(draft.fund, { campaign: draft.campaign || undefined });
 
@@ -72,11 +76,20 @@ export default function CheckoutPanel({ fundTitles, methods, locale }) {
       const response = await createDonation({ ...body, method: chosenMethod, locale });
       // Only failures come back; on success the browser is already on its way to the gateway.
       if (response) {
+        let saved = { ...body, method: chosenMethod };
         if (response.fieldErrors?.campaign && body.campaign) {
-          const { campaign: _campaign, ...withoutCampaign } = body;
-          saveDraft({ ...withoutCampaign, source: draft.source, method: chosenMethod });
+          saved = { ...saved, campaign: "" };
           setCampaignDropped(true);
         }
+        if (response.fieldErrors?.method) {
+          // This method can't take payments now: forget it and let the donor pick another.
+          const { method: _method, ...withoutMethod } = saved;
+          saved = withoutMethod;
+          setRefusedMethods((list) => [...list, chosenMethod]);
+          setMethod("");
+          response.fieldErrors.method = { key: "checkout.methodUnavailable", params: {} };
+        }
+        saveDraft({ ...saved, source: draft.source });
         setResult(response);
         sending.current = false;
       }
@@ -96,6 +109,8 @@ export default function CheckoutPanel({ fundTitles, methods, locale }) {
   ].filter(Boolean);
 
   const fieldErrors = Object.entries(result?.fieldErrors ?? {}).filter(([field]) => field !== "method" || draftMethod);
+  // Every method was refused (none switched on): no picker, no pay button; point to the other ways to give.
+  const noMethodLeft = !draftMethod && usableMethods.length === 0;
   const methodError = !draftMethod && result?.fieldErrors?.method ? tAll(result.fieldErrors.method.key, result.fieldErrors.method.params) : null;
 
   return (
@@ -114,7 +129,17 @@ export default function CheckoutPanel({ fundTitles, methods, locale }) {
         </dl>
       </section>
 
-      {!draftMethod && <MethodPicker methods={methods} name="checkout-method" value={method} onChange={setMethod} error={methodError} />}
+      {noMethodLeft && (
+        <p role="alert" className="rounded-lg border border-gold-500 bg-sand-100 p-4 text-base leading-relaxed text-em-950">
+          {t("noMethodLeft")}{" "}
+          <Link href="/donate#offline-giving" className="font-semibold text-em-700 underline underline-offset-2">
+            {t("otherWays")}
+          </Link>
+        </p>
+      )}
+      {!draftMethod && !noMethodLeft && (
+        <MethodPicker methods={usableMethods} name="checkout-method" value={method} onChange={setMethod} error={methodError} />
+      )}
 
       {(fieldErrors.length > 0 || result?.error) && (
         <div role="alert" className="rounded-lg border border-gold-500 bg-sand-100 p-4">
@@ -145,7 +170,7 @@ export default function CheckoutPanel({ fundTitles, methods, locale }) {
 
       {/* Pay first in the DOM so it is on top on phones; to the right of "change" from sm. */}
       <div className="flex flex-col gap-3 sm:flex-row-reverse sm:justify-start">
-        <Button variant="gold" size="cta" blockOnPhone className="shadow-md" onClick={pay} disabled={pending} aria-busy={pending || undefined}>
+        <Button variant="gold" size="cta" blockOnPhone className="shadow-md" onClick={pay} disabled={pending || noMethodLeft} aria-busy={pending || undefined}>
           <Lock aria-hidden="true" className="size-5" />
           {pending ? t("paying") : t("pay")}
         </Button>

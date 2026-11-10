@@ -1,0 +1,49 @@
+[project]
+name = "noore-sadaqah-backend"
+version = "0.1.0"
+description = "Django + DRF backend for the Noore Sadaqah Foundation website"
+readme = "CLAUDE.md"
+requires-python = ">=3.12"
+dependencies = [
+    "celery>=5.5",
+    "django>=5.2.8,<5.3",
+    "djangorestframework>=3.16,<3.17",
+    "gunicorn>=23",
+    "pillow>=11.3",
+    "psycopg[binary]>=3.2.10",
+    "python-dotenv>=1.1",
+    "redis>=5.2",
+    "requests>=2.32",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4",
+    "pytest-django>=4.11",
+    "responses>=0.25",
+    "ruff>=0.13",
+]
+
+[tool.uv]
+# An application, not a library: nothing to build or publish.
+package = false
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = ["**/migrations/*"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "DJ", "S", "SIM"]
+ignore = [
+    "S101", # assert is fine in tests
+    "SIM105", # a plain try/except with a comment reads more easily than contextlib.suppress
+]
+
+[tool.ruff.lint.per-file-ignores]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["test_*.py"]
+testpaths = ["tests"]
+addopts = "--reuse-db -p no:cacheprovider"

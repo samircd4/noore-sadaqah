@@ -17,6 +17,8 @@ import { pageMetadata } from "@/lib/seo";
  * GET /site/ (payment methods, mobile banking, fitra, zakat flag).
  * Phone: form first, story after (RESPONSIVE.md §7, §15). From lg: form (7) left, story and offline details (5) right.
  * The form reads ?amount= / ?campaign= in the browser, so the rest of the page is prerendered.
+ * The page body reads the URL's [fund] inside <Suspense>, so a navigation shows the placeholder at once
+ * (Next.js "instant" navigations) instead of waiting for the fund.
  */
 
 export async function generateStaticParams({ params }) {
@@ -44,7 +46,30 @@ function FormSkeleton() {
   return <div aria-hidden="true" className="h-[52rem] animate-pulse rounded-lg bg-sand-100 motion-reduce:animate-none sm:h-[44rem]" />;
 }
 
-export default async function FundDonatePage({ params }) {
+/** Placeholder for the whole page while the fund loads: hero band, then the form's area. */
+function PageSkeleton() {
+  return (
+    <div aria-hidden="true" className="animate-pulse motion-reduce:animate-none">
+      <div className="h-64 bg-em-900 sm:h-72" />
+      <div className="bg-sand-50 py-12 sm:py-14 lg:py-20">
+        <div className="mx-auto max-w-7xl px-4 lg:grid lg:grid-cols-12 lg:gap-10">
+          <div className="h-[52rem] rounded-lg bg-sand-100 sm:h-[44rem] lg:col-span-7" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function FundDonatePage({ params }) {
+  return (
+    <Suspense fallback={<PageSkeleton />}>
+      <FundDonateBody params={params} />
+    </Suspense>
+  );
+}
+
+/** @param {{ params: Promise<{ fund: string }> }} props */
+async function FundDonateBody({ params }) {
   const [{ fund: slug }, locale] = await Promise.all([params, currentLocale()]);
   const [fund, site, t] = await Promise.all([
     loadFund(slug, locale),

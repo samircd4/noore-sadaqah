@@ -4,11 +4,11 @@
  * (frontend/CLAUDE.md "Mock API" rule 2: the one page allowed to touch src/mocks/).
  */
 
-import { createHmac } from "node:crypto";
+import { createHmac, randomBytes } from "node:crypto";
 import { store } from "./store";
 
-/** Mock stand-in for RECEIPT_TOKEN_SECRET. Not a secret: the mock's receipt links don't open anything. */
-const MOCK_RECEIPT_SECRET = "mock-receipt-secret";
+/** Mock stand-in for RECEIPT_TOKEN_SECRET: random per server start (the mock's receipt links don't open anything). */
+const MOCK_RECEIPT_SECRET = randomBytes(32).toString("hex");
 const BASE32 = "abcdefghijklmnopqrstuvwxyz234567";
 
 /** First `length` base32 characters of some bytes. */

@@ -14,7 +14,7 @@ Quick-donate (home) / DonateForm (/donate/[fund])        frontend, client compon
 Next server action createDonation()                      frontend/src/lib/actions/donate.js
    │  Zod again → POST /api/v1/donations/  (+ Bearer token if logged in, + X-Forwarded-For)
    ▼
-Django DonationCreateView                                backend/apps/donations
+Django DonationCreateView                                backend/donations
    1. Serializer validates (fund active, amount ≥ min, BD mobile, fitra rules, recurring allowed)
    2. Donation {status: PENDING, gateway_ref}
    3. Start a gateway session (SSLCommerz initiate / bKash create payment) → GatewayEvent
@@ -22,7 +22,7 @@ Django DonationCreateView                                backend/apps/donations
    ▼
 Server action redirect(redirect_url) → donor pays on SSLCommerz / bKash
    ▼
-Gateway → Django                                         backend/apps/payments
+Gateway → Django                                         backend/payments
    • SSLCommerz: IPN (server-to-server) and the browser's success POST → Validation API with val_id
    • bKash: browser callback → Execute Payment → Query Payment
    ▼

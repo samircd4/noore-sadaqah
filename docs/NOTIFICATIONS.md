@@ -1,10 +1,10 @@
 # Notifications: SMS and email
 
-All messages are sent by **Celery tasks** in `apps/notifications/` (never inline in a request) and recorded as an
+All messages are sent by **Celery tasks** in `notifications/` (never inline in a request) and recorded as an
 `OutboundMessage` row. Provider code sits behind one interface so the SMS company can change without touching callers:
 
 ```python
-# apps/notifications/providers.py
+# notifications/providers.py
 class SmsProvider:   def send(self, to: str, text: str) -> SendResult: ...   # console | sslwireless | bulksmsbd | …
 class EmailProvider: def send(self, to, subject, html, text, attachments=()) -> SendResult: ...  # console | resend | smtp
 ```
@@ -20,7 +20,7 @@ class EmailProvider: def send(self, to, subject, html, text, attachments=()) -> 
 
 Bengali SMS are Unicode (UCS-2): **70 characters for one SMS, 67 per part** when longer. English (GSM-7): 160 / 153.
 Each part is billed. Keep every Bengali SMS to **one part where possible, two at most**.
-`apps/notifications/sms.py::segments(text)` counts parts; a unit test fails if a rendered template (with the longest
+`notifications/sms.py::segments(text)` counts parts; a unit test fails if a rendered template (with the longest
 realistic values) goes over its budget below.
 
 Links in SMS use the **short receipt link** `https://nooresadaqah.org/r/<code>` (API.md "Receipts"), never the long signed URL.
