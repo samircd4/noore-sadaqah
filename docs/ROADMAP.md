@@ -65,11 +65,13 @@ These take weeks. The site can't launch without them.
 
 ### F3: Donation flow (mock gateway)
 
-- [ ] `/donate`, `/donate/[fund]` (DonateForm, AmountPicker, FundCard), `/donate/checkout`, `/donate/success`, `/donate/failed`
-- [ ] `createDonation` and `refreshDonation` server actions; quick-donate on home uses the same action
-- [ ] Mock `POST /donations/`, `GET /donations/{id}/status/`, `POST /donations/{id}/refresh/` and the
+- [x] `/donate`, `/donate/[fund]` (DonateForm, AmountPicker, FundCard), `/donate/checkout`, `/donate/success`, `/donate/failed`
+- [x] `createDonation` and `refreshDonation` server actions; quick-donate on home uses the same action
+- [x] Mock `POST /donations/`, `GET /donations/{id}/status/`, `POST /donations/{id}/refresh/` and the
       **`/donate/mock-gateway`** page (success / fail / cancel / stay pending)
-- [ ] Double-submit protection, `502 gatewayUnavailable` message, failed page pre-filled from `sessionStorage` · QA §3, UI parts of §4
+- [x] Double-submit protection, `502 gatewayUnavailable` message, failed page pre-filled from `sessionStorage` · QA §3, UI parts of §4
+- [ ] Monthly toggle on the form waits for F4 (login); until then `?monthly=1` shows a "monthly opens soon" note and the gift is one-time
+- [ ] Real-device pass of the flow, including the Facebook/Messenger in-app browser (QA §4)
 
 > **Prompt:** "Build the donation pages from `docs/PAGES.md` (`/donate` through `/donate/failed`) and the `createDonation` / `refreshDonation` server actions. Use the endpoints in `docs/API.md` through `src/lib/api.js`. In mock mode, `POST /donations/` must store the donation in `src/mocks/store.js` and return `redirect_url` to `/donate/mock-gateway?id=…`, a page (mock mode only) with buttons for success, failure, cancel and 'stay pending' that sets the status and redirects like Django will. The success page must read the status from the API, never from the URL, and poll while PENDING."
 

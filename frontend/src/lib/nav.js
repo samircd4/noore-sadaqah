@@ -13,21 +13,21 @@ export const MAIN_NAV = [
   { key: "contact", href: "/contact" },
 ];
 
-/**
- * Where "দান করুন" buttons go. Until the donate pages exist (phase F3) they scroll to the quick-donate
- * panel on the home page; from F3 change this to "/donate".
- */
-export const DONATE_HREF = { pathname: "/", hash: "donate" };
+/** Where "দান করুন" buttons go: the list of funds (PAGES.md "/donate"). */
+export const DONATE_HREF = "/donate";
 
 /**
- * "Donate to this fund" links (program sidebar, campaign page, DonateCta). The target is
- * `/donate/[fund]?amount=&campaign=&monthly=1` (PAGES.md). That page arrives in phase F3; until then this falls
- * back to DONATE_HREF so no link leads to a 404. From F3 return
- * `{ pathname: `/donate/${fundSlug}`, query: { amount, campaign, monthly: monthly ? 1 : undefined } }`
- * (dropping empty values), or DONATE_HREF when there is no fund.
+ * "Donate to this fund" links (program sidebar, campaign page, DonateCta, get-involved):
+ * `/donate/[fund]?amount=&campaign=&monthly=1` (PAGES.md), dropping empty values; DONATE_HREF without a fund.
  * @param {string | null | undefined} fundSlug
  * @param {{ amount?: number, campaign?: string, monthly?: boolean }} [options]
  */
-export function fundDonateHref(fundSlug, options = {}) {
-  return DONATE_HREF;
+export function fundDonateHref(fundSlug, { amount, campaign, monthly } = {}) {
+  if (!fundSlug) return DONATE_HREF;
+  /** @type {Record<string, string | number>} */
+  const query = {};
+  if (amount) query.amount = amount;
+  if (campaign) query.campaign = campaign;
+  if (monthly) query.monthly = 1;
+  return { pathname: `/donate/${fundSlug}`, query };
 }

@@ -1,7 +1,7 @@
 /**
  * In-memory state for the mock API: what Django would keep in the database.
  * It lives on globalThis so it survives hot reloads in `next dev`, and it is lost when the server restarts.
- * Only src/mocks/handlers.js uses it.
+ * Only the mock routes (and the mock-only /donate/mock-gateway page, through src/mocks/gateway.js) use it.
  */
 
 const KEY = Symbol.for("noore-sadaqah.mock-store");
@@ -10,6 +10,8 @@ function createStore() {
   return {
     /** @type {Map<string, object>} id → donation */
     donations: new Map(),
+    /** @type {Map<number, number>} Dhaka year → last receipt sequence (ReceiptCounter) */
+    receiptCounters: new Map(),
     /** @type {Map<string, object>} id → subscription */
     subscriptions: new Map(),
     /** @type {Map<string, object>} phone or email → donor */
@@ -25,7 +27,9 @@ function createStore() {
   };
 }
 
-export const store = (globalThis[KEY] ??= createStore());
+// A store kept from before a hot reload may lack collections added since: add them without losing data.
+export const store = Object.assign(createStore(), (globalThis[KEY] ??= createStore()));
+globalThis[KEY] = store;
 
 /** Empties every collection (used by tests). */
 export function resetStore() {

@@ -8,27 +8,13 @@ import FieldError from "@/components/ui/FieldError";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import { Link, useRouter } from "@/i18n/navigation";
+import { saveDraft } from "@/lib/donation-draft";
 import { MAX_AMOUNT, parseAmount } from "@/lib/validation/common";
 import { quickDonateSchema } from "@/lib/validation/donation";
 import AmountPicker from "./AmountPicker";
 
 const DEFAULT_PRESETS = [100, 200, 500, 1000];
 const DEFAULT_AMOUNT = 500;
-
-/** sessionStorage key for the donation in progress; /donate/checkout (F3) reads it. */
-export const DONATION_DRAFT_KEY = "noore:donation-draft";
-
-/** Keeps the validated form for the checkout step. Storage can be blocked (private mode); checkout then asks again. */
-function saveDraft(data, locale) {
-  try {
-    sessionStorage.setItem(
-      DONATION_DRAFT_KEY,
-      JSON.stringify({ ...data, kind: "one_time", source: "quick_donate", locale, saved_at: Date.now() }),
-    );
-  } catch {
-    // Nothing to do: the checkout page handles a missing draft.
-  }
-}
 
 /**
  * Gold quick-donate panel (HOME_PAGE.md §3 and fixes 3–6, 13; RESPONSIVE.md §14 row 3).
@@ -71,7 +57,7 @@ export default function QuickDonate({ funds, className = "" }) {
   };
 
   const onValid = (data) => {
-    saveDraft(data, locale);
+    saveDraft({ ...data, kind: "one_time", source: "quick_donate", locale });
     router.push("/donate/checkout");
   };
 

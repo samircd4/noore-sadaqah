@@ -214,6 +214,7 @@ Django endpoints: `API.md`.
 API_MODE=mock                                      # mock | static | live (see "API modes")
 API_LIVE_GROUPS=                                   # during backend phases: e.g. content,forms (rest stays mocked)
 ALLOW_MOCK_IN_PRODUCTION=                          # 1 only for a staging demo build
+MOCK_GATEWAY_DOWN=                                 # mock only: 1 makes POST /donations/ answer 502 gatewayUnavailable
 NEXT_PUBLIC_SITE_URL=https://nooresadaqah.org
 NEXT_PUBLIC_MEDIA_HOST=media.nooresadaqah.org      # public R2 domain, for next/image remotePatterns
 API_INTERNAL_URL=http://127.0.0.1:8000/api/v1      # server only
