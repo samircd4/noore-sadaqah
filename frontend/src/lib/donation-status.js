@@ -1,9 +1,7 @@
 import "server-only";
 
 import { apiRequest, ApiError } from "@/lib/api";
-
-/** Donation ids are UUIDs; anything else is treated as unknown without calling the API. */
-const ID_PATTERN = /^[0-9a-f-]{8,64}$/i;
+import { isDonationId } from "@/lib/validation/donation";
 
 /**
  * GET /donations/{id}/status/ for the success and failed pages: uncached, no personal data in the answer.
@@ -13,7 +11,8 @@ const ID_PATTERN = /^[0-9a-f-]{8,64}$/i;
  */
 export async function donationStatus(id, locale) {
   const value = Array.isArray(id) ? id[0] : id;
-  if (!value || !ID_PATTERN.test(value)) return null;
+  // A malformed id is treated as unknown without calling the API.
+  if (!isDonationId(value)) return null;
   try {
     return await apiRequest(`/donations/${encodeURIComponent(value)}/status/`, { locale });
   } catch (error) {

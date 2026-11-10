@@ -91,13 +91,10 @@ async function SuccessBody({ searchParams, locale }) {
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
         {status.receipt_url && (
           // Django serves the PDF at /r/… (not a Next.js page), so a plain link.
-          <a
-            href={status.receipt_url}
-            className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-em-700 px-7 py-3 font-bold text-white transition hover:bg-em-500 active:bg-em-800 motion-reduce:transition-none sm:w-auto"
-          >
+          <Button href={status.receipt_url} external variant="primary" blockOnPhone>
             <Download aria-hidden="true" className="size-5" />
             {t("downloadReceipt")}
-          </a>
+          </Button>
         )}
         <Button href="/donate" variant="gold" blockOnPhone>
           <HandHeart aria-hidden="true" className="size-5" />

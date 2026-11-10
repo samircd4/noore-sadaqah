@@ -12,7 +12,8 @@ const MAX_TRIES = 12;
 /**
  * Shown on /donate/success while the donation is PENDING (PAGES.md): asks the refreshDonation server action every
  * 5 seconds, 12 times. When Django reports a final status the page reloads its server data (PAID shows the
- * receipt; FAILED/CANCELLED moves to /donate/failed). After 12 tries: "নিশ্চিত হলে এসএমএস পাবেন".
+ * receipt; FAILED/CANCELLED moves to /donate/failed). A failed check counts as a try. After 12 tries:
+ * "নিশ্চিত হলে এসএমএস পাবেন".
  * The status always comes from the API, never from the URL.
  * @param {{ id: string, locale: "bn" | "en" }} props
  */
@@ -27,7 +28,12 @@ export default function DonationPoller({ id, locale }) {
     let timer;
     const tick = async () => {
       tries += 1;
-      const status = await refreshDonation(id, locale);
+      let status = null;
+      try {
+        status = await refreshDonation(id, locale);
+      } catch {
+        // Offline for a moment, or a new deploy changed the action: count the try and keep going.
+      }
       if (stopped) return;
       const state = /** @type {any} */ (status)?.status;
       if (state === "paid") {

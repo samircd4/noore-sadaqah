@@ -2,21 +2,22 @@
 
 import { HandCoins, Lock, Pencil } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useMemo, useRef, useState, useSyncExternalStore, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
+import Button from "@/components/ui/Button";
 import EmptyState from "@/components/ui/EmptyState";
 import FieldError from "@/components/ui/FieldError";
-import { Link } from "@/i18n/navigation";
 import { createDonation } from "@/lib/actions/donate";
-import { parseDraft, readDraftText, saveDraft } from "@/lib/donation-draft";
+import { saveDraft, useDonationDraft } from "@/lib/donation-draft";
 import { bnDigits, taka } from "@/lib/format";
+import { fundDonateHref } from "@/lib/nav";
 import MethodPicker from "./MethodPicker";
-
-const noSubscribe = () => () => {};
 
 /**
  * /donate/checkout (PAGES.md): summary of the draft from sessionStorage and "পেমেন্ট করুন", which calls the
  * createDonation server action; on success the action redirects to the gateway. The quick-donate draft has no
  * payment method yet, so it is asked here. Loading state and a guard prevent a double submit (QA §3).
+ * If Django refuses the campaign (ended, or not this fund's), the campaign is dropped from the draft so the next
+ * "পেমেন্ট করুন" gives to the fund itself instead of failing again.
  * Phone: summary full width, buttons stacked with "পেমেন্ট করুন" on top (RESPONSIVE.md §15).
  * @param {object} props
  * @param {Record<string, string>} props.fundTitles slug → title, from GET /funds/
@@ -27,13 +28,23 @@ export default function CheckoutPanel({ fundTitles, methods, locale }) {
   const t = useTranslations("checkout");
   const tForm = useTranslations("donateForm");
   const tAll = useTranslations();
-  // null on the server (loading state); the stored text in the browser.
-  const draftText = useSyncExternalStore(noSubscribe, readDraftText, () => null);
-  const draft = useMemo(() => (draftText === null ? undefined : parseDraft(draftText)), [draftText]);
+  // undefined on the server (loading state); the draft or null in the browser.
+  const draft = useDonationDraft();
   const [method, setMethod] = useState(/** @type {string} */ (""));
   const [result, setResult] = useState(/** @type {{ fieldErrors?: Record<string, { key: string, params: object }>, error?: string } | null} */ (null));
   const [pending, startTransition] = useTransition();
   const sending = useRef(false);
+  const [campaignDropped, setCampaignDropped] = useState(false);
+
+  // Back from the gateway page, the browser may restore this page from its cache with the button still "paying"
+  // (the redirect never returned): load it fresh instead.
+  useEffect(() => {
+    const onPageShow = (event) => {
+      if (event.persisted) window.location.reload();
+    };
+    window.addEventListener("pageshow", onPageShow);
+    return () => window.removeEventListener("pageshow", onPageShow);
+  }, []);
 
   if (draft === undefined) {
     return <p className="py-12 text-center text-em-900/70">{tAll("common.loading")}</p>;
@@ -44,7 +55,7 @@ export default function CheckoutPanel({ fundTitles, methods, locale }) {
 
   const draftMethod = draft.method && methods.includes(draft.method) ? draft.method : "";
   const chosenMethod = draftMethod || method;
-  const changeHref = { pathname: `/donate/${draft.fund}`, query: draft.campaign ? { campaign: draft.campaign } : {} };
+  const changeHref = fundDonateHref(draft.fund, { campaign: draft.campaign || undefined });
 
   const pay = () => {
     if (sending.current) return;
@@ -61,6 +72,11 @@ export default function CheckoutPanel({ fundTitles, methods, locale }) {
       const response = await createDonation({ ...body, method: chosenMethod, locale });
       // Only failures come back; on success the browser is already on its way to the gateway.
       if (response) {
+        if (response.fieldErrors?.campaign && body.campaign) {
+          const { campaign: _campaign, ...withoutCampaign } = body;
+          saveDraft({ ...withoutCampaign, source: draft.source, method: chosenMethod });
+          setCampaignDropped(true);
+        }
         setResult(response);
         sending.current = false;
       }
@@ -105,7 +121,10 @@ export default function CheckoutPanel({ fundTitles, methods, locale }) {
           {result?.error && <FieldError id="checkout-error" message={tAll(result.error)} />}
           {fieldErrors.length > 0 && (
             <>
-              <p className="font-semibold text-em-950">{t("fixFields")}</p>
+              {/* Only the campaign was refused: it is already dropped, so "পেমেন্ট করুন" again is the fix. */}
+              {!(campaignDropped && fieldErrors.every(([field]) => field === "campaign")) && (
+                <p className="font-semibold text-em-950">{t("fixFields")}</p>
+              )}
               <ul className="mt-1">
                 {fieldErrors.map(([field, e]) => (
                   <li key={field}>
@@ -113,6 +132,7 @@ export default function CheckoutPanel({ fundTitles, methods, locale }) {
                   </li>
                 ))}
               </ul>
+              {campaignDropped && <p className="mt-2 text-base text-em-950">{t("campaignDropped")}</p>}
             </>
           )}
         </div>
@@ -125,34 +145,22 @@ export default function CheckoutPanel({ fundTitles, methods, locale }) {
 
       {/* Pay first in the DOM so it is on top on phones; to the right of "change" from sm. */}
       <div className="flex flex-col gap-3 sm:flex-row-reverse sm:justify-start">
-        <button
-          type="button"
-          onClick={pay}
-          disabled={pending}
-          aria-busy={pending || undefined}
-          className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-gold-500 px-8 py-3 text-lg font-bold text-em-950 shadow-md transition hover:bg-gold-400 active:bg-gold-600 disabled:cursor-wait disabled:opacity-70 motion-reduce:transition-none sm:w-auto"
-        >
+        <Button variant="gold" size="cta" blockOnPhone className="shadow-md" onClick={pay} disabled={pending} aria-busy={pending || undefined}>
           <Lock aria-hidden="true" className="size-5" />
           {pending ? t("paying") : t("pay")}
-        </button>
-        <ChangeLink href={changeHref} label={t("change")} disabled={pending} />
+        </Button>
+        <Button
+          href={changeHref}
+          variant="outline"
+          size="cta"
+          blockOnPhone
+          aria-disabled={pending || undefined}
+          className={pending ? "pointer-events-none opacity-60" : ""}
+        >
+          <Pencil aria-hidden="true" className="size-4" />
+          {t("change")}
+        </Button>
       </div>
     </div>
-  );
-}
-
-/** "পরিবর্তন করুন": back to the fund's form, which fills itself from the draft. */
-function ChangeLink({ href, label, disabled }) {
-  return (
-    <Link
-      href={href}
-      aria-disabled={disabled || undefined}
-      className={`inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg border border-em-700 px-6 py-3 font-semibold text-em-700 transition hover:bg-em-700 hover:text-white motion-reduce:transition-none sm:w-auto ${
-        disabled ? "pointer-events-none opacity-60" : ""
-      }`}
-    >
-      <Pencil aria-hidden="true" className="size-4" />
-      {label}
-    </Link>
   );
 }
