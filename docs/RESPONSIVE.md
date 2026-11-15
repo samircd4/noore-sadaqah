@@ -42,7 +42,7 @@ Tailwind defaults; no custom breakpoints.
 | Prefix | From | What typically changes |
 |---|---|---|
 | (none) | 0 | Single column, drawer menu, sticky donate bar, stacked forms, tables as cards |
-| `sm:` | 640 | 2-column grids, side-by-side buttons, language switch back in the header, header Donate button visible |
+| `sm:` | 640 | 2-column grids, side-by-side buttons, language switch back in the header, header Donate button at full size |
 | `md:` | 768 | Tables become real tables, 3–4 column galleries/news |
 | `lg:` | 1024 | Desktop nav replaces the drawer, sticky donate bar hidden, 12-column page layouts with sticky sidebars |
 | `xl:` | 1280 | Wider footer (5 columns), more white space |
@@ -116,7 +116,7 @@ inside `px-6` is about 450px. Phone header:
 
 | Width | Header contents | Height |
 |---|---|---|
-| < 640 | Logo mark (40px) + name (smaller: `text-base`, second line `text-xs tracking-[0.3em]`) · menu button (44px). Language switch and Donate move into the drawer; Donate also lives in the sticky bar (§9) | `h-16` (64px), `px-4` |
+| < 640 | Logo mark (40px) + name (smaller: `text-base`, second line `text-xs tracking-[0.3em]`) · compact Donate button (`h-11 px-3 text-sm`) · menu button (44px). Language switch moves into the drawer; Donate is also in the drawer and the sticky bar (§9) | `h-16` (64px), `px-4` |
 | 640–1023 | Logo + name · language switch · Donate button · menu button | `h-20` (80px) |
 | ≥ 1024 | Design as-is: logo · nav · switch · Donate | `h-20` |
 

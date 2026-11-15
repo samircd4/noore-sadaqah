@@ -70,7 +70,7 @@ All photos are Unsplash placeholders. Replace them with the foundation's own pho
 15. **Sticky donate bar on phones** (design addition, DECISIONS.md D14): `MobileDonateBar` below `lg`, with the
     hide rules in RESPONSIVE.md §9.
 16. **The header doesn't fit on phones.** Logo + name + বাং/EN switch + menu button inside `px-6` is about 450px
-    wide. Use the phone header in RESPONSIVE.md §8 (`h-16`, smaller name, switch and Donate moved into the drawer below `sm`).
+    wide. Use the phone header in RESPONSIVE.md §8 (`h-16`, smaller name, switch moved into the drawer below `sm`, a compact Donate button stays in the header).
 17. **Other phone problems in the design:** quick-donate labels use `text-red-500` for the `*` (off-palette: use
     `text-em-950` or drop the star and mark optional fields instead); social icons are 40px (use 44px); footer links
     are small tap targets; the campaign's three `text-3xl` amount cards don't fit at 320px; `.bg-parallax` uses

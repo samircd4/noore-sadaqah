@@ -97,7 +97,7 @@ so `$remote_addr` is the visitor. Gateways must still reach the callback URLs: d
 1. Ubuntu 24.04 updates; `unattended-upgrades` on; timezone `Asia/Dhaka`.
 2. SSH: key login only, no root login, no passwords; `fail2ban`.
 3. UFW: allow 22, 80, 443 only.
-4. Install Node 22 LTS, Python 3.12, PostgreSQL 16, Redis 7, Nginx, certbot, and WeasyPrint system libs (`libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz0b`).
+4. Install Node 22 LTS, Python 3.14 (uv), PostgreSQL 16, Redis 7, Nginx, certbot, and WeasyPrint system libs (`libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz0b`).
 5. Create users, `/srv/noore`, Postgres role + DB with a strong password, Redis password.
 6. Write `env/backend.env` and `env/frontend.env` from the `.env.example` files.
 7. Install systemd units and the Nginx site; `certbot --nginx -d nooresadaqah.org -d www.nooresadaqah.org`.

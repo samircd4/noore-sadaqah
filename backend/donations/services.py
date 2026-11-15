@@ -3,12 +3,8 @@ Changing a donation's status. mark_paid() is the ONLY code that may set a donati
 (docs/DATA_MODEL.md "Marking a donation PAID").
 """
 
-import base64
-import hashlib
-import hmac
 import logging
 
-from django.conf import settings
 from django.db import connection, transaction
 from django.utils import timezone
 
@@ -72,10 +68,3 @@ def mark_unpaid(donation_id, status, reason):
         donation.fail_reason = reason
         donation.save(update_fields=["status", "fail_reason", "updated_at"])
     return donation
-
-
-def receipt_url(gateway_ref):
-    """The short signed receipt link sent by SMS: /r/NSD7K2M9QX4PA-k3j9x2m1qa (docs/API.md "Receipts")."""
-    digest = hmac.new(settings.RECEIPT_TOKEN_SECRET.encode(), gateway_ref.encode(), hashlib.sha256).digest()
-    signature = base64.b32encode(digest).decode().lower()[:10]
-    return f"/r/{gateway_ref}-{signature}"

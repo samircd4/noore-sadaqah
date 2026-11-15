@@ -140,6 +140,14 @@ nothing before launch.
 **Consequences:** `localizedPath()` (SEO) returns `/bn/...`; canonical and `x-default` point to `/bn/...`. Django
 redirects donors back to `/{locale}/donate/...` (API.md "Payments"). Links built with next-intl's `<Link>` need no change.
 
+## D17. Receipt PDFs are in English only (2026-11-10, Decided)
+
+**Decision:** every receipt PDF is in English, whatever language the donor used: labels, date, fund name, amount in
+words ("One thousand five hundred taka only"). Names stay exactly as the donor typed them, so the Bengali font is
+still embedded. The website, SMS and email keep following the donor's language.
+**Why:** the foundation's choice (developer, 2026-11-10); one simple layout for accounts and audits.
+**Replaces:** "Language: `donation.locale`" and the Bengali date / amount-in-words in DONATION_FLOW.md "Receipts".
+
 ---
 
 ## Open decisions (foundation must answer; don't guess)

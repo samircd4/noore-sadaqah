@@ -85,12 +85,12 @@ Use the SSLCommerz sandbox test cards and mobile banking test accounts from thei
 
 ## 7. Receipts
 
-- [ ] PDF shows: foundation name, registration no., receipt no., date (Bengali), donor name, on-behalf-of name, fund, amount in digits **and in Bengali words**, method, txn ID
-- [ ] Bengali text renders correctly in the PDF (embedded font, conjuncts like ক্ষ, ন্ত, র্থ intact): check by eye and by `pdftotext` 🤖
+- [ ] PDF is in English and shows: foundation name, registration no., receipt no., date, donor name, on-behalf-of name, fund, amount in digits **and in words**, method, txn ID
+- [ ] A donor name typed in Bengali renders correctly (embedded font, conjuncts like ক্ষ, ন্ত, র্থ intact): check by eye 🤖
 - [ ] Another donor's receipt id returns 404; an SMS link with a wrong or expired token returns 404 🤖
 - [ ] Receipt numbers have no gaps or duplicates when 20 donations are paid at the same time (parallel test against real Postgres) 🤖
-- [ ] Refunded donation's PDF says "ফেরতকৃত"; receipt number unchanged
-- [ ] `amount_in_words_bn`: 1, 15, 100, 1500, 100000 (এক লক্ষ), 12500000 (এক কোটি পঁচিশ লক্ষ) 🤖
+- [ ] Refunded donation's PDF says "REFUNDED"; receipt number unchanged
+- [ ] `amount_in_words`: 1, 15, 100, 1500, 100000 (One lakh), 12500000 (One crore twenty-five lakh) 🤖
 
 ## 8. Zakat calculator and fitra (after ZAKAT_POLICY.md sign-off)
 

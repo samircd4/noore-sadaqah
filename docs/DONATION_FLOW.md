@@ -120,11 +120,12 @@ offline gifts get receipt numbers the same way.
 
 - Number format `NSF-{year}-{6-digit sequence}` from `ReceiptCounter` (year in Asia/Dhaka), set inside `mark_paid()`.
 - PDF made on demand by WeasyPrint from `templates/receipts/receipt.html` with embedded Noto Bengali fonts; not stored.
-- Contents: foundation name, registration number and address, receipt no, date (Bengali), donor name (always the real
-  name: "anonymous" only hides it on public pages), on-behalf-of name, fund, amount in digits **and in words** (`amount_in_words_bn`), method, transaction ID,
-  "যাকাত হিসেবে গৃহীত" for zakat funds (text approved by the Shariah advisor), "ফেরতকৃত" watermark when refunded.
+- **English only** for every donor (D17). Names stay as the donor typed them, so the Bengali font is still embedded.
+- Contents: foundation name, registration number and address (confirmed facts only), receipt no, date, donor name
+  (always the real name: "anonymous" only hides it on public pages), on-behalf-of name, fund, amount in digits and in
+  words (`amount_in_words`, crore/lakh counting), method, transaction ID, "REFUNDED" watermark when refunded.
+  A zakat line ("Accepted as zakat") waits for the Shariah advisor's wording (ZAKAT_POLICY.md).
 - Tax wording: only what CONTENT.md §2 confirms. If tax deductibility is unconfirmed, the receipt says nothing about tax.
-- Language: `donation.locale`.
 - Delivery: SMS (short text + link) and email (PDF attached, if an email was given). Templates: `NOTIFICATIONS.md`.
 
 ## Zakat calculator

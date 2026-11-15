@@ -13,9 +13,9 @@ import { useEffect, useRef } from "react";
  * exact for the real font on every device. The second line can't change the layout while this happens
  * (`w-0 min-w-full`). Browsers keep Bengali clusters (ন্ড, শ) together when letter-spacing is applied.
  *
- * @param {{ line1: string, line2: string, locale: "bn" | "en" }} props
+ * @param {{ line1: string, line2: string, locale: "bn" | "en", className?: string }} props
  */
-export default function BrandName({ line1, line2, locale }) {
+export default function BrandName({ line1, line2, locale, className = "" }) {
   const line1Ref = useRef(/** @type {HTMLSpanElement | null} */ (null));
   const line2Ref = useRef(/** @type {HTMLSpanElement | null} */ (null));
 
@@ -60,7 +60,7 @@ export default function BrandName({ line1, line2, locale }) {
   const sloganSize = isEn ? "text-sm tracking-[0.3em] sm:text-base sm:tracking-[0.42em]" : "text-base tracking-[0.35em] sm:text-lg";
 
   return (
-    <span lang={locale} className="inline-block shrink-0 whitespace-nowrap font-head font-bold">
+    <span lang={locale} className={`inline-block shrink-0 whitespace-nowrap font-head font-bold ${className}`}>
       <span className={`block h-6 leading-6 text-white sm:h-7 sm:leading-7 ${nameSize}`}>
         <span ref={line1Ref}>{line1}</span>
       </span>
