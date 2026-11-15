@@ -12,7 +12,6 @@ programs, funds, one-time and monthly donations, news, gallery, donor accounts, 
 noore-sadaqah/
 ├── CLAUDE.md          ← you are here (shared rules)
 ├── docs/              ← specs; the source of truth for both apps
-├── design/            ← tokens.css, reference/home.html
 ├── frontend/          ← Next.js 16, JavaScript, Tailwind v4   → frontend/CLAUDE.md
 └── backend/           ← Django + DRF, Celery, PostgreSQL       → backend/CLAUDE.md
 ```
@@ -50,8 +49,8 @@ Nginx serves one domain: `/` → Next.js, `/api/` and `/admin/` → Django (see 
 
 1. **Languages:** `frontend/` is **JavaScript only** (`.js` / `.jsx`; no TypeScript, no `.ts`/`.tsx`, no `tsconfig.json`; JSDoc where a type helps). `backend/` is **Python / Django**.
 2. **The API contract is `docs/API.md`.** Change it first, then the mock (`frontend/src/mocks/`), the frontend and the backend, in the same commit. Never call an endpoint that isn't documented there.
-3. **The home page is `design/reference/home.html`.** The Next.js home page must look the same. Don't redesign it; only apply the fixes in `docs/HOME_PAGE.md`.
-4. **Colors come only from the palette** in `design/tokens.css`: `em-*`, `sand-*`, `gold-*` plus white/black. No new hex values, no `blue-*`, `yellow-*`, `gray-*` for brand UI. If a new color is truly needed, add it to `tokens.css` and `DESIGN_SYSTEM.md` first.
+3. **The home page is `home.html` (the approved design, kept outside this repo).** The Next.js home page must look the same. Don't redesign it; only apply the fixes in `docs/HOME_PAGE.md`.
+4. **Colors come only from the palette** in `frontend/src/app/tokens.css`: `em-*`, `sand-*`, `gold-*` plus white/black. No new hex values, no `blue-*`, `yellow-*`, `gray-*` for brand UI. If a new color is truly needed, add it to `tokens.css` and `DESIGN_SYSTEM.md` first.
 5. **Text on gold is `text-em-950`**, never white (contrast 2.2:1 fails).
 6. **No hard-coded content.** Text, numbers and images come from the API through `frontend/src/lib/api.js` (served by the mock fixtures in `frontend/src/mocks/` while `API_MODE=mock`, see `docs/ARCHITECTURE.md` "API modes"). UI labels go in `frontend/messages/{bn,en}.json`.
 7. **Bengali is the default language.** Store plain numbers; display with `bnNumber()` / `taka()` (frontend) or the matching template filters (backend).

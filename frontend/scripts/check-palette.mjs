@@ -1,12 +1,13 @@
 // Fails if frontend code uses colors outside the palette (CLAUDE.md rule 4, QA_CHECKLIST.md §1):
 // raw hex values, or Tailwind's blue-*, yellow-*, gray-* (and their cousins) for brand UI.
-// src/lib/theme.js holds the one allowed hex (docs/RESPONSIVE.md §11).
+// src/app/tokens.css defines the palette itself; src/lib/theme.js holds the one other allowed hex
+// (docs/RESPONSIVE.md §11).
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const SRC = fileURLToPath(new URL("../src", import.meta.url));
-const ALLOWED_FILES = new Set(["lib/theme.js"]);
+const ALLOWED_FILES = new Set(["app/tokens.css", "lib/theme.js"]);
 const HEX = /#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?\b/g;
 const OFF_PALETTE = /\b(?:bg|text|border|ring|fill|stroke|from|to|via|outline|decoration|divide|placeholder|accent|caret|shadow)-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d{2,3}\b/g;
 
@@ -34,7 +35,7 @@ for (const path of files(SRC)) {
 
 if (problems.length > 0) {
   console.error(problems.join("\n"));
-  console.error(`\nPalette check failed: ${problems.length} off-palette color(s). Use em-*, sand-*, gold-* from design/tokens.css.`);
+  console.error(`\nPalette check failed: ${problems.length} off-palette color(s). Use em-*, sand-*, gold-* from src/app/tokens.css.`);
   process.exit(1);
 }
 console.log("Palette check passed.");

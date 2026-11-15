@@ -12,7 +12,7 @@ import { apiGet } from "@/lib/api";
 import { currentLocale } from "@/lib/locale";
 
 /**
- * Home page: design/reference/home.html, built phone-first (docs/HOME_PAGE.md, docs/RESPONSIVE.md §14).
+ * Home page: the approved home.html design, built phone-first (docs/HOME_PAGE.md, docs/RESPONSIVE.md §14).
  * All content comes from the API (mock fixtures while API_MODE=mock).
  */
 export default async function HomePage() {

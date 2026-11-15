@@ -1,6 +1,6 @@
 # Page Specs — every page except home
 
-Only the home page has a visual design (`design/reference/home.html`). Every other page is
+Only the home page has a visual design (`home.html`, the approved design kept outside this repo). Every other page is
 **built from the same parts**: the components in `src/components/ui/*` and the patterns in
 `DESIGN_SYSTEM.md`. Don't invent new styles: if a page needs something new, add it to
 DESIGN_SYSTEM.md first.

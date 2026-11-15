@@ -140,5 +140,5 @@ donor_email, on_behalf_of, is_anonymous, status, subscription_id, reference, cre
 
 ## Unfold theme
 
-Colors from `design/tokens.css` in `UNFOLD["COLORS"]` (emerald as primary). Site title "নূরে সাদাকাহ ফাউন্ডেশন",
+Colors from `frontend/src/app/tokens.css` in `UNFOLD["COLORS"]` (emerald as primary). Site title "নূরে সাদাকাহ ফাউন্ডেশন",
 logo from `frontend/public/`. Sidebar groups: দান (donations, subscriptions, offline), কনটেন্ট, যোগাযোগ, সেটিংস, স্টাফ.

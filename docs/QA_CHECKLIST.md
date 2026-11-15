@@ -27,7 +27,7 @@ Don't tick those boxes in mock mode.
 
 ## 2. Home page (HOME_PAGE.md acceptance)
 
-- [ ] Side by side with `design/reference/home.html` at 1440px: same look
+- [ ] Side by side with `home.html` (the approved design, kept outside this repo) at 1440px: same look
 - [ ] All fixes in HOME_PAGE.md are applied
 - [ ] Quick-donate panel doesn't cover the stats at 320 and 375px; chips are a 2×2 grid on phones
 - [ ] Phone header fits at 320px (RESPONSIVE.md §8); every section matches its row in RESPONSIVE.md §14

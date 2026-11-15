@@ -62,9 +62,10 @@ private files use signed URLs.
 
 ## D8. Monorepo (2026-11-04, Decided)
 
-**Decision:** One git repo: `frontend/`, `backend/`, plus shared `docs/` and `design/` at the root. Each app has its
+**Decision:** One git repo: `frontend/`, `backend/`, plus shared `docs/` at the root. Each app has its
 own `CLAUDE.md`; the root `CLAUDE.md` holds the shared rules.
 **Why:** One AI session can see both sides of an API change, and the docs are not duplicated.
+**Update (2026-11-16):** `design/` was removed from the repo so `frontend/` builds on its own (Netlify demo). The palette moved to `frontend/src/app/tokens.css`; the approved `home.html`, its Tailwind v3 config and the logo source are kept outside the repo (git history before this date has them under `design/`).
 
 ## D9. Same origin for site, API and admin (2026-11-04, Decided)
 
@@ -116,7 +117,7 @@ before any backend code exists; frontend and backend work don't block each other
 approved design's header and some sections don't fit on phones. A visible donate button on every scroll position is a
 common, effective pattern for charity sites.
 **Consequences:**
-- The sticky bar is a **design addition** to `design/reference/home.html` (HOME_PAGE.md fix 15); its hide rules are in RESPONSIVE.md §9.
+- The sticky bar is a **design addition** to `home.html` (the approved design, kept outside this repo) (HOME_PAGE.md fix 15); its hide rules are in RESPONSIVE.md §9.
 - The phone header differs from the design (HOME_PAGE.md fix 16).
 - Inputs are 44px tall instead of the design's 42px (touch target and no iOS zoom).
 

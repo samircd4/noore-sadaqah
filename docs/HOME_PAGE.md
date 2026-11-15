@@ -1,6 +1,6 @@
 # Home Page Spec
 
-**The home page (`/`) is `design/reference/home.html`.** That file is the approved design.
+**The home page (`/`) is the approved design `home.html`** (kept outside this repo since 2026-11-16, see DECISIONS.md D8).
 When building `frontend/src/app/[locale]/page.jsx`, reproduce it section by section, as components, with the
 hard-coded text moved into data. Every section loads through `src/lib/api.js`: the mock fixtures during frontend
 phases F1–F5, Django afterwards, with the same shapes (`API.md`; endpoint per section in PAGES.md "Where each page
@@ -60,7 +60,7 @@ All photos are Unsplash placeholders. Replace them with the foundation's own pho
 8. **Video button** ("▶ ভিডিও দেখুন") links to `#about`. Make it open a modal with a YouTube embed.
 9. **Images as CSS backgrounds** (`.pc-food`, `.g1` …). Use `next/image` with `fill` + `object-cover` and an overlay `div`, so images are optimised and get `alt` text.
 10. **Icons** are mixed (Font Awesome, emoji, letters). Use one icon set.
-11. **Remove the Tailwind CDN script and the inline `tailwind.config`.** Tokens come from `design/tokens.css`.
+11. **Remove the Tailwind CDN script and the inline `tailwind.config`.** Tokens come from `frontend/src/app/tokens.css`.
 12. **Newsletter input** needs a `<form>`, `type="email"` and a server action (→ `POST /subscribers/`).
 13. **Off-palette colors in the design.** The বাং/EN switch uses `bg-[#d6a83f] text-white`, `text-black` and `hover:bg-blue-50`; the quick-donate fields use `gray-*`, `yellow-700` and `text-black`; the panel uses `bg-[#d6a83f]`. Replace them with tokens: `bg-gold-500 text-em-950`, `hover:bg-sand-100`, the Input pattern from DESIGN_SYSTEM.md, and `text-em-950`. Also translate the English "Or" (→ "অথবা", I18N.md).
 14. **More off-palette colors** not covered above: the water program card (`.pc-water`) uses
@@ -107,7 +107,7 @@ is set (CONTENT.md §7).
 
 ## Acceptance checklist
 
-- [ ] At 1440px the page looks like `design/reference/home.html` opened in a browser
+- [ ] At 1440px the page looks like `home.html` (the approved design, kept outside this repo) opened in a browser
 - [ ] At **320**, 375 and 768px nothing overlaps or clips, no horizontal scroll, mobile menu works, sticky donate bar follows its hide rules
 - [ ] Quick-donate submits fund + name + mobile + amount and goes to the checkout step (mock gateway from F3, real gateways from B2)
 - [ ] Stats, programs, campaign, gallery and news come from data, not hard-coded JSX

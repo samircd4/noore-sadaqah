@@ -1,9 +1,9 @@
 # Design System
 
-The look of the site comes from the home page design in `design/reference/home.html`.
-The tokens live in **`design/tokens.css`** (Tailwind v4). Change a color there and nowhere else.
-`design/tailwind.config.js` is a **reference copy** for Tailwind v3 / the CDN only (it lets `home.html` render); the build
-doesn't use it. If a token changes, update it too so `home.html` still matches.
+The look of the site comes from the home page design in `home.html` (the approved design, kept outside this repo).
+The tokens live in **`frontend/src/app/tokens.css`** (Tailwind v4). Change a color there and nowhere else.
+`home.html`, its Tailwind v3 `tailwind.config.js` (which lets it render from the CDN) and the logo source are kept
+outside this repo (DECISIONS.md D8); the build needs none of them. They are in git history before 2026-11-16 under `design/`.
 The Django admin (Unfold) uses the same emerald scale as its primary color (ADMIN.md), and receipt/email templates use
 the same hex values, copied from `tokens.css`.
 
@@ -113,7 +113,7 @@ Defined as CSS variables in `tokens.css`. Always put text on photos over one of 
 - **Every link and button shows the pointer cursor** (`cursor: pointer`), and so does everything else that reacts to a
   click: `[role="button"]`, `<summary>` (accordions), `<select>`, radio/checkbox inputs and the labels wrapping them
   (amount chips, toggles). Disabled controls show `not-allowed`.
-- This is set once, globally, in `design/tokens.css` (`@layer base`), because Tailwind v4 no longer gives buttons a
+- This is set once, globally, in `frontend/src/app/tokens.css` (`@layer base`), because Tailwind v4 no longer gives buttons a
   pointer. Don't add `cursor-pointer` to components by hand; if something clickable isn't covered (e.g. a clickable
   `<div>`), make it a real `<button>` or `<a>` instead.
 - Every clickable element also has a visible hover or `active:` state and the gold focus ring (dark `em-950` ring on gold backgrounds).
@@ -132,7 +132,7 @@ Defined as CSS variables in `tokens.css`. Always put text on photos over one of 
 
 ## Logo
 
-- Source file: `design/brand/logo-source.png` (1024×1024, from the foundation). Don't edit it; regenerate the sizes from it.
+- Source file: `logo-source.png` (kept outside this repo with the design) (1024×1024, from the foundation). Don't edit it; regenerate the sizes from it.
 - Website sizes: `frontend/public/brand/logo-256.png` (header and footer, circular with transparent corners) and
   `logo-512.png` (for the OG image and app manifest later). Browser icons: `frontend/src/app/icon.png` (192px) and
   `apple-icon.png` (180px, white background, as iOS requires).

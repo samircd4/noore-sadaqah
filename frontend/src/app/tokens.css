@@ -1,14 +1,13 @@
 /*
  * Noore Sadaqah Foundation — design tokens (single source of truth)
  *
- * Tailwind CSS v4: paste this file's contents into src/app/globals.css
- * right after `@import "tailwindcss";` (or `@import "./tokens.css";`).
+ * Tailwind CSS v4: imported by src/app/globals.css right after `@import "tailwindcss";`.
  * Every token below becomes a utility automatically:
  *   --color-em-700   ->  bg-em-700, text-em-700, border-em-700 ...
  *   --font-head      ->  font-head
  *
  * Plain CSS can use the same values: var(--color-gold-500).
- * Taken from design/reference/home.html. Change colors HERE only.
+ * Taken from the approved home page design (home.html, kept outside this repo). Change colors HERE only.
  */
 
 @theme {

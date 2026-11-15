@@ -12,7 +12,7 @@ Why it is built this way: `DECISIONS.md` D1–D11.
 | Layer | Choice | Notes |
 |---|---|---|
 | Framework | **Next.js 16**, App Router, JavaScript (`.js`/`.jsx`) | No TypeScript. `jsconfig.json` for the `@/*` alias. JSDoc where types help. |
-| Styling | **Tailwind CSS v4** | Tokens from `design/tokens.css`. No CSS-in-JS, no component library. |
+| Styling | **Tailwind CSS v4** | Tokens from `frontend/src/app/tokens.css`. No CSS-in-JS, no component library. |
 | Validation | **Zod** + **react-hook-form** | Mirrors the server rules for fast feedback; Django is the authority |
 | i18n | **next-intl** | `bn` default, `en` second (`I18N.md`) |
 | Icons | `lucide-react` | |
@@ -113,10 +113,6 @@ noore-sadaqah/
 ├── README.md
 ├── .gitignore                      # node_modules, .next, .venv, __pycache__, .env*, media/
 ├── .github/workflows/ci.yml        # lint + tests for both apps (TESTING.md)
-├── design/
-│   ├── tokens.css                  # palette & fonts (source of truth)
-│   ├── tailwind.config.js          # reference only (Tailwind v3); not used by the build
-│   └── reference/home.html         # approved home page design
 ├── docs/
 ├── deploy/                         # nginx site, systemd units, backup script (DEPLOYMENT.md)
 ├── e2e/                            # Playwright end-to-end tests (TESTING.md)
@@ -132,10 +128,11 @@ noore-sadaqah/
 │       ├── proxy.js                # locale + /account protection + token refresh (Next 16)
 │       ├── i18n/                   # next-intl routing.js, request.js
 │       ├── app/
-│       │   ├── globals.css         # @import "tailwindcss"; @import "../../../design/tokens.css";
+│       │   ├── globals.css         # @import "tailwindcss"; @import "./tokens.css";
+│       │   ├── tokens.css          # palette & fonts (source of truth)
 │       │   ├── [locale]/
 │       │   │   ├── layout.jsx      # fonts, <html lang>, Header, Footer
-│       │   │   ├── page.jsx        # HOME (design/reference/home.html)
+│       │   │   ├── page.jsx        # HOME (the approved home.html design)
 │       │   │   ├── about/ programs/ programs/[slug]/ campaigns/[slug]/
 │       │   │   ├── donate/ donate/[fund]/ donate/checkout/ donate/success/ donate/failed/
 │       │   │   ├── donate/mock-gateway/     # fake payment page, API_MODE=mock only (notFound() otherwise)

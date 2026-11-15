@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* Palette, fonts, shadows, overlays and z-index layers: the single source of truth (CLAUDE.md rule 4). */
-@import "../../../design/tokens.css";
+@import "./tokens.css";
 
 /*
  * next/font loads Noto Sans/Serif Bengali under generated family names and exposes them as

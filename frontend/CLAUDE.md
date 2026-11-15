@@ -5,7 +5,7 @@ Read the root `../CLAUDE.md` first; its hard rules apply here too. This file add
 ## Stack
 
 Next.js 16 (App Router) · **JavaScript only** (`.js`/`.jsx`, JSDoc for types, `jsconfig.json` for `@/*`) ·
-Tailwind CSS v4 with `../design/tokens.css` · next-intl · Zod + react-hook-form · lucide-react.
+Tailwind CSS v4 with `src/app/tokens.css` · next-intl · Zod + react-hook-form · lucide-react.
 
 ## Rules
 

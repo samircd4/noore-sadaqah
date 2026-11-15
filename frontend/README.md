@@ -19,7 +19,7 @@ npm run dev                    # http://localhost:3000 (Bengali) and http://loca
 | `npm run lint` | ESLint |
 | `npm run test` | Vitest unit tests (`src/**/*.test.js`) |
 | `npm run i18n:check` | `messages/bn.json` and `messages/en.json` have the same keys |
-| `npm run check:palette` | No colors outside `design/tokens.css` |
+| `npm run check:palette` | No colors outside `src/app/tokens.css` |
 | `npm run build` | Production build (`API_MODE=mock` needs `ALLOW_MOCK_IN_PRODUCTION=1`) |
 | `npm run build:standalone` | Build + copy static files for the VPS (`../docs/DEPLOYMENT.md`) |
 

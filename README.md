@@ -10,10 +10,6 @@ donor accounts and a staff admin. Bengali first, English second.
 ```
 CLAUDE.md            Shared rules for AI coding assistants (read automatically by Claude Code)
 README.md            This file
-design/
-  tokens.css         Color palette, fonts, shadows, overlays (Tailwind v4) ← edit colors here
-  tailwind.config.js Reference copy for Tailwind v3 / CDN (not used by the build)
-  reference/home.html  Approved home page design (open it in a browser)
 frontend/            Next.js 16 (JavaScript) — see frontend/CLAUDE.md
 backend/             Django + DRF, Celery — see backend/CLAUDE.md
 docs/

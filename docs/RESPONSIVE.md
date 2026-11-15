@@ -145,7 +145,7 @@ Design addition, approved (DECISIONS.md D14). Component `MobileDonateBar` (clien
 
 ## 10. Fixed layers (z-index scale)
 
-Only these values (variables in `design/tokens.css`; use `z-(--z-header)` etc. in Tailwind v4):
+Only these values (variables in `frontend/src/app/tokens.css`; use `z-(--z-header)` etc. in Tailwind v4):
 
 | Layer | Token | Value |
 |---|---|---|
@@ -215,7 +215,7 @@ value large (amount), the rest as label/value rows. Never make a table scroll si
 
 ## 14. Home page, section by section
 
-Reference: `design/reference/home.html`. "320" means the phone layout (320–639).
+Reference: `home.html` (the approved design, kept outside this repo). "320" means the phone layout (320–639).
 
 | # | Section | 320 (phone) | 768 | 1440 |
 |---|---|---|---|---|

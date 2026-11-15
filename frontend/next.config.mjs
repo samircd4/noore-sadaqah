@@ -1,4 +1,3 @@
-import { fileURLToPath } from "node:url";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.js");
@@ -35,9 +34,7 @@ const nextConfig = {
   output: "standalone", // docs/DEPLOYMENT.md: run with node .next/standalone/server.js on the VPS
   poweredByHeader: false,
   images: { remotePatterns },
-  // The repo root, so CSS can import ../design/tokens.css from outside frontend/.
   turbopack: {
-    root: fileURLToPath(new URL("..", import.meta.url)),
     rules: {
       "*.css": {
         loaders: ["@tailwindcss/turbopack"],
