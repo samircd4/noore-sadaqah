@@ -1,13 +1,19 @@
 # Netlify staging demo of the frontend alone, running on the mock API (docs/ARCHITECTURE.md "API modes").
 # Production stays on the VPS (docs/DEPLOYMENT.md); this site is for previews and reviews only.
-# The project's base directory is `frontend/`; Netlify detects Next.js and applies its runtime automatically.
+# The project's base directory is `frontend/`. The Next.js runtime is listed below so it always runs.
 
 [build]
   command = "npm run build"
   publish = ".next"
   # Skip the build when nothing in frontend/ (the base directory) changed, e.g. backend- or docs-only pushes.
-  # Exit code 0 = skip. Runs in the base directory, so "." means frontend/.
-  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- ."
+  # Exit code 0 = skip, 1 = build. Runs in the base directory, so "." means frontend/. On the first build and on
+  # a manual "Trigger deploy" both refs are the same commit, so always build then (git diff would say "no change").
+  ignore = 'if [ "$CACHED_COMMIT_REF" = "$COMMIT_REF" ]; then exit 1; fi; git diff --quiet "$CACHED_COMMIT_REF" "$COMMIT_REF" -- .'
+
+# Serves the app through Next.js (SSR, routing, the proxy). Without it Netlify publishes .next as plain files
+# and every page is Netlify's "Page not found".
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
 
 [build.environment]
   NODE_VERSION = "22"
