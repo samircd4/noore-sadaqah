@@ -41,3 +41,5 @@ Thumbs.db
 
 # Playwright MCP screenshots and logs (local testing)
 .playwright-mcp/
+PROPOSAL.md
+PROPOSAL.pdf
