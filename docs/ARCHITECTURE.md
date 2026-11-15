@@ -167,7 +167,8 @@ noore-sadaqah/
     ├── CLAUDE.md
     ├── .env.example
     ├── pyproject.toml              # deps (uv; uv.lock pins them), ruff and pytest config
-    ├── docker-compose.dev.yml      # local Postgres + Redis
+    ├── docker-compose.dev.yml      # local Postgres + Redis, and optionally Django + Celery (dev only)
+    ├── Dockerfile.dev              # dev image for the web and worker services (not used in production)
     ├── manage.py
     ├── config/                     # settings.py (one file, values from .env), urls.py, celery.py, wsgi.py
     ├── core/                       # SiteSetting, health view, revalidate signal, format filters

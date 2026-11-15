@@ -56,6 +56,23 @@ uv run pytest
 uv run ruff check . && uv run ruff format .
 ```
 
+**Or run the whole backend in Docker** (dev only; production does not use Docker). `web` (Django on
+127.0.0.1:8000, runs `migrate` on start) and `worker` (Celery + beat) use `Dockerfile.dev`, read `.env`, and get
+`DB_HOST=db` / `REDIS_URL=redis://redis:6379/0` from compose. The code is mounted, so runserver reloads; the worker
+does not (restart it). Pango is in the image, so receipt PDFs work without MSYS2.
+
+```bash
+docker compose -f docker-compose.dev.yml up -d --build          # Postgres, Redis, Django, Celery
+docker compose -f docker-compose.dev.yml exec web uv run python manage.py seed
+docker compose -f docker-compose.dev.yml exec web uv run pytest
+docker compose -f docker-compose.dev.yml restart worker         # after changing task code
+docker compose -f docker-compose.dev.yml logs -f web worker
+docker compose -f docker-compose.dev.yml up -d db redis         # only the services, to run Django with uv
+```
+
+In Docker, requests from the Next.js dev server arrive from the Docker gateway IP, not 127.0.0.1, so
+`client_ip()` ignores `X-Forwarded-For` and every local visitor shares one rate-limit bucket. Fine for development.
+
 **Receipt PDFs need Pango** (WeasyPrint's text library):
 - Windows: `winget install MSYS2.MSYS2`, then in the MSYS2 shell `pacman -S mingw-w64-ucrt-x86_64-pango`,
   and set `WEASYPRINT_DLL_DIRECTORIES=C:\msys64\ucrt64\bin` in `.env`.

@@ -1,0 +1,9 @@
+# The dev image only needs pyproject.toml, uv.lock and .python-version; the code is mounted, not copied.
+.env
+.env.*
+.venv/
+**/__pycache__/
+.pytest_cache/
+.ruff_cache/
+staticfiles/
+media/
