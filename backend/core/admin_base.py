@@ -62,6 +62,18 @@ class SortedStackedInline(StackedInline):
     tab = True
 
 
+def login_image(request):
+    """The photo beside the admin login form: the website's hero image, so it changes with the site. None (no
+    panel) when no hero image is uploaded or the database isn't reachable yet."""
+    from .models import HomeImage
+
+    try:
+        hero = HomeImage.objects.filter(slot=HomeImage.Slot.HERO).exclude(image="").first()
+    except Exception:  # noqa: BLE001 - the login page must open even if this fails
+        return None
+    return hero.image.url if hero else None
+
+
 def in_group(user, *names):
     """True for superusers and for members of one of these Groups (ADMIN.md "Groups")."""
     return user.is_superuser or user.groups.filter(name__in=names).exists()
