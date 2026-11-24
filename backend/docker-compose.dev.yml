@@ -1,4 +1,6 @@
 # Local development only (production runs everything on the VPS without Docker, DEPLOYMENT.md).
+# To run the frontend too, use the root compose.yaml (`docker compose up --build` from the repo root): it includes
+# this file. The commands below run the backend alone, from backend/.
 #   docker compose -f docker-compose.dev.yml up -d --build            # whole backend: Postgres, Redis, Mailpit, Django, Celery
 #   docker compose -f docker-compose.dev.yml up -d db redis mailpit   # only the services, to run Django with uv
 # Settings come from backend/.env (Compose reads it automatically). Inside the containers DB_HOST and REDIS_URL
@@ -11,6 +13,8 @@ x-backend: &backend
   image: noore-backend-dev
   env_file: .env
   environment:
+    # Requests forwarded by the Next.js container (root compose.yaml) arrive with Host "web".
+    DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,web
     DB_HOST: db
     DB_PORT: "5432"
     REDIS_URL: redis://redis:6379/0
@@ -71,3 +75,4 @@ services:
 
 volumes:
   pgdata:
+    name: backend_pgdata   # fixed name: the same database whether started from backend/ or from the root

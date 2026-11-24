@@ -34,6 +34,9 @@ const nextConfig = {
   output: "standalone", // docs/DEPLOYMENT.md: run with node .next/standalone/server.js on the VPS
   poweredByHeader: false,
   images: { remotePatterns },
+  // Docker on Windows doesn't pass file-change events into the container: Dockerfile.dev sets WATCHPACK_POLLING,
+  // so the dev server checks for edits every second instead. Off everywhere else.
+  ...(process.env.WATCHPACK_POLLING === "true" ? { watchOptions: { pollIntervalMs: 1000 } } : {}),
   turbopack: {
     rules: {
       "*.css": {

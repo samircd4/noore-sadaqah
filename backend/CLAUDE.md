@@ -56,6 +56,10 @@ uv run pytest
 uv run ruff check . && uv run ruff format .
 ```
 
+**The whole site (frontend too) in one command:** `docker compose up --build` from the repo root (root
+`compose.yaml`; guide in the root `README.md`). It includes this folder's compose file, so the commands below also
+work from the root without `-f docker-compose.dev.yml`.
+
 **Or run the whole backend in Docker** (dev only; production does not use Docker). `web` (Django on
 127.0.0.1:8000, runs `migrate` on start) and `worker` (Celery + beat) use `Dockerfile.dev`, read `.env`, and get
 `DB_HOST=db` / `REDIS_URL=redis://redis:6379/0` from compose. The code is mounted, so runserver reloads; the worker
