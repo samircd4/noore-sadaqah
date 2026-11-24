@@ -1,31 +1,108 @@
 # The whole site for local development, in one command (from the repo root):
 #   docker compose up --build        then open http://localhost:3000
-# Production does not use Docker (docs/DEPLOYMENT.md). Guide: README "Run everything with Docker".
+# Production on the VPS uses compose.prod.yaml instead (docs/DEPLOYMENT.md). Guide: README "Run everything with Docker".
 #
-# Backend services (Postgres, Redis, Mailpit, Django, Celery) come from backend/docker-compose.dev.yml, which still
-# works on its own. This file adds the Next.js dev server in front of them.
+#   docker compose up -d db redis mailpit    only the services, to run Django (uv) and Next.js (npm) on your machine
+#   docker compose exec web uv run pytest    backend tests
+#
+# Backend settings come from backend/.env. Inside the containers DB_HOST, REDIS_URL and EMAIL_HOST point at the
+# services below instead of 127.0.0.1; load_dotenv() never overrides them.
 name: noore
 
-include:
-  - backend/docker-compose.dev.yml
+x-backend: &backend
+  build:
+    context: ./backend
+    dockerfile: Dockerfile.dev
+  image: noore-backend-dev
+  env_file: ./backend/.env
+  environment:
+    # Requests forwarded by the Next.js container arrive with Host "web".
+    DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,web
+    DB_HOST: db
+    DB_PORT: "5432"
+    REDIS_URL: redis://redis:6379/0
+    EMAIL_HOST: mailpit
+    EMAIL_PORT: "1025"
+    WEASYPRINT_DLL_DIRECTORIES: ""   # Windows-only setting; the image has Pango installed
+    # Admin saves refresh the Next.js cache (core/revalidate.py). The secret only works inside this Docker network
+    # and on 127.0.0.1, so a fixed value is fine here; production uses a real one (DEPLOYMENT.md).
+    FRONTEND_INTERNAL_URL: http://frontend:3000
+    REVALIDATE_SECRET: local-docker-only
+  volumes:
+    - ./backend:/app/backend
+    # `manage.py seed` reads the frontend's mock fixtures (settings.SEED_FIXTURES_DIR) and the sample files they link to
+    - ./frontend/src/mocks/fixtures:/app/frontend/src/mocks/fixtures:ro
+    - ./frontend/public:/app/frontend/public:ro
+  depends_on:
+    db:
+      condition: service_healthy
+    redis:
+      condition: service_started
+    mailpit:
+      condition: service_started
 
 services:
+  db:
+    image: postgres:16-alpine
+    # Postgres takes its first-run user, password and database from backend/.env (DB_USER, DB_PASSWORD, DB_NAME).
+    env_file: ./backend/.env
+    entrypoint:
+      - sh
+      - -c
+      - export POSTGRES_DB="$${DB_NAME:-noore}" POSTGRES_USER="$${DB_USER:-noore}" POSTGRES_PASSWORD="$$DB_PASSWORD"; exec docker-entrypoint.sh postgres
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${DB_USER:-noore}\" -d \"$${DB_NAME:-noore}\""]
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "127.0.0.1:6379:6379"
+
+  # Catches every email sent in development; read them at http://127.0.0.1:8025 (nothing reaches a real inbox).
+  mailpit:
+    image: axllent/mailpit:v1.27
+    ports:
+      - "127.0.0.1:1025:1025"   # SMTP
+      - "127.0.0.1:8025:8025"   # web inbox
+
+  # Django on http://127.0.0.1:8000 (the Next.js dev server forwards /api/, /admin/, /r/ and /media/ to it).
+  # On the first start it also loads the frontend fixtures and their photos (seed --if-empty skips that later).
+  web:
+    <<: *backend
+    command: >-
+      sh -c "uv run python manage.py migrate
+      && uv run python manage.py seed --if-empty
+      && uv run python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "127.0.0.1:8000:8000"
+
+  # Celery worker + beat in one process (dev only). It does not reload on code changes: restart it.
+  worker:
+    <<: *backend
+    command: uv run celery -A config worker -B -l info -s /tmp/celerybeat-schedule
+
   # Next.js on http://localhost:3000. It forwards /api/, /admin/, /r/ and /media/ to Django (next.config.mjs),
-  # standing in for Nginx, so the donation flow, the SSLCommerz callbacks and uploaded photos work on this one address.
+  # standing in for the production proxy, so the donation flow, SSLCommerz callbacks and uploaded photos work here.
   frontend:
     build:
-      context: frontend
+      context: ./frontend
       dockerfile: Dockerfile.dev
     image: noore-frontend-dev
     env_file:
-      - path: frontend/.env.local   # optional: your own settings; the values below win over it
+      - path: ./frontend/.env.local   # optional: your own settings; the values below win over it
         required: false
     environment:
-      API_MODE: ${API_MODE:-mock}                       # mock | static | live
-      API_LIVE_GROUPS: ${API_LIVE_GROUPS-content,forms,donations}   # served by Django; login and /me stay mocked
-      API_INTERNAL_URL: http://web:8000/api/v1          # Django's service name inside Docker
+      API_MODE: ${API_MODE:-mock}                                     # mock | static | live
+      API_LIVE_GROUPS: ${API_LIVE_GROUPS-content,forms,donations}     # served by Django; login and /me stay mocked
+      API_INTERNAL_URL: http://web:8000/api/v1                        # Django's service name inside Docker
       NEXT_PUBLIC_SITE_URL: http://localhost:3000
-      REVALIDATE_SECRET: local-docker-only              # same as the backend's (backend/docker-compose.dev.yml)
+      REVALIDATE_SECRET: local-docker-only                            # same as the backend's (above)
     volumes:
       - ./frontend:/app/frontend
       - frontend_node_modules:/app/frontend/node_modules   # the image's Linux node_modules, not the host's
@@ -36,5 +113,7 @@ services:
       - web
 
 volumes:
+  pgdata:
+    name: backend_pgdata   # the database created before the compose files were merged; keep this name
   frontend_node_modules:
   frontend_next:

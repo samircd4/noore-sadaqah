@@ -16,6 +16,7 @@ dependencies = [
     "gunicorn>=23",
     "markdown>=3.11.3",
     "nh3>=0.3.8",
+    "packaging>=26.3",
     "pillow>=11.3",
     "psycopg[binary]>=3.2.10",
     "python-dotenv>=1.1",

@@ -93,7 +93,7 @@ TEMPLATES = [
     },
 ]
 
-# Local Postgres and Redis come from docker-compose.dev.yml. A hosting add-on may give DATABASE_URL instead
+# Local Postgres and Redis come from the root compose.yaml. A hosting add-on may give DATABASE_URL instead
 # (SnapDeploy, DEPLOYMENT.md); it wins over the DB_* values.
 DATABASES = {
     "default": {
@@ -229,7 +229,7 @@ SEED_ADMIN_EMAIL = os.getenv("SEED_ADMIN_EMAIL", "")
 SEED_ADMIN_PASSWORD = os.getenv("SEED_ADMIN_PASSWORD", "")
 
 # Email (docs/NOTIFICATIONS.md). EMAIL_PROVIDER=smtp sends through EMAIL_HOST: Mailpit in development
-# (docker-compose.dev.yml; inbox at http://127.0.0.1:8025), the real mail server in production. console prints them.
+# (root compose.yaml; inbox at http://127.0.0.1:8025), the real mail server in production. console prints them.
 EMAIL_PROVIDER = os.getenv("EMAIL_PROVIDER", "smtp")
 EMAIL_BACKENDS = {
     "smtp": "django.core.mail.backends.smtp.EmailBackend",

@@ -167,6 +167,19 @@ data into the new tables. The `/site/` JSON in API.md is unchanged.
 
 ---
 
+## D19. The VPS runs Docker Compose (2026-11-25, Decided)
+
+**Decision:** Production on the Hostinger VPS runs with Docker Compose (`compose.prod.yaml` at the repo root): Caddy
+(HTTPS + routing) in front of the Next.js and Django images, with the Celery worker, beat, PostgreSQL and Redis as
+their own services. All settings live in `deploy/.env`; `deploy/deploy.sh` deploys. Development keeps one compose
+file too (`compose.yaml`).
+**Why:** The production images already exist (also used for SnapDeploy). The same images run locally and on the
+server, setup is "install Docker, clone, fill in one file, run one script", and the server needs no Python, Node,
+Postgres, Redis or Nginx installed by hand. Caddy renews certificates by itself.
+**Replaces:** the systemd units, Nginx config and hand-installed services in DEPLOYMENT.md "Server layout".
+
+---
+
 ## Open decisions (foundation must answer; don't guess)
 
 | # | Question | Blocks | Owner |

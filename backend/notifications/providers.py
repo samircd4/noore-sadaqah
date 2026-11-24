@@ -1,6 +1,6 @@
 """
 Sending email (docs/NOTIFICATIONS.md). EMAIL_PROVIDER in .env picks how:
-  smtp     any SMTP server: Mailpit in development (docker-compose.dev.yml), the real mail server in production
+  smtp     any SMTP server: Mailpit in development (root compose.yaml), the real mail server in production
   console  print the email in the Celery log
 Changing provider or mail server is a .env change only; callers use send_email() and never see the difference.
 SMS comes later (ROADMAP B2) behind the same kind of function.

@@ -57,7 +57,7 @@ the gateway page and posts a valid-looking callback, while the Validation API is
 Locally there is no Nginx: `next dev` forwards `/api/`, `/admin/` and `/r/` to Django (`frontend/next.config.mjs`),
 so the site and the callbacks share `http://localhost:3000`.
 
-1. `cd backend && docker compose -f docker-compose.dev.yml up -d && uv run python manage.py migrate && uv run python manage.py seed`,
+1. `docker compose up -d db redis mailpit` (repo root), then `cd backend && uv run python manage.py migrate && uv run python manage.py seed`,
    then `uv run python manage.py runserver 8000`. `backend/.env` holds the sandbox store id and password.
 2. Frontend `.env.local`: `API_LIVE_GROUPS=donations`, `API_INTERNAL_URL=http://127.0.0.1:8000/api/v1`; restart `npm run dev`.
    Content stays mocked; donations go to Django and the real sandbox.

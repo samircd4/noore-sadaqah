@@ -6,8 +6,9 @@ set -e
 python manage.py migrate --noinput
 
 # Loads the fixture content and photos only when the database is still empty (first deploy).
+# A failed seed is reported but doesn't stop the site from starting (run it again by hand: manage.py seed).
 if [ "${SEED_ON_START:-false}" = "true" ]; then
-    python manage.py seed --if-empty
+    python manage.py seed --if-empty || echo "WARNING: seed failed; the site starts without the fixture content." >&2
 fi
 
 # Receipt emails, the nightly cleanup and cache refreshes. RUN_WORKER=false when the worker runs as its own app.

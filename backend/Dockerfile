@@ -1,8 +1,7 @@
-# Production image for Django + Celery (docs/DEPLOYMENT.md "SnapDeploy").
-# Development uses Dockerfile.dev through docker-compose.dev.yml instead.
+# Production image for Django + Celery (docs/DEPLOYMENT.md). Development uses Dockerfile.dev (root compose.yaml).
 #
-# One container runs both the web server (gunicorn) and the Celery worker with its beat scheduler, because the host
-# (SnapDeploy) runs one start command per app. See start.sh.
+# - VPS (compose.prod.yaml): the same image runs three services: web (start.sh, RUN_WORKER=false), worker and beat.
+# - SnapDeploy: one container runs gunicorn and the Celery worker with beat (start.sh), since it has one start command.
 FROM python:3.14-slim
 
 # Pango + HarfBuzz for WeasyPrint's receipt PDFs (the fonts are embedded from static/fonts/).
@@ -32,8 +31,8 @@ COPY . .
 # are fine here because collectstatic uses neither, and the real ones only exist at run time.
 RUN DJANGO_SECRET_KEY=build-only RECEIPT_TOKEN_SECRET=build-only python manage.py collectstatic --noinput
 
-# Run as a normal user, not root.
-RUN useradd --create-home --uid 1000 app && chown -R app /app/backend
+# Run as a normal user, not root. media/ exists in the image so a volume mounted there belongs to that user.
+RUN useradd --create-home --uid 1000 app && mkdir -p /app/backend/media && chown -R app /app/backend
 USER app
 
 # The host sets PORT; 8000 when run anywhere else.

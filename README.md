@@ -139,5 +139,5 @@ docker compose exec frontend npm run lint                      # frontend checks
 docker compose down -v                                         # stop AND delete the database: a fresh start
 ```
 
-The backend alone still runs from `backend/` with `docker compose -f docker-compose.dev.yml up -d` (see
-`backend/CLAUDE.md`).
+Only the services, to run Django and Next.js on your own machine: `docker compose up -d db redis mailpit` (see
+`backend/CLAUDE.md`). Production on the VPS uses `compose.prod.yaml` instead: see `docs/DEPLOYMENT.md`.

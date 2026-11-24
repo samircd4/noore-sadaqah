@@ -114,7 +114,8 @@ noore-sadaqah/
 ├── .gitignore                      # node_modules, .next, .venv, __pycache__, .env*, media/
 ├── .github/workflows/ci.yml        # lint + tests for both apps (TESTING.md)
 ├── docs/
-├── deploy/                         # nginx site, systemd units, backup script (DEPLOYMENT.md)
+├── compose.yaml / compose.prod.yaml  # Docker: development / the VPS (DEPLOYMENT.md)
+├── deploy/                         # Caddyfile, .env.example, deploy.sh, backup.sh (DEPLOYMENT.md)
 ├── e2e/                            # Playwright end-to-end tests (TESTING.md)
 │
 ├── frontend/
@@ -164,7 +165,6 @@ noore-sadaqah/
     ├── CLAUDE.md
     ├── .env.example
     ├── pyproject.toml              # deps (uv; uv.lock pins them), ruff and pytest config
-    ├── docker-compose.dev.yml      # local Postgres + Redis, and optionally Django + Celery (dev only)
     ├── Dockerfile.dev              # dev image for the web and worker services (not used in production)
     ├── manage.py
     ├── config/                     # settings.py (one file, values from .env), urls.py, celery.py, wsgi.py
@@ -261,7 +261,7 @@ SMS_PROVIDER=console                              # console | sslwireless | bulk
 SMS_API_KEY=
 SMS_SENDER_ID=
 EMAIL_PROVIDER=smtp                               # smtp | console (resend later)
-EMAIL_HOST=127.0.0.1                              # dev: Mailpit (docker-compose.dev.yml, inbox :8025); prod: the real SMTP server
+EMAIL_HOST=127.0.0.1                              # dev: Mailpit (root compose.yaml, inbox :8025); prod: the real SMTP server
 EMAIL_PORT=1025
 EMAIL_HOST_USER=
 EMAIL_HOST_PASSWORD=
