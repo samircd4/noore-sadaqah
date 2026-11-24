@@ -24,7 +24,8 @@ These take weeks. The site can't launch without them.
       straight into the mock fixtures, which later become the Django seed data.
 - [ ] Buy domain, VPS, R2, SMS sender ID, mailbox, **in the foundation's name** (DEPLOYMENT.md "What to buy")
 - [ ] Lawyer/board reviews `POLICIES.md`
-- [ ] Shariah advisor answers and signs `ZAKAT_POLICY.md` (blocks the calculator and fitra in phase L)
+- [ ] Shariah advisor answers and signs `ZAKAT_POLICY.md` (blocks the calculator and fitra in phase L).
+      The Bengali question sheet to send is ready: `docs/zakat-signoff/zakat-signoff-bn.pdf`
 - [ ] Ask bKash and SSLCommerz which **recurring** products our merchant accounts get (DONATION_FLOW.md "Gateway reality check")
 - [ ] Answer the open decisions in `DECISIONS.md` (translator, Accountant role, admin cost %, tax wording, retention)
 - [ ] Gateway applications are submitted. If they ask for a live site, deploy the **pre-launch site** (after F2)

@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<title>যাকাত ও ফিতরা নীতিমালা — শরয়ী সিদ্ধান্তের অনুরোধ</title>
+<!--
+  Sign-off sheet for the foundation's Shariah advisor: the questions of docs/ZAKAT_POLICY.md in Bengali, with boxes
+  and space for the rulings. Printed as zakat-signoff-bn.pdf (WeasyPrint, base_url = backend/static, which holds the
+  fonts and the logo; see docs/zakat-signoff/README.md). If ZAKAT_POLICY.md changes, change this sheet with it.
+-->
+<style>
+  @font-face { font-family: "Noto Sans Bengali"; src: url("fonts/NotoSansBengali-Regular.ttf"); font-weight: 400; }
+  @font-face { font-family: "Noto Sans Bengali"; src: url("fonts/NotoSansBengali-Bold.ttf"); font-weight: 700; }
+  @font-face { font-family: "Noto Sans"; src: url("fonts/NotoSans-Regular.ttf"); font-weight: 400; }
+  @font-face { font-family: "Noto Sans"; src: url("fonts/NotoSans-Bold.ttf"); font-weight: 700; }
+
+  /* Colours from frontend/src/app/tokens.css: em-950, em-700, em-500, em-50, sand-50, sand-200, gold-600. */
+  @page {
+    size: A4;
+    margin: 16mm 15mm 18mm;
+    @bottom-center { content: "পৃষ্ঠা " counter(page, bengali) " / " counter(pages, bengali); font-family: "Noto Sans Bengali"; font-size: 8.5pt; color: #0f5a3f; }
+  }
+  html { font-family: "Noto Sans Bengali", "Noto Sans", sans-serif; color: #041c13; font-size: 10.5pt; line-height: 1.6; }
+  body { margin: 0; }
+  h1, h2, h3 { color: #0f5a3f; line-height: 1.35; margin: 0; }
+
+  .head { display: flex; align-items: center; gap: 12pt; border-bottom: 2pt solid #d6a83f; padding-bottom: 10pt; }
+  .head img { width: 58pt; height: 58pt; }
+  .head h1 { font-size: 15pt; }
+  .head .sub { font-size: 11.5pt; font-weight: 700; color: #041c13; }
+  .meta { font-size: 9pt; color: #0f5a3f; margin-top: 2pt; }
+
+  .note { background: #fbf8f2; border: 1pt solid #eadfc8; border-left: 4pt solid #b88725; border-radius: 6pt;
+          padding: 8pt 11pt; margin: 12pt 0; }
+  .note p { margin: 0 0 4pt; }
+  .note p:last-child { margin-bottom: 0; }
+
+  h2 { font-size: 13pt; margin: 16pt 0 8pt; padding-bottom: 3pt; border-bottom: 1pt solid #eadfc8; }
+  .section { break-before: page; }
+
+  .q { border: 1pt solid #eadfc8; border-radius: 6pt; padding: 8pt 11pt 9pt; margin: 0 0 9pt; break-inside: avoid; }
+  .q h3 { font-size: 11pt; }
+  .q h3 .no { display: inline-block; min-width: 26pt; color: #b88725; }
+  .q .why { font-size: 9.5pt; color: #0f5a3f; margin: 2pt 0 0; }
+  .opts { list-style: none; margin: 5pt 0 0; padding: 0; }
+  .opts li { margin: 1.5pt 0; }
+  .opts li::before { content: "☐"; display: inline-block; width: 15pt; font-family: "Noto Sans", sans-serif; }
+  .proposed { margin: 6pt 0 0; padding: 4pt 8pt; background: #eaf6f0; border-radius: 4pt; font-size: 9.5pt; }
+  .proposed b { color: #0f5a3f; }
+  .answer { margin: 7pt 0 0; font-size: 9.5pt; font-weight: 700; color: #0f5a3f; }
+  .line { border-bottom: 0.8pt dotted #0f5a3f; height: 17pt; }
+
+  .formula { font-family: "Noto Sans Bengali", "Noto Sans", sans-serif; background: #fbf8f2; border: 1pt solid #eadfc8;
+             border-radius: 6pt; padding: 8pt 12pt; margin: 6pt 0 9pt; }
+  .formula p { margin: 1pt 0; }
+  ul.plain { margin: 4pt 0 8pt; padding-left: 16pt; }
+  ul.plain li { margin: 2pt 0; }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 8pt; }
+  th, td { border: 1pt solid #eadfc8; padding: 7pt 8pt; text-align: left; vertical-align: top; }
+  th { background: #eaf6f0; color: #0f5a3f; font-size: 9.5pt; }
+  td { height: 30pt; }
+  .sign { break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<div class="head">
+  <img src="receipts/logo.png" alt="">
+  <div>
+    <h1>নূরে সাদাকাহ ফাউন্ডেশন</h1>
+    <div class="sub">যাকাত ও ফিতরা নীতিমালা — শরয়ী সিদ্ধান্তের অনুরোধ</div>
+    <div class="meta">সম্মানিত শরয়ী উপদেষ্টার জন্য · সংস্করণ ১ · ২৫ নভেম্বর ২০২৬</div>
+  </div>
+</div>
+
+<div class="note">
+  <p><b>কেন এই কাগজ:</b> ফাউন্ডেশনের ওয়েবসাইটে একটি যাকাত ক্যালকুলেটর ও ফিতরা দানের ফর্ম থাকবে। নিচের প্রশ্নগুলোর
+  উত্তর ও আপনার স্বাক্ষর না পাওয়া পর্যন্ত এগুলো বন্ধ থাকবে; কোনো যাকাত হিসাব, যাকাত-সংক্রান্ত লেখা বা ফিতরার হার
+  প্রকাশ করা হবে না।</p>
+  <p><b>"প্রস্তাবিত" উত্তর শুধু আলোচনার সূচনা, কোনো ফতোয়া বা সিদ্ধান্ত নয়।</b> প্রতিটি প্রশ্নে আপনার সিদ্ধান্তের ঘরে
+  টিক দিন, প্রয়োজনে "অন্য" লিখুন, এবং চাইলে দলিল বা মন্তব্য যোগ করুন।</p>
+  <p><b>ইতিমধ্যে নিশ্চিত:</b> যাকাতের টাকা শুধু যাকাত তহবিলেই থাকে, আলাদা হিসাবে দেখানো হয়, এবং কোনোভাবেই অন্য তহবিলে
+  সরানো যায় না।</p>
+</div>
+
+<h2>১. যাকাত: প্রয়োজনীয় সিদ্ধান্ত</h2>
+
+<div class="q">
+  <h3><span class="no">Z1</span>যাকাত ক্যালকুলেটর কোন নিসাব ব্যবহার করবে?</h3>
+  <ul class="opts">
+    <li>(ক) শুধু রুপার নিসাব</li>
+    <li>(খ) শুধু স্বর্ণের নিসাব</li>
+    <li>(গ) দাতা নিজে বেছে নেবেন</li>
+    <li>(ঘ) দুটির মধ্যে যেটি কম</li>
+    <li>অন্য: ____________________________________________</li>
+  </ul>
+  <p class="proposed"><b>প্রস্তাবিত (সিদ্ধান্ত নয়):</b> (ক) রুপা, ৬১২.৩৬ গ্রাম (৫২.৫ তোলা), কারণ এতে বেশি দরিদ্র মানুষ উপকৃত হন।</p>
+  <p class="answer">আপনার সিদ্ধান্ত ও মন্তব্য:</p><div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">Z2</span>স্বর্ণের নিসাবের ওজন (যদি স্বর্ণ ব্যবহার হয়)</h3>
+  <ul class="opts">
+    <li>৮৭.৪৮ গ্রাম (৭.৫ তোলা)</li>
+    <li>অন্য: ____________________________________________</li>
+  </ul>
+  <p class="proposed"><b>প্রস্তাবিত (সিদ্ধান্ত নয়):</b> ৮৭.৪৮ গ্রাম।</p>
+  <p class="answer">আপনার সিদ্ধান্ত ও মন্তব্য:</p><div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">Z3</span>স্বর্ণ ও রুপার দাম কোথা থেকে নেওয়া হবে, এবং কত দিন পরপর হালনাগাদ হবে?</h3>
+  <p class="why">বিকল্প: বাংলাদেশ জুয়েলার্স অ্যাসোসিয়েশনের (বাজুস) দাম অ্যাডমিন হাতে বসাবেন।</p>
+  <ul class="opts">
+    <li>সাপ্তাহিক</li>
+    <li>রমজানের আগে</li>
+    <li>অন্য উৎস বা সময়: ________________________________</li>
+  </ul>
+  <p class="proposed"><b>প্রস্তাবিত (সিদ্ধান্ত নয়):</b> অ্যাডমিন ওয়েবসাইটের অ্যাডমিন প্যানেলে (সেটিংস → নিসাব) দাম হালনাগাদ
+  করবেন; ক্যালকুলেটর দাম ও তার তারিখ দেখাবে; দাম ৩০ দিনের বেশি পুরোনো হলে অ্যাডমিনকে সতর্ক করা হবে।</p>
+  <p class="answer">আপনার সিদ্ধান্ত ও মন্তব্য:</p><div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">Z4</span>স্বর্ণ/রুপার কোন দাম ধরা হবে: ক্রয়মূল্য না বিক্রয়মূল্য? কোন ক্যারেট?</h3>
+  <ul class="opts">
+    <li>ক্রয়মূল্য</li>
+    <li>বিক্রয়মূল্য</li>
+    <li>২২ ক্যারেট</li>
+    <li>২১ ক্যারেট</li>
+    <li>১৮ ক্যারেট</li>
+    <li>সনাতন পদ্ধতি</li>
+  </ul>
+  <p class="proposed"><b>প্রস্তাবিত:</b> কোনো প্রস্তাব নেই; আপনার সিদ্ধান্ত প্রয়োজন।</p>
+  <p class="answer">আপনার সিদ্ধান্ত ও মন্তব্য:</p><div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">Z5</span>কোন কোন সম্পদ যাকাতের হিসাবে আসবে? (প্রযোজ্যগুলোতে টিক দিন)</h3>
+  <ul class="opts">
+    <li>নগদ টাকা</li>
+    <li>ব্যাংক ব্যালান্স</li>
+    <li>স্বর্ণ</li>
+    <li>রুপা</li>
+    <li>ব্যবসার পণ্য (স্টক)</li>
+    <li>পাওনা টাকা (অন্যের কাছে আপনার পাওনা)</li>
+    <li>বিনিয়োগ / শেয়ার</li>
+    <li>সঞ্চয়পত্র</li>
+    <li>ডিপিএস / এফডিআর</li>
+    <li>প্রভিডেন্ট ফান্ড</li>
+    <li>ক্রিপ্টোকারেন্সি</li>
+  </ul>
+  <p class="proposed"><b>প্রস্তাবিত (সিদ্ধান্ত নয়):</b> তালিকার সবগুলো, প্রভিডেন্ট ফান্ড ছাড়া; প্রভিডেন্ট ফান্ড বিষয়ে আপনার মত জানতে চাই।</p>
+  <p class="answer">আপনার সিদ্ধান্ত ও মন্তব্য:</p><div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">Z6</span>স্বর্ণ/রুপার মূল্য: শুধু ধাতুর বাজারমূল্য ধরা হবে (মজুরি বা তৈরির খরচ বাদে)?</h3>
+  <ul class="opts">
+    <li>হ্যাঁ</li>
+    <li>না: ____________________________________________</li>
+  </ul>
+  <p class="proposed"><b>প্রস্তাবিত (সিদ্ধান্ত নয়):</b> হ্যাঁ।</p>
+  <p class="answer">আপনার সিদ্ধান্ত ও মন্তব্য:</p><div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">Z7</span>কোন ঋণ যাকাতযোগ্য সম্পদ থেকে বাদ দেওয়া যাবে?</h3>
+  <ul class="opts">
+    <li>শুধু এখন পরিশোধযোগ্য ঋণ</li>
+    <li>দীর্ঘমেয়াদি ঋণের আগামী ১২ মাসের কিস্তি</li>
+    <li>পুরো দীর্ঘমেয়াদি ঋণ</li>
+    <li>অন্য: ____________________________________________</li>
+  </ul>
+  <p class="proposed"><b>প্রস্তাবিত (সিদ্ধান্ত নয়):</b> এখন পরিশোধযোগ্য স্বল্পমেয়াদি ঋণ।</p>
+  <p class="answer">আপনার সিদ্ধান্ত ও মন্তব্য:</p><div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">Z8</span>পাওনা টাকা (অন্যের কাছে আপনার পাওনা) কীভাবে ধরা হবে?</h3>
+  <ul class="opts">
+    <li>শুধু যেগুলো ফেরত পাওয়ার সম্ভাবনা আছে</li>
+    <li>সব পাওনা</li>
+    <li>অন্য: ____________________________________________</li>
+  </ul>
+  <p class="proposed"><b>প্রস্তাবিত (সিদ্ধান্ত নয়):</b> শুধু ফেরত পাওয়ার সম্ভাবনা আছে এমন পাওনা।</p>
+  <p class="answer">আপনার সিদ্ধান্ত ও মন্তব্য:</p><div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">Z9</span>যাকাতের হার: যাকাতযোগ্য সম্পদের ২.৫% (চান্দ্র বছর)</h3>
+  <ul class="opts">
+    <li>হ্যাঁ, ২.৫%</li>
+    <li>অন্য: ____________________________________________</li>
+  </ul>
+  <p class="proposed"><b>প্রস্তাবিত (সিদ্ধান্ত নয়):</b> ২.৫%।</p>
+  <p class="answer">আপনার সিদ্ধান্ত ও মন্তব্য:</p><div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">Z10</span>সৌর বছরের বিকল্প: কিছু আলেম সৌর বছরের জন্য ২.৫৭৭% ধরেন। ক্যালকুলেটরে এই বিকল্প থাকবে?</h3>
+  <ul class="opts">
+    <li>থাকবে</li>
+    <li>থাকবে না (শুধু চান্দ্র বছর)</li>
+  </ul>
+  <p class="proposed"><b>প্রস্তাবিত (সিদ্ধান্ত নয়):</b> থাকবে না (শুধু চান্দ্র বছর)।</p>
+  <p class="answer">আপনার সিদ্ধান্ত ও মন্তব্য:</p><div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">Z11</span>এই ফাউন্ডেশন যাকাত কাদের দেবে? সূরা আত-তাওবা (৯:৬০)-এর আট খাতের কোনগুলো?</h3>
+  <ul class="opts">
+    <li>ফকির (দরিদ্র)</li>
+    <li>মিসকিন (অভাবী)</li>
+    <li>আমিল (যাকাত সংগ্রহ ও বণ্টনের কর্মী)</li>
+    <li>মুআল্লাফাতুল কুলুব (যাদের মন আকৃষ্ট করা উদ্দেশ্য)</li>
+    <li>রিকাব (দাসমুক্তি)</li>
+    <li>গারিমিন (ঋণগ্রস্ত)</li>
+    <li>ফি সাবিলিল্লাহ (আল্লাহর পথে)</li>
+    <li>ইবনুস সাবিল (বিপদগ্রস্ত মুসাফির)</li>
+  </ul>
+  <p class="proposed"><b>প্রস্তাবিত:</b> কোনো চূড়ান্ত প্রস্তাব নেই; উদাহরণ হিসেবে: ফকির, মিসকিন, গারিমিন।</p>
+  <p class="answer">আপনার সিদ্ধান্ত ও মন্তব্য:</p><div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">Z12</span>যাকাত থেকে এতিমদের সহায়তা করা যাবে কি?</h3>
+  <ul class="opts">
+    <li>শুধু দরিদ্র এতিম</li>
+    <li>সব এতিম</li>
+    <li>অন্য: ____________________________________________</li>
+  </ul>
+  <p class="proposed"><b>প্রস্তাবিত (সিদ্ধান্ত নয়):</b> শুধু দরিদ্র ও মুসলিম এতিম, অভিভাবকের কাছে মালিকানা হস্তান্তর করে (তামলিক)।</p>
+  <p class="answer">আপনার সিদ্ধান্ত ও মন্তব্য:</p><div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">Z13</span>যাকাত দিয়ে মসজিদ, মাদ্রাসা ভবন, নলকূপ বা বৃক্ষরোপণ করা যাবে কি?</h3>
+  <p class="why">অধিকাংশ আলেমের মতে না, কারণ এগুলোতে কোনো ব্যক্তির মালিকানা থাকে না।</p>
+  <ul class="opts">
+    <li>না</li>
+    <li>হ্যাঁ: ____________________________________________</li>
+  </ul>
+  <p class="proposed"><b>প্রস্তাবিত (সিদ্ধান্ত নয়):</b> না। যাকাত শুধু Z11-এ অনুমোদিত কার্যক্রমে যাবে।</p>
+  <p class="answer">আপনার সিদ্ধান্ত ও মন্তব্য:</p><div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">Z14</span>যাকাত থেকে প্রশাসনিক খরচের অংশ ("আমিল" অংশ)</h3>
+  <ul class="opts">
+    <li>কোনো অংশ নেওয়া যাবে না</li>
+    <li>সর্বোচ্চ ______ %</li>
+    <li>শুধু যাকাত সংগ্রহ ও বণ্টনের কাজে নিয়োজিত কর্মীদের জন্য</li>
+  </ul>
+  <p class="proposed"><b>প্রস্তাবিত:</b> কোনো প্রস্তাব নেই; আপনার সিদ্ধান্ত প্রয়োজন।</p>
+  <p class="answer">আপনার সিদ্ধান্ত ও মন্তব্য:</p><div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">Z15</span>বণ্টনের আগে যাকাত কত দিন রাখা যাবে?</h3>
+  <ul class="opts">
+    <li>যত দ্রুত সম্ভব</li>
+    <li>একই চান্দ্র বছরের মধ্যে</li>
+    <li>অন্য: ____________________________________________</li>
+  </ul>
+  <p class="proposed"><b>প্রস্তাবিত:</b> কোনো প্রস্তাব নেই; আপনার সিদ্ধান্ত প্রয়োজন।</p>
+  <p class="answer">আপনার সিদ্ধান্ত ও মন্তব্য:</p><div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">Z16</span>অন্যের পক্ষ থেকে যাকাত দেওয়া যাবে কি?</h3>
+  <ul class="opts">
+    <li>হ্যাঁ, তার অনুমতি নিয়ে</li>
+    <li>না</li>
+  </ul>
+  <p class="proposed"><b>প্রস্তাবিত (সিদ্ধান্ত নয়):</b> হ্যাঁ; দানের ফর্মে দাতা নিশ্চিত করবেন: "আমি তার অনুমতি নিয়েছি"।</p>
+  <p class="answer">আপনার সিদ্ধান্ত ও মন্তব্য:</p><div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">Z17</span>মাসিক যাকাত (কিস্তিতে অগ্রিম যাকাত দেওয়া)</h3>
+  <ul class="opts">
+    <li>অনুমোদিত</li>
+    <li>দেওয়া হবে না</li>
+  </ul>
+  <p class="proposed"><b>প্রস্তাবিত (সিদ্ধান্ত নয়):</b> অগ্রিম যাকাত হিসেবে অনুমোদিত; রসিদে লেখা থাকবে "অগ্রিম যাকাত"।</p>
+  <p class="answer">আপনার সিদ্ধান্ত ও মন্তব্য:</p><div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">Z18</span>সুদের (রিবা) আয় কি যাকাত বা সাদাকাহ তহবিলে নেওয়া যাবে?</h3>
+  <ul class="opts">
+    <li>আলাদা "সুদ নিষ্পত্তি" তহবিলে নেওয়া হবে</li>
+    <li>গ্রহণ করা হবে না</li>
+    <li>অন্য: ____________________________________________</li>
+  </ul>
+  <p class="proposed"><b>প্রস্তাবিত:</b> কোনো প্রস্তাব নেই; আপনার সিদ্ধান্ত প্রয়োজন।</p>
+  <p class="answer">আপনার সিদ্ধান্ত ও মন্তব্য:</p><div class="line"></div>
+</div>
+
+<div class="section">
+<h2>২. ফিতরা (সাদাকাতুল ফিতর)</h2>
+
+<div class="q">
+  <h3><span class="no">F1</span>জনপ্রতি ফিতরার পরিমাণ কীভাবে নির্ধারণ হবে?</h3>
+  <p class="proposed"><b>প্রস্তাবিত (সিদ্ধান্ত নয়):</b> প্রতি বছর ইসলামিক ফাউন্ডেশন বাংলাদেশের জাতীয় ঘোষণার পর অ্যাডমিন
+  গম / যব / খেজুর / কিশমিশ / পনিরের হার বসাবেন; দাতা একটি বেছে নেবেন।</p>
+  <ul class="opts"><li>প্রস্তাব অনুযায়ী ঠিক আছে</li><li>পরিবর্তন: ________________________________________</li></ul>
+  <div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">F2</span>দানের ফর্ম কেমন হবে?</h3>
+  <p class="proposed"><b>প্রস্তাবিত (সিদ্ধান্ত নয়):</b> মানুষের সংখ্যা × নির্বাচিত হার = মোট টাকা; দাতা নিজে ইচ্ছামতো পরিমাণ লিখবেন না।</p>
+  <ul class="opts"><li>প্রস্তাব অনুযায়ী ঠিক আছে</li><li>পরিবর্তন: ________________________________________</li></ul>
+  <div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">F3</span>শেষ সময়</h3>
+  <p class="proposed"><b>প্রস্তাবিত (সিদ্ধান্ত নয়):</b> ঈদুল ফিতরের নামাজের আগে; অ্যাডমিনের নির্ধারিত তারিখ ও সময়ের পর ফর্ম বন্ধ
+  হবে অথবা সতর্কবার্তা দেখাবে।</p>
+  <ul class="opts"><li>প্রস্তাব অনুযায়ী ঠিক আছে</li><li>পরিবর্তন: ________________________________________</li></ul>
+  <div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">F4</span>ফিতরা প্রাপকদের কাছে কীভাবে পৌঁছাবে?</h3>
+  <p class="proposed"><b>প্রস্তাবিত (সিদ্ধান্ত নয়):</b> ঈদের আগে বণ্টন; দেরিতে পাওয়া গেলে রসিদে লেখা থাকবে যে দেরিতে দেওয়া হয়েছে।</p>
+  <ul class="opts"><li>প্রস্তাব অনুযায়ী ঠিক আছে</li><li>পরিবর্তন: ________________________________________</li></ul>
+  <div class="line"></div>
+</div>
+
+<div class="q">
+  <h3><span class="no">F5</span>মাসিক বা নিয়মিত ফিতরা</h3>
+  <p class="proposed"><b>প্রস্তাবিত (সিদ্ধান্ত নয়):</b> অনুমোদিত নয়।</p>
+  <ul class="opts"><li>প্রস্তাব অনুযায়ী ঠিক আছে</li><li>পরিবর্তন: ________________________________________</li></ul>
+  <div class="line"></div>
+</div>
+
+<h2>৩. ক্যালকুলেটর কীভাবে হিসাব করবে</h2>
+<p>উপরের সিদ্ধান্ত অনুযায়ী ক্যালকুলেটর এভাবে হিসাব করবে। পদ্ধতিটিও অনুমোদন করুন।</p>
+<div class="formula">
+  <p><b>যাকাতযোগ্য সম্পদ</b> = নগদ টাকা + ব্যাংক ব্যালান্স</p>
+  <p>&nbsp;&nbsp;+ স্বর্ণের মূল্য (গ্রাম × প্রতি গ্রামের দাম, ক্যারেট Z4 অনুযায়ী) + রুপার মূল্য (গ্রাম × প্রতি গ্রামের দাম)</p>
+  <p>&nbsp;&nbsp;+ ব্যবসার পণ্য (বিক্রয়মূল্যে) + পাওনা টাকা (Z8 অনুযায়ী) + বিনিয়োগ (Z5 অনুযায়ী)</p>
+  <p>&nbsp;&nbsp;− ঋণ (Z7 অনুযায়ী)</p>
+  <p><b>নিসাব</b> = Z1 অনুযায়ী (যেমন: রুপার গ্রাম × রুপার দাম)</p>
+  <p><b>যাকাতযোগ্য সম্পদ নিসাবের সমান বা বেশি হলে:</b> যাকাত = যাকাতযোগ্য সম্পদ × ২.৫% (পূর্ণ টাকায়, ওপরের দিকে)</p>
+  <p><b>কম হলে:</b> বার্তা দেখাবে: "আপনার সম্পদ নিসাব পরিমাণ হয়নি; যাকাত ফরজ নয়।"</p>
+</div>
+<ul class="plain">
+  <li>স্বর্ণ ও রুপা গ্রাম অথবা ভরি/তোলায় লেখা যাবে (১ ভরি = ১১.৬৬৪ গ্রাম)।</li>
+  <li>দাতা যা লেখেন তা সার্ভারে সংরক্ষণ করা হয় না; শুধু যাকাতের পরিমাণ দানের ফর্মে যায়।</li>
+  <li>ক্যালকুলেটর দেখাবে কোন তারিখের দাম দিয়ে হিসাব করা হয়েছে।</li>
+</ul>
+<ul class="opts"><li>পদ্ধতি অনুমোদিত</li><li>পরিবর্তন: ________________________________________________</li></ul>
+<div class="line"></div>
+
+<h2>৪. যে লেখাগুলো আপনার অনুমোদন প্রয়োজন</h2>
+<p>নিচের লেখাগুলো ফাউন্ডেশন আলাদাভাবে আপনার কাছে পাঠাবে। অনুমোদন হলে টিক দিন।</p>
+<ul class="opts">
+  <li>যাকাত তহবিলের পাতার লেখা</li>
+  <li>ক্যালকুলেটরের সহায়ক লেখা ও প্রশ্নোত্তর (FAQ)</li>
+  <li>ফিতরা তহবিলের পাতা ও হার</li>
+  <li>হোম পেজের হাদীসের বাক্য ও সূত্র</li>
+  <li>যাকাতের রসিদের লাইন (যেমন: "যাকাত হিসেবে গৃহীত")</li>
+</ul>
+
+<div class="sign">
+<h2>৫. স্বাক্ষর</h2>
+<p>উপরের সিদ্ধান্তগুলো আমি পর্যালোচনা ও অনুমোদন করলাম।</p>
+<table>
+  <tr><th style="width: 30%">নাম</th><th style="width: 22%">ভূমিকা</th><th style="width: 18%">তারিখ</th><th>স্বাক্ষর</th></tr>
+  <tr><td></td><td>শরয়ী উপদেষ্টা</td><td></td><td></td></tr>
+  <tr><td></td><td>চেয়ারম্যান</td><td></td><td></td></tr>
+</table>
+</div>
+</div>
+
+</body>
+</html>

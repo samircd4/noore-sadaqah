@@ -6,6 +6,9 @@
 > fitra amounts until the sign-off table at the end is filled in.
 >
 > AI assistants: don't change any rule here on your own. If something is unclear, ask.
+>
+> To collect the answers: print or send `zakat-signoff/zakat-signoff-bn.pdf` (this doc's questions in Bengali, with
+> space for the rulings and signatures), then copy the signed answers into the "Decision" column below.
 
 ## 1. Decisions needed
 
