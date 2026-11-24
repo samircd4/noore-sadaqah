@@ -1,0 +1,12 @@
+# Added on top of compose.prod.yaml when deploy/.env has PROXY=nginx (deploy.sh and backup.sh do it):
+# an Nginx already on the VPS keeps ports 80/443 and forwards this site's domain to Caddy on 127.0.0.1:8080.
+services:
+  caddy:
+    ports: !override
+      - "127.0.0.1:8080:80"
+    volumes: !override
+      - ./deploy/Caddyfile.behind-nginx:/etc/caddy/Caddyfile:ro
+      - ./deploy/routes.caddy:/etc/caddy/routes.caddy:ro
+      - media:/srv/media:ro
+      - caddy_data:/data
+      - caddy_config:/config

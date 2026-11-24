@@ -89,6 +89,25 @@ If Cloudflare proxies the domain (orange cloud), keep the gateways' callback pat
    `rclone config` with a remote named `r2` for off-site copies. **Test a restore.**
 10. Uptime monitor and Sentry.
 
+## VPS that already runs Nginx (`PROXY=nginx`)
+
+If another site on the VPS already uses Nginx on ports 80/443, don't stop it. Nginx keeps those ports and forwards
+this site's domain to Caddy on `127.0.0.1:8080`; Caddy only does the routing (`deploy/Caddyfile.behind-nginx`,
+`deploy/compose.behind-nginx.yaml`). The other sites are not touched.
+
+1. `deploy/.env`: `PROXY=nginx`. `deploy.sh` and `backup.sh` then add the override file themselves.
+2. Nginx site for this domain only (a subdomain such as `noore-sadakah.example.com` works the same way):
+   ```bash
+   sed "s/DOMAIN/<your domain>/g" deploy/nginx-site.conf > /etc/nginx/sites-available/noore-sadaqah
+   ln -s /etc/nginx/sites-available/noore-sadaqah /etc/nginx/sites-enabled/
+   nginx -t && systemctl reload nginx
+   certbot --nginx -d <your domain>      # HTTPS for this domain; certbot renews it with the others
+   ```
+3. `sh deploy/deploy.sh`.
+
+`nginx-site.conf` overwrites `X-Forwarded-For` with the visitor's address, and Caddy trusts it from the private
+network, so Django still sees the real visitor IP for rate limits.
+
 ## Deploy (`deploy/deploy.sh`, run as `deploy`)
 
 ```bash

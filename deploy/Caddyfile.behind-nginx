@@ -1,0 +1,16 @@
+# Caddy behind an Nginx that already runs on the VPS (PROXY=nginx in deploy/.env; DEPLOYMENT.md).
+# Nginx does HTTPS on 80/443 for this domain and forwards everything to 127.0.0.1:8080; Caddy only does the routing.
+{
+	auto_https off
+	servers {
+		# Requests come from Nginx through Docker's port forwarding: keep the visitor IP and https from its headers.
+		trusted_proxies static private_ranges
+	}
+}
+
+:80 {
+	@www host www.{$DOMAIN}
+	redir @www https://{$DOMAIN}{uri} permanent
+
+	import /etc/caddy/routes.caddy
+}
