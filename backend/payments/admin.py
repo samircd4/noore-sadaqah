@@ -1,10 +1,12 @@
 from django.contrib import admin
 
+from core.admin_base import Admin
+
 from .models import GatewayEvent
 
 
 @admin.register(GatewayEvent)
-class GatewayEventAdmin(admin.ModelAdmin):
+class GatewayEventAdmin(Admin):
     """Read only: the evidence for disputes (RUNBOOK.md)."""
 
     list_display = ("received_at", "provider", "kind", "status", "gateway_ref", "donation")

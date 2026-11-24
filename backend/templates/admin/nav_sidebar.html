@@ -1,0 +1,32 @@
+{% load i18n unfold %}
+{% comment %}
+  Unfold's sidebar wrapper (unfold/templates/admin/nav_sidebar.html, django-unfold 0.110) with one change:
+  on desktop the toggle button doesn't hide the sidebar, it folds it into a 72px rail that shows only the logo and the
+  menu icons (styles in core/static/core/admin.css, class "ns-mini"). The width change is animated. On phones and
+  tablets (≤1280px) it still slides away completely, as before: `wide` follows the window size, so making the window
+  narrow while the rail is folded hides it too. Unfold keeps the open/closed state in localStorage.
+{% endcomment %}
+
+<div class="relative z-60" x-bind:class="{'select-none': resizing}" x-on:mousemove.window="if (resizing) { sidebarWidth = Math.min(max, Math.max(min, getComputedStyle($el).direction === 'rtl' ? document.getElementById('nav-sidebar').getBoundingClientRect().right - $event.clientX : $event.clientX)); localStorage.setItem('sidebarWidth', sidebarWidth); }" x-on:mouseup.window="resizing = false" x-on:resize.window="wide = window.innerWidth > 1280" x-data="{ min: 220, max: 360, rail: 72, resizing: false, wide: window.innerWidth > 1280, open() { return typeof sidebarOpen === 'function' ? sidebarOpen() : sidebarOpen } }">
+    <div class="fixed xl:relative ns-sidebar {% element_classes 'navigation_wrapper' %}"
+         x-show="open() || wide"
+         x-bind:class="{'ns-mini': wide && !open(), 'ns-resizing': resizing}"
+         x-bind:style="`width: ${open() || !wide ? sidebarWidth : rail}px`">
+        <div class="bg-base-50 relative z-30 dark:bg-base-900">
+            <div id="nav-sidebar" class="ns-sidebar bg-base-50 border-e border-base-200 bottom-0 fixed max-h-screen top-0 dark:border-base-800 dark:bg-base-900 {% element_classes 'navigation' %}"
+                 x-bind:class="{'ns-resizing': resizing}"
+                 x-bind:style="`width: ${open() || !wide ? sidebarWidth : rail}px`">
+                {% if templates.navigation %}
+                    {% include templates.navigation %}
+                {% else %}
+                    {% include "unfold/helpers/navigation.html" %}
+                {% endif %}
+
+                <div class="absolute bottom-0 cursor-col-resize flex group items-center justify-center end-[-3px] top-0 resize w-[7px]" x-show="open()" x-on:mousedown="resizing = true">
+                    <div class="h-full w-[3px] transition-colors group-hover:bg-base-300 group-hover:dark:bg-base-700">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

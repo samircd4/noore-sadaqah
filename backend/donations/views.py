@@ -16,6 +16,8 @@ from django.core.cache import cache
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from drf_spectacular.utils import OpenApiParameter, extend_schema, inline_serializer
+from rest_framework import serializers
 from rest_framework.decorators import api_view, throttle_classes
 from rest_framework.response import Response
 from rest_framework.throttling import SimpleRateThrottle
@@ -27,6 +29,22 @@ from payments.models import GatewayEvent
 from .models import FAIL_REASONS, Donation, Status
 from .receipts import donation_for_link, receipt_pdf, receipt_url
 from .serializers import DonationSerializer
+
+LANGUAGE = OpenApiParameter("Accept-Language", str, OpenApiParameter.HEADER, enum=["bn", "en"])
+STATUS = inline_serializer(
+    "DonationStatus",
+    {
+        "id": serializers.UUIDField(),
+        "status": serializers.ChoiceField(["pending", "paid", "failed", "cancelled", "refunded"]),
+        "amount": serializers.IntegerField(),
+        "fund": inline_serializer("DonationFund", {"slug": serializers.CharField(), "title": serializers.CharField()}),
+        "kind": serializers.CharField(),
+        "receipt_no": serializers.CharField(allow_null=True),
+        "paid_at": serializers.DateTimeField(allow_null=True),
+        "fail_reason": serializers.CharField(allow_null=True),
+        "receipt_url": serializers.CharField(required=False, help_text="Only when paid"),
+    },
+)
 
 
 class TenPerTenMinutes(SimpleRateThrottle):
@@ -41,6 +59,22 @@ class TenPerTenMinutes(SimpleRateThrottle):
         return f"throttle_donation_create_{client_ip(request)}"
 
 
+@extend_schema(
+    tags=["Donations"],
+    summary="Start a donation and get the payment page",
+    description="Creates a PENDING donation. It becomes PAID only after Django checks the payment with the gateway.",
+    request=DonationSerializer,
+    responses={
+        201: inline_serializer(
+            "DonationCreated",
+            {
+                "id": serializers.UUIDField(),
+                "redirect_url": serializers.URLField(),
+                "expires_at": serializers.DateTimeField(),
+            },
+        )
+    },
+)
 @api_view(["POST"])
 @throttle_classes([TenPerTenMinutes])
 def create_donation(request):
@@ -76,12 +110,16 @@ def create_donation(request):
     )
 
 
+@extend_schema(tags=["Donations"], summary="A donation's status, for the success and failed pages",
+               parameters=[LANGUAGE], responses={200: STATUS})  # fmt: skip
 @api_view(["GET"])
 def donation_status(request, donation_id):
     donation = get_object_or_404(Donation, pk=donation_id)
     return Response(status_json(donation, request_language(request)))
 
 
+@extend_schema(tags=["Donations"], summary="The status again; after 2 minutes also asks the gateway once",
+               parameters=[LANGUAGE], request=None, responses={200: STATUS})  # fmt: skip
 @api_view(["POST"])
 def refresh_donation(request, donation_id):
     """The success page calls this every 5 seconds while the payment is PENDING. If it is still PENDING after

@@ -9,6 +9,8 @@ import sys
 from pathlib import Path
 
 from celery.schedules import crontab
+from django.templatetags.static import static
+from django.urls import reverse, reverse_lazy
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent  # backend/
@@ -35,6 +37,8 @@ ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1")
 CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000")
 
 INSTALLED_APPS = [
+    "unfold",  # admin theme (DECISIONS.md D4); must come before django.contrib.admin
+    "unfold.contrib.forms",  # list widgets such as the preset amounts row
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -43,12 +47,15 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.postgres",
     "rest_framework",
+    "drf_spectacular",  # /api/docs/
     "core",
     "accounts",
     "content",
     "donations",
     "payments",
     "notifications",
+    "engagement",
+    "audit",
     "django_celery_beat",  # production beat reads the schedule from the database (DEPLOYMENT.md)
 ]
 
@@ -116,8 +123,13 @@ USE_TZ = True
 
 STATIC_URL = "dj-static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-MEDIA_URL = "media/"
+# The foundation's logo (the same file as frontend/public/brand/logo-256.png, also used on receipts) for the admin.
+STATICFILES_DIRS = [("brand", BASE_DIR / "static" / "receipts")]
+# Uploaded images and PDFs. In development Django serves them at /media/ (the Next.js dev server forwards that path);
+# in production MEDIA_URL is the R2 public address, e.g. https://media.nooresadaqah.org/ (DEPLOYMENT.md).
+MEDIA_URL = os.getenv("MEDIA_URL", "/media/")
 MEDIA_ROOT = BASE_DIR / "media"
+FILE_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
@@ -128,6 +140,21 @@ REST_FRAMEWORK = {
     "UNAUTHENTICATED_USER": None,
     # Errors in the shape the frontend expects: {"error": {"code": ..., "fields": ...}} (docs/API.md)
     "EXCEPTION_HANDLER": "core.errors.api_error_handler",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+# Browsable API docs at /api/docs/ (Swagger UI) and the OpenAPI file at /api/schema/. Open to anyone while
+# DJANGO_DEBUG=true; on the server only to staff logged in to /admin/ (config/urls.py).
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Noore Sadaqah Foundation API",
+    "DESCRIPTION": (
+        "The contract between the Next.js website and Django (docs/API.md is the source of truth). "
+        "Content endpoints answer in the language of the Accept-Language header (bn or en)."
+    ),
+    "VERSION": "v1",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SCHEMA_PATH_PREFIX": "/api/v1",
+    "COMPONENT_SPLIT_REQUEST": True,
 }
 
 # Only the Next.js server (on this machine) may tell us the visitor's IP with X-Forwarded-For.
@@ -135,6 +162,11 @@ TRUSTED_PROXY_IPS = ["127.0.0.1", "::1"]
 
 # The public website. Gateway callback URLs and the redirects back to /bn/donate/... are built from it.
 SITE_URL = os.getenv("SITE_URL", "http://localhost:3000").rstrip("/")
+
+# After an admin save, Django tells the Next.js server which cached answers are stale (core/revalidate.py).
+# Both empty = off (the frontend's cache then refreshes on its own within minutes).
+FRONTEND_INTERNAL_URL = os.getenv("FRONTEND_INTERNAL_URL", "").rstrip("/")
+REVALIDATE_SECRET = os.getenv("REVALIDATE_SECRET", "")
 
 RECEIPT_TOKEN_SECRET = os.getenv("RECEIPT_TOKEN_SECRET") or (secrets.token_urlsafe(50) if TESTING else None)
 if not RECEIPT_TOKEN_SECRET:
@@ -146,8 +178,9 @@ SSLCOMMERZ_SANDBOX = env_bool("SSLCOMMERZ_SANDBOX", "true")
 # SSLCommerz requires an email. When the donor gave none we send this one (the donor never sees it).
 DONATION_FALLBACK_EMAIL = os.getenv("DONATION_FALLBACK_EMAIL", "donations@nooresadaqah.org")
 
-# `manage.py seed` loads the frontend's mock data, so both apps show the same funds.
+# `manage.py seed` loads the frontend's mock data, so both apps show the same content.
 SEED_FIXTURES_DIR = BASE_DIR.parent / "frontend" / "src" / "mocks" / "fixtures"
+SEED_PUBLIC_DIR = BASE_DIR.parent / "frontend" / "public"  # sample files the fixtures link to (/samples/…)
 SEED_ADMIN_EMAIL = os.getenv("SEED_ADMIN_EMAIL", "")
 SEED_ADMIN_PASSWORD = os.getenv("SEED_ADMIN_PASSWORD", "")
 
@@ -181,6 +214,113 @@ CELERY_TIMEZONE = TIME_ZONE  # beat times below are Dhaka time
 CELERY_BEAT_SCHEDULE = {
     # DONATION_FLOW.md rule 5: settle donations still PENDING after 24 hours
     "cleanup-pending": {"task": "payments.tasks.cleanup_pending", "schedule": crontab(hour=3, minute=0)},
+}
+
+
+def admin_link(model, icon, title=None):
+    """A sidebar entry for one admin list, shown only to staff allowed to see that model."""
+    app, name = model.split(".")
+    return {
+        "title": title or name.replace("_", " ").capitalize(),
+        "icon": icon,
+        "link": reverse_lazy(f"admin:{app}_{name}_changelist"),
+        "permission": lambda request: request.user.has_perm(f"{app}.view_{name}"),
+    }
+
+
+# Django admin theme (ADMIN.md "Unfold theme"). Colors only from frontend/src/app/tokens.css: the emerald scale
+# has no 200–400 steps, so those reuse the nearest palette value.
+UNFOLD = {
+    "SITE_TITLE": "নূরে সাদাকাহ ফাউন্ডেশন",
+    "SITE_HEADER": "নূরে সাদাকাহ ফাউন্ডেশন",
+    "SITE_SUBHEADER": "Staff admin",
+    "SITE_URL": SITE_URL,
+    "SITE_ICON": lambda request: static("brand/logo.png"),
+    "SITE_FAVICONS": [{"rel": "icon", "type": "image/png", "href": lambda request: static("brand/logo.png")}],
+    "STYLES": [lambda request: static("core/admin.css")],
+    "SCRIPTS": [lambda request: static("core/admin.js")],  # sidebar tooltips for the folded icon rail
+    "DASHBOARD_CALLBACK": "core.dashboard.dashboard",  # the admin home page (ADMIN.md "Dashboard")
+    "SHOW_VIEW_ON_SITE": False,
+    "COLORS": {
+        "primary": {
+            "50": "#eaf6f0",
+            "100": "#cde9dc",
+            "200": "#cde9dc",
+            "300": "#cde9dc",
+            "400": "#1f8a63",
+            "500": "#1f8a63",
+            "600": "#16704f",
+            "700": "#0f5a3f",
+            "800": "#0b4631",
+            "900": "#072e20",
+            "950": "#041c13",
+        },
+    },
+    "SIDEBAR": {
+        "show_search": True,
+        "show_all_applications": True,
+        "navigation": [
+            {
+                "items": [
+                    {
+                        "title": "ড্যাশবোর্ড (Dashboard)",
+                        "icon": "dashboard",
+                        "link": reverse_lazy("admin:index"),
+                        "active": lambda request: request.path == reverse("admin:index"),
+                    },
+                ],
+            },
+            {
+                "title": "দান (Donations)",
+                "collapsible": True,
+                "items": [
+                    admin_link("donations.donation", "payments", "Donations"),
+                    admin_link("donations.offlinetotal", "summarize", "Offline totals"),
+                    admin_link("payments.gatewayevent", "receipt_long", "Gateway events"),
+                    admin_link("notifications.outboundmessage", "mail", "Sent messages"),
+                ],
+            },
+            {
+                "title": "কনটেন্ট (Content)",
+                "collapsible": True,
+                "items": [
+                    admin_link("content.fund", "savings", "Funds"),
+                    admin_link("content.campaign", "campaign", "Campaigns"),
+                    admin_link("content.program", "volunteer_activism", "Programs"),
+                    admin_link("content.post", "article", "News posts"),
+                    admin_link("content.postcategory", "label", "Categories"),
+                    admin_link("content.galleryitem", "photo_library", "Gallery"),
+                    admin_link("content.person", "groups", "People"),
+                    admin_link("content.report", "description", "Reports"),
+                    admin_link("content.job", "work", "Jobs"),
+                    admin_link("content.page", "menu_book", "Pages"),
+                ],
+            },
+            {
+                "title": "যোগাযোগ (Contact)",
+                "collapsible": True,
+                "items": [
+                    admin_link("engagement.contactmessage", "chat", "Messages"),
+                    admin_link("engagement.volunteer", "diversity_3", "Volunteers"),
+                    admin_link("engagement.subscriber", "mark_email_read", "Subscribers"),
+                ],
+            },
+            {
+                "title": "সেটিংস (Settings)",
+                "collapsible": True,
+                "items": [admin_link("core.sitesettings", "settings", "Site settings")],
+            },
+            {
+                "title": "স্টাফ (Staff)",
+                "collapsible": True,
+                "items": [
+                    admin_link("accounts.user", "person", "Users"),
+                    admin_link("auth.group", "admin_panel_settings", "Groups"),
+                    admin_link("audit.auditlog", "history", "Audit log"),
+                ],
+            },
+        ],
+    },
 }
 
 # Log ids only: never names, phone numbers, emails or gateway passwords.

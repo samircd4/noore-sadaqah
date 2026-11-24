@@ -8,8 +8,12 @@ dependencies = [
     "celery>=5.5",
     "django>=5.2.8,<5.3",
     "django-celery-beat>=2.9.0",
+    "django-unfold>=0.110.1",
     "djangorestframework>=3.16,<3.17",
+    "drf-spectacular>=0.30.0",
     "gunicorn>=23",
+    "markdown>=3.11.3",
+    "nh3>=0.3.8",
     "pillow>=11.3",
     "psycopg[binary]>=3.2.10",
     "python-dotenv>=1.1",
@@ -50,3 +54,7 @@ DJANGO_SETTINGS_MODULE = "config.settings"
 python_files = ["test_*.py"]
 testpaths = ["tests"]
 addopts = "--reuse-db -p no:cacheprovider"
+filterwarnings = [
+    # Admin URL fields: Django 6 will assume https:// for links typed without a scheme, which is what we want.
+    "ignore:The default scheme will be changed:django.utils.deprecation.RemovedInDjango60Warning",
+]

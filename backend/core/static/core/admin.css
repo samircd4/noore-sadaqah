@@ -1,0 +1,157 @@
+/*
+ * Admin tweaks on top of Unfold (loaded through UNFOLD["STYLES"]).
+ * Everything you can click or open shows the pointer cursor, like on the website (DESIGN_SYSTEM.md "Interaction").
+ */
+a[href],
+button:not(:disabled),
+summary,
+select:not(:disabled),
+option,
+label[for],
+input[type="checkbox"]:not(:disabled),
+input[type="radio"]:not(:disabled),
+input[type="file"]:not(:disabled),
+input[type="submit"]:not(:disabled),
+[role="button"],
+[role="menuitem"],
+[role="option"],
+[role="tab"],
+[x-on\:click],
+[\@click],
+[data-action],
+.select2-selection,
+.select2-results__option {
+  cursor: pointer;
+}
+
+/*
+ * Sidebar rail (templates/admin/nav_sidebar.html). On desktop the sidebar toggle folds the menu into a 72px rail:
+ * only the logo and the menu icons stay, and the width change is animated.
+ */
+.ns-sidebar {
+  transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-x: hidden;
+}
+.ns-sidebar.ns-resizing {
+  transition: none; /* dragging the edge follows the mouse without delay */
+}
+#nav-sidebar-apps a span,
+#nav-sidebar-apps h2,
+#nav-sidebar-inner .truncate {
+  white-space: nowrap; /* text is clipped while the width animates, never wrapped */
+}
+
+/* What the rail hides: titles, the search box, the site name, labels and the close button. */
+.ns-mini #nav-sidebar-inner > div:first-child > div:first-child > div.grow,
+.ns-mini #nav-sidebar-inner > div:first-child > span.material-symbols-outlined,
+.ns-mini #nav-sidebar-inner > div.mb-2\.5,
+.ns-mini #nav-sidebar-apps h2,
+.ns-mini #nav-sidebar-apps a > span:not(.material-symbols-outlined),
+.ns-mini #nav-sidebar-apps a > span.ml-auto,
+.ns-mini #nav-sidebar-inner > div.border-t > div > div.flex-col,
+.ns-mini #nav-sidebar-inner > div.border-t > div > span.material-symbols-outlined {
+  display: none !important;
+}
+
+/* The logo sits in the middle of the rail. */
+.ns-mini #nav-sidebar-inner > div:first-child {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+.ns-mini #nav-sidebar-inner > div:first-child > div:first-child {
+  flex-grow: 0;
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Every icon shows, even inside a folded group; groups are split by a thin line. */
+.ns-mini #nav-sidebar-apps ol {
+  display: flex !important;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+.ns-mini #nav-sidebar-apps > div + div {
+  border-top: 1px solid var(--color-base-200);
+  padding-top: 6px;
+}
+.dark .ns-mini #nav-sidebar-apps > div + div {
+  border-top-color: var(--color-base-800);
+}
+.ns-mini #nav-sidebar-apps a {
+  justify-content: center;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+.ns-mini #nav-sidebar-apps a > .material-symbols-outlined {
+  margin: 0;
+}
+
+/* The avatar sits in the middle; its menu opens wider than the rail. */
+.ns-mini #nav-sidebar-inner > div.border-t > div {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+/* The user menu (theme, password, log out) opens beside the rail instead of inside it, where it would be cut off. */
+.ns-mini #nav-sidebar-inner > div.border-t > nav {
+  position: fixed;
+  left: 80px;
+  right: auto;
+  bottom: 12px;
+  width: 240px;
+}
+
+/* "All applications" at the bottom of the menu: icon only in the rail. */
+.ns-mini #nav-sidebar-inner div.mt-auto > a {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+.ns-mini #nav-sidebar-inner div.mt-auto > a > span:not(.material-symbols-outlined) {
+  display: none;
+}
+.ns-mini #nav-sidebar-inner div.mt-auto > a > .material-symbols-outlined {
+  margin: 0;
+}
+
+/* Dashboard: a campaign that has ended is shown faded under the running ones. */
+.ns-ended {
+  opacity: 0.6;
+}
+
+/* Tooltip beside the folded rail (core/static/core/admin.js). */
+.ns-tooltip {
+  position: fixed;
+  z-index: 1000;
+  transform: translate(-4px, -50%);
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--color-base-900);
+  color: #fff;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.25);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.dark .ns-tooltip {
+  background: var(--color-base-100);
+  color: var(--color-base-900);
+}
+.ns-tooltip.ns-tooltip-on {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+/* Phones and tablets never get the rail: below Unfold's desktop width the sidebar is a full slide-over menu. */
+@media (max-width: 1280px) {
+  .ns-tooltip {
+    display: none;
+  }
+}

@@ -9,7 +9,7 @@ import logging
 from django.conf import settings
 from django.template.loader import render_to_string
 
-from core.models import SiteSetting
+from core.models import SiteSettings
 from core.utils import bn_date, taka, translated
 from donations.receipts import is_placeholder, receipt_pdf, receipt_url
 
@@ -25,21 +25,17 @@ def language_of(donation):
     return "en" if donation.locale == "en" else "bn"
 
 
-def in_language(value, language):
-    """The text of a {"bn": ..., "en": ...} site setting in this language, falling back to the other one."""
-    if isinstance(value, dict):
-        other = "bn" if language == "en" else "en"
-        return (value.get(language) or value.get(other) or "").strip()
-    return str(value or "").strip()
+def in_language(site, field, language):
+    """site.<field>_<language>, falling back to the other language."""
+    other = "bn" if language == "en" else "en"
+    return (getattr(site, f"{field}_{language}") or getattr(site, f"{field}_{other}") or "").strip()
 
 
 def footer(language):
     """Foundation address and registration for the footer; sample or unconfirmed facts are left out (CONTENT.md)."""
-    contact = SiteSetting.get("contact", {}) or {}
-    registration = SiteSetting.get("registration", {}) or {}
-    parts = (registration.get("authority"), registration.get("number"))
-    reg = " ".join(text for text in (in_language(part, language) for part in parts) if text)
-    lines = [in_language(contact.get("address"), language), contact.get("phone", ""), contact.get("email", "")]
+    site = SiteSettings.load()
+    reg = " ".join(text for text in (in_language(site, "reg_authority", language), site.reg_number.strip()) if text)
+    lines = [in_language(site, "address", language), site.phone, site.email]
     return {
         "name": FOUNDATION[language],
         "lines": [line for line in lines if not is_placeholder(line)],

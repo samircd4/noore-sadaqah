@@ -6,10 +6,12 @@ Checks the donation form sent to POST /donations/. Same rules and error codes as
 import re
 
 from django.conf import settings
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from content.models import Campaign, Fund
-from core.models import SiteSetting
+from core.models import SiteSettings
 from core.utils import normalize_mobile, to_latin_digits
 
 MAX_AMOUNT = 10_000_000
@@ -26,6 +28,7 @@ CHOICE = {"required": "required", "null": "required", "invalid_choice": "choiceI
 YES_NO = {"invalid": "choiceInvalid", "null": "choiceInvalid"}
 
 
+@extend_schema_field(OpenApiTypes.INT)
 class AmountField(serializers.Field):
     """Whole taka from 1 to 1 crore. Accepts 1000, "1000" or "১,০০০"."""
 
@@ -61,9 +64,12 @@ class MethodField(serializers.ChoiceField):
 
 def methods_we_can_take():
     """Payment methods that work right now. bKash is added when its code is written (ROADMAP B2)."""
-    listed = SiteSetting.get("payment_methods", ["bkash", "sslcommerz"])
-    ready = ["sslcommerz"] if settings.SSLCOMMERZ_STORE_ID else []
-    return [method for method in listed if method in ready]
+    return [method for method in SiteSettings.load().listed_payment_methods() if method in methods_with_code()]
+
+
+def methods_with_code():
+    """Gateways whose code is written and configured."""
+    return ["sslcommerz"] if settings.SSLCOMMERZ_STORE_ID else []
 
 
 class DonationSerializer(serializers.Serializer):
@@ -101,8 +107,7 @@ class DonationSerializer(serializers.Serializer):
         if data["amount"] < fund.min_amount:
             errors["amount"] = [{"code": "minAmount", "min": fund.min_amount}]
 
-        fitra = SiteSetting.get("fitra", {}) or {}
-        if fund.is_fitra and not fitra.get("open"):  # fitra waits for the zakat policy sign-off
+        if fund.is_fitra and not SiteSettings.load().fitra_is_open:  # fitra waits for the zakat policy sign-off
             errors["fund"] = ["fitraClosed"]
 
         if data["kind"] == "monthly":  # needs donor login and subscriptions (ROADMAP B3–B4)

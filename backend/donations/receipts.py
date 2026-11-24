@@ -17,7 +17,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils import timezone
 
-from core.models import SiteSetting
+from core.models import SiteSettings
 from core.utils import translated
 
 from .models import Donation, Status
@@ -107,26 +107,16 @@ METHODS = {
 }
 
 
-def english(value):
-    """The English text of a {"bn": ..., "en": ...} site setting ("" when there is none)."""
-    if isinstance(value, dict):
-        return (value.get("en") or "").strip()
-    return str(value or "").strip()
-
-
 def is_placeholder(text):
     """Sample or unconfirmed facts never go on a receipt (docs/CONTENT.md: TODO items must not go live)."""
     return not text or any(mark in text.lower() for mark in ("sample", "todo", "নমুনা"))
 
 
 def foundation_facts():
-    """Address, phone, email and registration from the site settings; placeholders are left out."""
-    contact = SiteSetting.get("contact", {}) or {}
-    registration = SiteSetting.get("registration", {}) or {}
-    reg_text = " ".join(
-        part for part in (english(registration.get("authority")), english(registration.get("number"))) if part
-    )
-    lines = [english(contact.get("address")), contact.get("phone", ""), contact.get("email", "")]
+    """Address, phone, email and registration from the site settings (English); placeholders are left out."""
+    site = SiteSettings.load()
+    reg_text = " ".join(part.strip() for part in (site.reg_authority_en, site.reg_number) if part.strip())
+    lines = [site.address_en.strip(), site.phone, site.email]
     return {
         "lines": [line for line in lines if not is_placeholder(line)],
         "registration": None if is_placeholder(reg_text) else reg_text,

@@ -89,8 +89,10 @@ Docker (`docs/DEPLOYMENT.md`).
    docker compose up --build        # builds the images, then starts everything (Ctrl+C stops it)
    ```
 
-   The first build takes a few minutes. Django runs its migrations on start.
-4. In a second terminal, load the funds and site settings (and the admin user from `SEED_ADMIN_EMAIL`):
+   The first build takes a few minutes. Django runs its migrations on start, and on the very first start it also
+   loads all the content from the frontend fixtures, downloads their photos, creates the staff groups and the
+   admin user from `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` (`seed --if-empty`; later starts skip it).
+4. To load the fixtures again later (this overwrites what you edited in the admin):
 
    ```bash
    docker compose exec web uv run python manage.py seed
@@ -100,12 +102,15 @@ Docker (`docs/DEPLOYMENT.md`).
 
 | Address | What |
 |---|---|
-| http://localhost:3000 | The website (it forwards `/api/`, `/admin/` and `/r/` to Django) |
-| http://localhost:3000/admin/ | Django admin |
+| http://localhost:3000 | The website (it forwards `/api/`, `/admin/`, `/r/` and `/media/` to Django) |
+| http://localhost:3000/admin/ | Django admin: content, settings, donations, messages |
+| http://localhost:3000/api/docs/ | API docs (Swagger): every endpoint, try them in the browser |
 | http://127.0.0.1:8025 | Mailpit: every email the site sends lands here, none reach a real inbox |
 | http://127.0.0.1:8000 | Django directly (rarely needed) |
 
-By default content is mocked and **donations go to Django** (`API_LIVE_GROUPS=donations`). Change it for one run:
+By default **content, forms and donations come from Django** (`API_LIVE_GROUPS=content,forms,donations`); only donor
+login and the `/account` pages are still mocked (they arrive with B3). Edit something in the admin and the page
+updates (Django tells Next.js to refresh its cache). Change it for one run:
 `API_LIVE_GROUPS= docker compose up` (everything mocked), or set `API_MODE` / `API_LIVE_GROUPS` in a root `.env` file.
 
 **Every day**
