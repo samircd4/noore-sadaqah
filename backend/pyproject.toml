@@ -6,8 +6,10 @@ readme = "CLAUDE.md"
 requires-python = ">=3.12"
 dependencies = [
     "celery>=5.5",
+    "dj-database-url>=3.1.2",
     "django>=5.2.8,<5.3",
     "django-celery-beat>=2.9.0",
+    "django-storages[s3]>=1.14.6",
     "django-unfold>=0.110.1",
     "djangorestframework>=3.16,<3.17",
     "drf-spectacular>=0.30.0",
@@ -20,6 +22,7 @@ dependencies = [
     "redis>=5.2",
     "requests>=2.32",
     "weasyprint>=66",
+    "whitenoise>=6.12.0",
 ]
 
 [dependency-groups]

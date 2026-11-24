@@ -1,5 +1,6 @@
 """Small helpers used by several apps."""
 
+import hmac
 import re
 
 from django.conf import settings
@@ -8,12 +9,21 @@ from django.utils import timezone
 
 def client_ip(request):
     """The visitor's IP. The Next.js server sends it in X-Forwarded-For; we only believe that header when the
-    request really comes from that server (127.0.0.1), so nobody can fake their IP to dodge the rate limit."""
+    request really comes from that server, so nobody can fake their IP to dodge the rate limit:
+    - on the VPS it comes from 127.0.0.1 (TRUSTED_PROXY_IPS);
+    - on a host where Next.js is on another machine (SnapDeploy) it carries X-Proxy-Secret = API_PROXY_SECRET."""
     remote = request.META.get("REMOTE_ADDR")
     forwarded = request.META.get("HTTP_X_FORWARDED_FOR", "").split(",")[0].strip()
-    if remote in settings.TRUSTED_PROXY_IPS and forwarded:
+    if forwarded and (remote in settings.TRUSTED_PROXY_IPS or from_our_frontend(request)):
         return forwarded
     return remote
+
+
+def from_our_frontend(request):
+    """True when the request carries the shared secret only the Next.js server knows (compared in constant time)."""
+    secret = settings.API_PROXY_SECRET
+    given = request.META.get("HTTP_X_PROXY_SECRET", "")
+    return bool(secret) and hmac.compare_digest(given.encode(), secret.encode())
 
 
 def request_language(request):

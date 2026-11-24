@@ -1,4 +1,8 @@
 node_modules
 .next
+frontend
 .env*
 !.env.example
+.dockerignore
+Dockerfile.dev
+docker-compose.dev.yml

@@ -171,6 +171,36 @@ If a gateway wants to see a live site before the backend exists (ROADMAP "pre-la
 4. Later, adding Django means installing the other services and enabling the `/api/v1/…`, `/r/` and `/admin/` blocks;
    the `location /` block doesn't change. Then switch to `API_MODE=live` and rebuild.
 
+## SnapDeploy (container hosting, alternative to the VPS)
+
+SnapDeploy builds each app from a Dockerfile, gives it `PORT`, and injects `DATABASE_URL` / `REDIS_URL` from its
+add-ons. The repo has two apps, so create **two SnapDeploy apps from the same GitHub repo**. That's why the
+"No Build Files at Root" message appears: each app needs its **Root Directory** set (Advanced Options).
+
+| | Backend app | Frontend app |
+|---|---|---|
+| Root Directory | `backend/` | `frontend/` |
+| Dockerfile | `backend/Dockerfile` (gunicorn + Celery worker + beat, `start.sh`) | `frontend/Dockerfile` (Next standalone) |
+| Add-ons | PostgreSQL, Redis | — |
+| Build variables | — | `NEXT_PUBLIC_DJANGO_ORIGIN` = backend app's https address; `NEXT_PUBLIC_SITE_URL`; `NEXT_PUBLIC_MEDIA_HOST` |
+| Run variables | `DJANGO_DEBUG=false`, `DJANGO_SECRET_KEY`, `RECEIPT_TOKEN_SECRET`, `DJANGO_ALLOWED_HOSTS` (backend host), `DJANGO_CSRF_TRUSTED_ORIGINS` (`https://<site>`), `SITE_URL` (`https://<site>`), SSLCommerz, email, `FRONTEND_INTERNAL_URL` (`https://<site>`), `REVALIDATE_SECRET`, `API_PROXY_SECRET`, `MEDIA_STORAGE=s3` + `MEDIA_*`, `SEED_ON_START=true` (first deploy) | `API_MODE=live`, `API_INTERNAL_URL` (`<backend>/api/v1`), `REVALIDATE_SECRET`, `API_PROXY_SECRET` |
+
+Order: deploy the **backend first** (with its add-ons), then the frontend: its build reads Django's content.
+Without `NEXT_PUBLIC_DJANGO_ORIGIN` the frontend builds as the read-only pre-launch site from the fixtures.
+
+Visitors, the admin (`/admin/`) and SSLCommerz callbacks all use the **frontend's** address; Next.js forwards
+`/api/`, `/admin/`, `/r/` and `/media/` to the backend (next.config.mjs), standing in for Nginx.
+
+Before real donations on SnapDeploy:
+- **Uploads need R2** (`MEDIA_STORAGE=s3`): SnapDeploy has no lasting disk, so files saved in the container are lost
+  at the next deploy.
+- **Always-on plan**: the free tier sleeps after 15 idle minutes (the Celery worker and the receipt emails sleep too)
+  and has 512 MB, tight for gunicorn + Celery + WeasyPrint. Custom domains need a paid tier.
+- The Celery worker shares the web container: if it crashes it isn't restarted until the next deploy. Watch the logs.
+- `/internal/revalidate` is reachable on the public address here (no Nginx to block it); it relies on
+  `REVALIDATE_SECRET` alone, so make it long and random.
+- Images run on ARM64; both Dockerfiles use multi-arch base images.
+
 ## Launch day
 
 1. QA_CHECKLIST.md fully passed on staging with sandbox keys.

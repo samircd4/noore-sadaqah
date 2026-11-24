@@ -12,7 +12,7 @@ The contract between `frontend/` and `backend/`. **Change this file first**, the
 | Dates | ISO 8601 with offset, UTC (`"2026-11-04T04:00:00Z"`). The frontend formats them in `Asia/Dhaka`. |
 | Language | Request header `Accept-Language: bn` or `en`. Content endpoints return **already-resolved** fields (`title`, `summary` …) in that language, with Bengali as the fallback for missing English (I18N.md). |
 | Auth | `Authorization: Bearer <access JWT>` for `me/*`. Public endpoints need no auth. |
-| Client IP | Next.js sends `X-Forwarded-For: <visitor IP>`; Django trusts it only from `127.0.0.1`. |
+| Client IP | Next.js sends `X-Forwarded-For: <visitor IP>`; Django trusts it only from `127.0.0.1` (VPS), or when the request also carries `X-Proxy-Secret` equal to `API_PROXY_SECRET` (hosts where Next.js runs on another machine, such as SnapDeploy). |
 | Pagination | Only `/posts/` and `/gallery/` are paginated: `?page=N`, 12 per page (or `?limit=N` for a single short page, e.g. the home page), returning `{ "count", "page", "pages", "results": [...] }`; a page past the end is 404. Every other list (`/funds/`, `/programs/`, `/campaigns/`, `/post-categories/`, `/people/`, `/reports/`, `/jobs/`) returns a plain array. |
 | Images | `{ "url", "alt", "width", "height" }`. `url` is on `NEXT_PUBLIC_MEDIA_HOST`. |
 | Mock | `frontend/src/mocks/` implements this whole contract for frontend-first work (ARCHITECTURE.md "API modes") and must change in the same commit as this file. Mock-only behaviour: `POST /donations/` returns `redirect_url: "/donate/mock-gateway?id=…"` (the server action adds the language prefix), and answers `502 gatewayUnavailable` while `MOCK_GATEWAY_DOWN=1`; the OTP code is always `123456`; in `static` mode every write returns `503 comingSoon`. |

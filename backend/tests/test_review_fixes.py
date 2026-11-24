@@ -140,3 +140,18 @@ def test_dashboard_shares_keep_zakat_apart():
     sadaqah = Fund.objects.get(slug="sadaqah").title_bn
     assert rows[sadaqah] == "৫০%"  # half of the general money, not 30% of everything
     assert next(share for name, share in rows.items() if "যাকাত" in name and share != "০%") == "১০০%"
+
+
+# Client IP on a host without a local proxy (SnapDeploy) ------------------------------------------------------------
+def test_forwarded_ip_trusted_only_with_the_proxy_secret(rf, settings):
+    from core.utils import client_ip
+
+    good = secrets.token_urlsafe(16)
+    settings.API_PROXY_SECRET = good
+    outside = {"REMOTE_ADDR": "10.0.0.9", "HTTP_X_FORWARDED_FOR": "203.0.113.7"}
+    with_secret = lambda value: rf.get("/", **outside, **{"HTTP_X_PROXY_SECRET": value})  # noqa: E731
+    assert client_ip(rf.get("/", **outside)) == "10.0.0.9"  # a visitor faking the header
+    assert client_ip(with_secret("wrong")) == "10.0.0.9"
+    assert client_ip(with_secret(good)) == "203.0.113.7"
+    settings.API_PROXY_SECRET = ""
+    assert client_ip(with_secret("")) == "10.0.0.9"  # off when unset
