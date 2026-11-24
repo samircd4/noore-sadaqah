@@ -9,7 +9,7 @@ django-unfold · django-storages (R2) · WeasyPrint · pytest-django · ruff.
 
 Layout: a plain Django project. `config/` holds the one `settings.py` (every value from `.env`; `DJANGO_DEBUG=true`
 locally), `urls.py`, `celery.py` and `wsgi.py`. Apps sit next to `manage.py`: `core/`, `accounts/`, `content/`,
-`donations/`, `payments/` (see `../docs/ARCHITECTURE.md`). Keep the code plain and easy to read: function views,
+`donations/`, `payments/`, `notifications/` (see `../docs/ARCHITECTURE.md`). Keep the code plain and easy to read: function views,
 short functions with a comment saying what they do and why, no extra layers.
 
 ## Rules
@@ -46,7 +46,7 @@ Dependencies are managed with **uv**: `pyproject.toml` + `uv.lock` (no requireme
 `uv add <pkg>` (or `uv add --dev <pkg>`), then commit both files.
 
 ```bash
-docker compose -f docker-compose.dev.yml up -d      # Postgres 16 + Redis for local work and tests
+docker compose -f docker-compose.dev.yml up -d      # Postgres 16 + Redis + Mailpit for local work and tests
 uv sync                                             # creates .venv from uv.lock
 cp .env.example .env                                # then fill in the secrets (never committed)
 uv run python manage.py migrate && uv run python manage.py seed
@@ -59,15 +59,16 @@ uv run ruff check . && uv run ruff format .
 **Or run the whole backend in Docker** (dev only; production does not use Docker). `web` (Django on
 127.0.0.1:8000, runs `migrate` on start) and `worker` (Celery + beat) use `Dockerfile.dev`, read `.env`, and get
 `DB_HOST=db` / `REDIS_URL=redis://redis:6379/0` from compose. The code is mounted, so runserver reloads; the worker
-does not (restart it). Pango is in the image, so receipt PDFs work without MSYS2.
+does not (restart it). Pango is in the image, so receipt PDFs work without MSYS2. Every email sent in development
+lands in Mailpit: open http://127.0.0.1:8025 (nothing reaches a real inbox).
 
 ```bash
-docker compose -f docker-compose.dev.yml up -d --build          # Postgres, Redis, Django, Celery
+docker compose -f docker-compose.dev.yml up -d --build          # Postgres, Redis, Mailpit, Django, Celery
 docker compose -f docker-compose.dev.yml exec web uv run python manage.py seed
 docker compose -f docker-compose.dev.yml exec web uv run pytest
 docker compose -f docker-compose.dev.yml restart worker         # after changing task code
 docker compose -f docker-compose.dev.yml logs -f web worker
-docker compose -f docker-compose.dev.yml up -d db redis         # only the services, to run Django with uv
+docker compose -f docker-compose.dev.yml up -d db redis mailpit # only the services, to run Django with uv
 ```
 
 In Docker, requests from the Next.js dev server arrive from the Docker gateway IP, not 127.0.0.1, so

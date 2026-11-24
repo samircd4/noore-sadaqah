@@ -1,0 +1,17 @@
+{% extends "emails/base.html" %}
+{% block content %}
+<h1 style="margin:0 0 12px;font-size:22px;color:#0b4631;">জাযাকাল্লাহু খাইরান!</h1>
+<p style="margin:0 0 16px;">প্রিয় {{ donation.donor_name }}, আপনার দান আমরা পেয়েছি। আল্লাহ আপনার দান কবুল করুন।</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #eadfc8;border-radius:8px;margin:0 0 16px;">
+  <tr><td style="padding:10px 14px;color:#0f5a3f;">পরিমাণ</td><td style="padding:10px 14px;font-weight:bold;" align="right">{{ amount }}</td></tr>
+  <tr><td style="padding:10px 14px;color:#0f5a3f;border-top:1px solid #eadfc8;">ফান্ড</td><td style="padding:10px 14px;border-top:1px solid #eadfc8;" align="right">{{ fund }}</td></tr>
+  <tr><td style="padding:10px 14px;color:#0f5a3f;border-top:1px solid #eadfc8;">তারিখ</td><td style="padding:10px 14px;border-top:1px solid #eadfc8;" align="right">{{ date }}</td></tr>
+  <tr><td style="padding:10px 14px;color:#0f5a3f;border-top:1px solid #eadfc8;">রসিদ নম্বর</td><td style="padding:10px 14px;border-top:1px solid #eadfc8;" align="right">{{ receipt_no }}</td></tr>
+</table>
+{% if receipt_link %}
+<p style="margin:0 0 20px;">রসিদ ডাউনলোড করুন: <a href="{{ receipt_link }}" style="color:#0f5a3f;">{{ receipt_link }}</a></p>
+{% else %}
+<p style="margin:0 0 20px;">রসিদের PDF এই ইমেইলের সাথে সংযুক্ত আছে।</p>
+{% endif %}
+<a href="{{ account_url }}" style="display:inline-block;background:#d6a83f;color:#041c13;font-weight:bold;text-decoration:none;padding:12px 20px;border-radius:8px;">আপনার সব দান দেখুন</a>
+{% endblock %}

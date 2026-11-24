@@ -8,6 +8,7 @@ import secrets
 import sys
 from pathlib import Path
 
+from celery.schedules import crontab
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent  # backend/
@@ -47,6 +48,8 @@ INSTALLED_APPS = [
     "content",
     "donations",
     "payments",
+    "notifications",
+    "django_celery_beat",  # production beat reads the schedule from the database (DEPLOYMENT.md)
 ]
 
 MIDDLEWARE = [
@@ -65,7 +68,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],  # emails/*.html (receipts/ lives in the donations app)
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -148,9 +151,37 @@ SEED_FIXTURES_DIR = BASE_DIR.parent / "frontend" / "src" / "mocks" / "fixtures"
 SEED_ADMIN_EMAIL = os.getenv("SEED_ADMIN_EMAIL", "")
 SEED_ADMIN_PASSWORD = os.getenv("SEED_ADMIN_PASSWORD", "")
 
+# Email (docs/NOTIFICATIONS.md). EMAIL_PROVIDER=smtp sends through EMAIL_HOST: Mailpit in development
+# (docker-compose.dev.yml; inbox at http://127.0.0.1:8025), the real mail server in production. console prints them.
+EMAIL_PROVIDER = os.getenv("EMAIL_PROVIDER", "smtp")
+EMAIL_BACKENDS = {
+    "smtp": "django.core.mail.backends.smtp.EmailBackend",
+    "console": "django.core.mail.backends.console.EmailBackend",
+}
+if EMAIL_PROVIDER not in EMAIL_BACKENDS:
+    raise RuntimeError(f"EMAIL_PROVIDER must be one of {', '.join(EMAIL_BACKENDS)}.")
+EMAIL_BACKEND = EMAIL_BACKENDS[EMAIL_PROVIDER]
+EMAIL_HOST = os.getenv("EMAIL_HOST", "127.0.0.1")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "1025"))
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = env_bool("EMAIL_USE_TLS", "false")  # STARTTLS, usually port 587
+EMAIL_USE_SSL = env_bool("EMAIL_USE_SSL", "false")  # SSL from the start, usually port 465
+if EMAIL_USE_TLS and EMAIL_USE_SSL:
+    raise RuntimeError("Set only one of EMAIL_USE_TLS (port 587) and EMAIL_USE_SSL (port 465).")
+EMAIL_TIMEOUT = 10  # seconds; a slow mail server must not hang a worker
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "রসিদ <receipts@nooresadaqah.org>")
+EMAIL_MESSAGE_ID_DOMAIN = os.getenv("EMAIL_MESSAGE_ID_DOMAIN", "nooresadaqah.org")
+
 CELERY_BROKER_URL = CACHES["default"]["LOCATION"]
 CELERY_TASK_ACKS_LATE = True
-CELERY_TIMEZONE = TIME_ZONE
+CELERY_TIMEZONE = TIME_ZONE  # beat times below are Dhaka time
+# The schedule lives here. Production beat runs django-celery-beat's DatabaseScheduler, which copies it into the
+# database on start (and lets staff see it in /admin/); `celery -B` in development reads it directly.
+CELERY_BEAT_SCHEDULE = {
+    # DONATION_FLOW.md rule 5: settle donations still PENDING after 24 hours
+    "cleanup-pending": {"task": "payments.tasks.cleanup_pending", "schedule": crontab(hour=3, minute=0)},
+}
 
 # Log ids only: never names, phone numbers, emails or gateway passwords.
 LOGGING = {
@@ -175,3 +206,5 @@ if TESTING:
     SSLCOMMERZ_STORE_ID = "teststore"
     SSLCOMMERZ_STORE_PASSWORD = secrets.token_urlsafe(16)  # random: the tests never reach SSLCommerz
     SSLCOMMERZ_SANDBOX = True
+    CELERY_TASK_ALWAYS_EAGER = True  # tasks run inside the test, no Redis
+    CELERY_TASK_EAGER_PROPAGATES = True

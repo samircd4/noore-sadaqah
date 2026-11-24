@@ -132,7 +132,7 @@ curl -fsS https://nooresadaqah.org/api/v1/health/ && echo "$(date -Is) $(git rev
 | Task | Schedule | What it does |
 |---|---|---|
 | `subscriptions.charge_subscriptions` | daily 10:00 | DONATION_FLOW.md "Monthly" |
-| `donations.cleanup_pending` | daily 03:00 | Query the gateway once, then settle PENDING older than 24 hours |
+| `payments.cleanup_pending` | daily 03:00 | Query the gateway once, then settle PENDING older than 24 hours |
 | `core.nisab_reminder` | weekly, Sunday 10:00 | Email the admin if the nisab price is older than 30 days |
 | `payments.reconcile_report` | weekly, Monday 09:00 | Email PAID totals per method for the past week, for comparison with the merchant panels |
 | `core.backup_check` | daily 07:00 | Alert if last night's backup file is missing or tiny |

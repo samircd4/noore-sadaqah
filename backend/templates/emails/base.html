@@ -1,0 +1,30 @@
+{# One layout for every email (NOTIFICATIONS.md). Colors are palette tokens inlined (tokens.css): email clients ignore stylesheets. #}
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ subject }}</title>
+</head>
+<body style="margin:0;padding:0;background:#fbf8f2;color:#041c13;font-family:'Noto Sans Bengali','Hind Siliguri',Arial,sans-serif;font-size:16px;line-height:1.6;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fbf8f2;">
+<tr><td align="center" style="padding:24px 16px;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border:1px solid #eadfc8;border-radius:12px;overflow:hidden;">
+    <tr><td style="background:#0b4631;padding:20px 24px;">
+      <img src="{{ site_url }}/icon.png" width="40" height="40" alt="" style="vertical-align:middle;border-radius:8px;">
+      <span style="color:#ffffff;font-size:18px;font-weight:bold;vertical-align:middle;margin-left:10px;">{{ foundation }}</span>
+    </td></tr>
+    <tr><td style="padding:24px;">
+      {% block content %}{% endblock %}
+    </td></tr>
+    <tr><td style="background:#f5eedf;padding:16px 24px;font-size:13px;color:#072e20;">
+      <strong>{{ footer.name }}</strong><br>
+      {% for line in footer.lines %}{{ line }}<br>{% endfor %}
+      {% if footer.registration %}{{ footer.registration }}<br>{% endif %}
+      <a href="{{ site_url }}/{{ lang }}" style="color:#0f5a3f;">{{ site_url }}</a>
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body>
+</html>

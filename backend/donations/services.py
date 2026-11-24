@@ -55,8 +55,19 @@ def mark_paid(donation_id, *, txn_id, payload, paid_at=None):
     donation.receipt_no = next_receipt_no(timezone.localtime(paid_at).year)  # the year in Dhaka
     donation.save()
     logger.info("donation %s paid", donation.pk)
-    # Later in B2: send the receipt SMS and email here (a Celery task, after the save is committed).
+    queue_receipt(donation)
     return donation, True
+
+
+def queue_receipt(donation):
+    """Send the receipt once the PAID status is committed (backend/CLAUDE.md rule 5). robust=True: if Redis is down,
+    the error is logged and the payment still counts; the donor can download the receipt from the success page."""
+    if not donation.donor_email:  # SMS joins send_receipt later (ROADMAP B2); until then only email donors get one
+        return
+    from notifications.tasks import send_receipt  # imported here: notifications imports this app's models
+
+    donation_id = donation.pk
+    transaction.on_commit(lambda: send_receipt.delay(str(donation_id)), robust=True)
 
 
 @transaction.atomic

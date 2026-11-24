@@ -95,11 +95,14 @@ def check_payment(val_id, ip=None):
 # ---- 3b. Ask about our transaction id (fail, cancel, refresh, IPN without val_id) --------------------------------
 
 
-def ask_sslcommerz(donation, browser_says=None, kind="query", ip=None):
+def ask_sslcommerz(donation, browser_says=None, kind="query", ip=None, give_up=False):
     """Ask SSLCommerz about this donation's transaction id and update the donation to match.
 
     browser_says is "failed" or "cancelled" when the donor's browser came back that way. We only believe it when
-    SSLCommerz has no record of a payment at all (then nothing was charged)."""
+    SSLCommerz has no record of a payment at all (then nothing was charged).
+    give_up=True (the nightly cleanup, a day later): if SSLCommerz answers but nothing was paid, the session has
+    expired, so the donation becomes FAILED. If SSLCommerz confirms the payment even later, FAILED → PAID still
+    works."""
     answer = call_sslcommerz(
         "GET", "/validator/api/merchantTransIDvalidationAPI.php", {"tran_id": donation.gateway_ref}
     )
@@ -113,7 +116,7 @@ def ask_sslcommerz(donation, browser_says=None, kind="query", ip=None):
             confirm(donation, payment, ip)
             return Donation.objects.get(pk=donation.pk)
 
-    if statuses & {"PENDING", "UNATTEMPTED"}:
+    if statuses & {"PENDING", "UNATTEMPTED"} and not give_up:
         return donation  # the donor may still be paying (for example a second card after a declined one)
     if "FAILED" in statuses:
         return mark_unpaid(donation.pk, Status.FAILED, "declined")
@@ -125,6 +128,8 @@ def ask_sslcommerz(donation, browser_says=None, kind="query", ip=None):
         return mark_unpaid(donation.pk, Status.FAILED, "declined")
     if not payments and answer.get("APIConnect") == "DONE" and browser_says == "cancelled":
         return mark_unpaid(donation.pk, Status.CANCELLED, "cancelled")
+    if give_up and answer.get("APIConnect") == "DONE":
+        return mark_unpaid(donation.pk, Status.FAILED, "expired")
     return donation  # still in progress, or SSLCommerz didn't answer: leave it PENDING
 
 
