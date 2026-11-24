@@ -17,8 +17,8 @@ def without_secrets(data):
 
 class GatewayEvent(models.Model):
     """One call to or from a payment gateway, kept as evidence for disputes. Never deleted.
-    kind: create, validate, query, refresh_query, ipn, success_redirect, failed_redirect, cancelled_redirect,
-    mismatch, alert."""
+    kind: create, validate, query, refresh_query, cleanup_query, ipn, success_redirect, failed_redirect,
+    cancelled_redirect, mismatch, alert."""
 
     provider = models.CharField(max_length=12)  # sslcommerz | bkash
     kind = models.CharField(max_length=30)

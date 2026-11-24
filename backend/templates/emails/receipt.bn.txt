@@ -1,0 +1,19 @@
+{% autoescape off %}জাযাকাল্লাহু খাইরান!
+
+প্রিয় {{ donation.donor_name }}, আপনার দান আমরা পেয়েছি। আল্লাহ আপনার দান কবুল করুন।
+
+পরিমাণ: {{ amount }}
+ফান্ড: {{ fund }}
+তারিখ: {{ date }}
+রসিদ নম্বর: {{ receipt_no }}
+
+{% if receipt_link %}রসিদ ডাউনলোড করুন: {{ receipt_link }}{% else %}রসিদের PDF এই ইমেইলের সাথে সংযুক্ত আছে।{% endif %}
+
+আপনার সব দান দেখুন: {{ account_url }}
+
+--
+{{ footer.name }}
+{% for line in footer.lines %}{{ line }}
+{% endfor %}{% if footer.registration %}{{ footer.registration }}
+{% endif %}{{ site_url }}
+{% endautoescape %}

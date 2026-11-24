@@ -138,8 +138,10 @@ Done (branch `b2-sslcommerz-sandbox`):
 Still to do (donations are refused or limited until these land):
 - [ ] bKash sandbox (until then `method: "bkash"` is refused with `choiceInvalid`)
 - [x] Receipt PDF (`/r/…` and `/api/v1/receipts/…/`): WeasyPrint, embedded Noto Bengali, amount in words, refunded mark
-- [ ] Celery `send_receipt`, SMS + email (console providers first)
-- [ ] `cleanup_pending` beat task
+- [x] Celery `send_receipt` by email (PDF attached), `OutboundMessage` log; Mailpit in development
+- [ ] Receipt SMS (joins `send_receipt`; console provider first)
+- [x] `cleanup_pending` beat task (daily 03:00 Dhaka)
+- [ ] Real SMTP settings in the production `.env`
 - [ ] When `GET /site/` moves to Django (B1): `payment_methods` lists only the methods Django can take now, so
       donors never see a method that will be refused
 

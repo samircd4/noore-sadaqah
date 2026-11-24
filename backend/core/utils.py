@@ -3,6 +3,7 @@
 import re
 
 from django.conf import settings
+from django.utils import timezone
 
 
 def client_ip(request):
@@ -38,3 +39,43 @@ def normalize_mobile(text):
     digits = re.sub(r"[\s\-().]", "", to_latin_digits(text or ""))
     match = re.fullmatch(r"(?:\+?88)?(01[3-9]\d{8})", digits)
     return match.group(1) if match else None
+
+
+# ---- Showing numbers, money and dates (docs/I18N.md; the same output as frontend/src/lib/format.js) --------------
+
+BENGALI_DIGITS = str.maketrans("0123456789", "০১২৩৪৫৬৭৮৯")
+ENGLISH_MONTHS = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+]  # fmt: skip
+BENGALI_MONTHS = [
+    "জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন",
+    "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর",
+]  # fmt: skip
+
+
+def bn_number(value, language="bn"):
+    """12500 → '১২,৫০০' with lakh grouping (100000 → '১,০০,০০০'); in English '12,500'."""
+    n = int(value)
+    if language == "en":
+        return f"{n:,}"
+    digits = str(abs(n))
+    head, groups = digits[:-3], [digits[-3:]]
+    while head:  # above the last three digits, Bengali groups by two: 1,00,00,000
+        groups.insert(0, head[-2:])
+        head = head[:-2]
+    return ("-" if n < 0 else "") + ",".join(groups).translate(BENGALI_DIGITS)
+
+
+def taka(amount, language="bn"):
+    """1000 → '৳১,০০০' (bn) or '৳1,000' (en)."""
+    return f"৳{bn_number(amount, language)}"
+
+
+def bn_date(moment, language="bn"):
+    """The day in Dhaka: '২৪ নভেম্বর ২০২৬' (bn) or '24 November 2026' (en).
+    Fixed month names, never the server's locale."""
+    local = timezone.localtime(moment)
+    if language == "en":
+        return f"{local.day} {ENGLISH_MONTHS[local.month - 1]} {local.year}"
+    return f"{local.day} {BENGALI_MONTHS[local.month - 1]} {local.year}".translate(BENGALI_DIGITS)

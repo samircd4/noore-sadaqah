@@ -1,0 +1,19 @@
+{% autoescape off %}Jazakallahu khairan!
+
+Dear {{ donation.donor_name }}, we have received your donation. May Allah accept it from you.
+
+Amount: {{ amount }}
+Fund: {{ fund }}
+Date: {{ date }}
+Receipt no.: {{ receipt_no }}
+
+{% if receipt_link %}Download your receipt: {{ receipt_link }}{% else %}Your receipt is attached to this email as a PDF.{% endif %}
+
+See all your donations: {{ account_url }}
+
+--
+{{ footer.name }}
+{% for line in footer.lines %}{{ line }}
+{% endfor %}{% if footer.registration %}{{ footer.registration }}
+{% endif %}{{ site_url }}
+{% endautoescape %}

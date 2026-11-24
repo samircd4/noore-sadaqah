@@ -1,0 +1,39 @@
+# The whole site for local development, in one command (from the repo root):
+#   docker compose up --build        then open http://localhost:3000
+# Production does not use Docker (docs/DEPLOYMENT.md). Guide: README "Run everything with Docker".
+#
+# Backend services (Postgres, Redis, Mailpit, Django, Celery) come from backend/docker-compose.dev.yml, which still
+# works on its own. This file adds the Next.js dev server in front of them.
+name: noore
+
+include:
+  - backend/docker-compose.dev.yml
+
+services:
+  # Next.js on http://localhost:3000. It forwards /api/, /admin/ and /r/ to Django (next.config.mjs), standing in
+  # for Nginx, so the donation flow and the SSLCommerz callbacks work on this one address.
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile.dev
+    image: noore-frontend-dev
+    env_file:
+      - path: frontend/.env.local   # optional: your own settings; the values below win over it
+        required: false
+    environment:
+      API_MODE: ${API_MODE:-mock}                       # mock | static | live
+      API_LIVE_GROUPS: ${API_LIVE_GROUPS-donations}     # served by Django; the rest stays mocked
+      API_INTERNAL_URL: http://web:8000/api/v1          # Django's service name inside Docker
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+    volumes:
+      - ./frontend:/app/frontend
+      - frontend_node_modules:/app/frontend/node_modules   # the image's Linux node_modules, not the host's
+      - frontend_next:/app/frontend/.next                  # build cache, kept apart from the host's .next
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      - web
+
+volumes:
+  frontend_node_modules:
+  frontend_next:

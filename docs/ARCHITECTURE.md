@@ -259,7 +259,13 @@ BKASH_SANDBOX=true
 SMS_PROVIDER=console                              # console | sslwireless | bulksmsbd | …
 SMS_API_KEY=
 SMS_SENDER_ID=
-EMAIL_PROVIDER=console                            # console | resend | smtp
+EMAIL_PROVIDER=smtp                               # smtp | console (resend later)
+EMAIL_HOST=127.0.0.1                              # dev: Mailpit (docker-compose.dev.yml, inbox :8025); prod: the real SMTP server
+EMAIL_PORT=1025
+EMAIL_HOST_USER=
+EMAIL_HOST_PASSWORD=
+EMAIL_USE_TLS=false
+EMAIL_USE_SSL=false
 RESEND_API_KEY=
 DEFAULT_FROM_EMAIL=রসিদ <receipts@nooresadaqah.org>
 ADMIN_ALERT_EMAIL=
@@ -277,7 +283,8 @@ SENTRY_DSN=
 ```
 
 Never commit a `.env`. Never expose gateway, JWT or R2 secrets with a `NEXT_PUBLIC_` prefix.
-`console` providers print SMS and email to the Celery log in development; never use them in production.
+`console` providers print SMS and email to the Celery log; never use them in production. In development email goes
+by SMTP to Mailpit, which catches every message (read them at http://127.0.0.1:8025).
 
 ## Security & trust (summary; full rules in SECURITY.md)
 
