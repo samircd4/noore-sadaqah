@@ -6,7 +6,9 @@
 set -eu
 
 cd "$(dirname "$0")/.."
-COMPOSE="docker compose -f compose.prod.yaml --env-file deploy/.env"
+COMPOSE="docker compose -f compose.prod.yaml"
+grep -q '^PROXY=nginx' deploy/.env && COMPOSE="$COMPOSE -f deploy/compose.behind-nginx.yaml"
+COMPOSE="$COMPOSE --env-file deploy/.env"
 STAMP="$(date +%Y-%m-%d_%H%M)"
 DIR=deploy/backups
 mkdir -p "$DIR"

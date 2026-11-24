@@ -1,0 +1,40 @@
+# Which paths go where. Shared by deploy/Caddyfile (Caddy does HTTPS itself) and deploy/Caddyfile.behind-nginx
+# (an existing Nginx on the VPS does HTTPS and forwards here). Only the Django paths the internet needs reach Django;
+# the rest of /api/ is internal (Next.js → Django on the Docker network) and /internal/ never leaves it.
+encode zstd gzip
+
+request_body {
+	max_size 10MB
+}
+
+header {
+	Strict-Transport-Security "max-age=31536000; includeSubDomains"
+	-Server
+}
+
+route {
+	# Photos and PDFs uploaded in the admin (the media volume, read only).
+	handle /media/* {
+		root * /srv
+		header Cache-Control "public, max-age=2592000"
+		header X-Content-Type-Options "nosniff"
+		file_server
+	}
+
+	# Django: gateway callbacks, receipts, health check, admin and its files, API docs (staff only).
+	@django path /api/v1/payments/* /api/v1/receipts/* /api/v1/health/ /r/* /admin /admin/* /dj-static/* /api/docs/ /api/schema/
+	handle @django {
+		reverse_proxy web:8000
+	}
+
+	# Internal only: the content API (Next.js calls it directly) and the revalidate hook.
+	@internal path /api/* /internal/*
+	handle @internal {
+		respond 404
+	}
+
+	# Everything else is the website.
+	handle {
+		reverse_proxy frontend:3000
+	}
+}

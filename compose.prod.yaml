@@ -2,7 +2,8 @@
 #
 # Every setting comes from deploy/.env (copy deploy/.env.example; never committed). Always run with both files:
 #   docker compose -f compose.prod.yaml --env-file deploy/.env <command>
-# Deploys go through deploy/deploy.sh, which builds and starts things in the right order.
+# With PROXY=nginx (another site's Nginx already on 80/443) add: -f deploy/compose.behind-nginx.yaml
+# Deploys go through deploy/deploy.sh, which builds and starts things in the right order (and adds that file itself).
 #
 # Only Caddy is reachable from the internet (ports 80/443, automatic HTTPS). Everything else talks on the private
 # Docker network; Postgres and Redis have no published ports. Django is also on 127.0.0.1:8000 of the VPS, so the
@@ -54,6 +55,7 @@ services:
       ACME_EMAIL: ${ACME_EMAIL}
     volumes:
       - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./deploy/routes.caddy:/etc/caddy/routes.caddy:ro
       - media:/srv/media:ro
       - caddy_data:/data
       - caddy_config:/config

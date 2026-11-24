@@ -5,9 +5,14 @@ set -eu
 
 cd "$(dirname "$0")/.."
 REF="${1:-origin/master}"
-COMPOSE="docker compose -f compose.prod.yaml --env-file deploy/.env"
 
 [ -f deploy/.env ] || { echo "deploy/.env is missing: copy deploy/.env.example and fill it in." >&2; exit 1; }
+COMPOSE="docker compose -f compose.prod.yaml"
+# PROXY=nginx: an existing Nginx keeps ports 80/443 and forwards to Caddy on 127.0.0.1:8080 (DEPLOYMENT.md).
+if grep -q '^PROXY=nginx' deploy/.env; then
+    COMPOSE="$COMPOSE -f deploy/compose.behind-nginx.yaml"
+fi
+COMPOSE="$COMPOSE --env-file deploy/.env"
 DOMAIN="$(grep '^DOMAIN=' deploy/.env | cut -d= -f2 | cut -d' ' -f1)"
 
 echo "==> Code: $REF"
