@@ -155,3 +155,43 @@ input[type="submit"]:not(:disabled),
     display: none;
   }
 }
+
+/* Login page (templates/unfold/layouts/unauthenticated.html and helpers/unauthenticated_title.html): the website's
+   hero photo fills the page behind an emerald tint, and the form sits on a card in the middle. */
+.ns-login-logo {
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+  border-radius: 9999px;
+  box-shadow: 0 6px 24px rgb(4 28 19 / 0.18);
+}
+.ns-login-photo {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+.ns-login-photo::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(160deg, rgb(15 90 63 / 0.72), rgb(4 28 19 / 0.88));
+}
+.ns-login-photo > div {
+  position: relative; /* above the tint */
+}
+.ns-login-photo .ns-login-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px 28px;
+  margin: 72px 0 32px;
+  box-shadow: 0 24px 64px rgb(4 28 19 / 0.45);
+}
+.dark .ns-login-photo .ns-login-card {
+  background: var(--color-base-900);
+}
+/* "Return to site" and the theme button sit on the dark photo: light text there. */
+.ns-login-photo > div > .absolute a,
+.ns-login-photo > div > .absolute .material-symbols-outlined {
+  color: #fff;
+}

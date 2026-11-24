@@ -146,3 +146,23 @@ def test_admin_branding_and_avatar(client, superuser):
     assert "/dj-static/core/admin.css" in page  # pointer cursor on everything clickable
     assert superuser.photo.url in page and "Samir Das" in page
     assert "None None" not in page
+
+
+def test_login_page_shows_logo_and_hero_photo(client):
+    from io import BytesIO
+
+    from django.core.files.uploadedfile import SimpleUploadedFile
+    from PIL import Image
+
+    from core.models import HomeImage
+
+    page = client.get(reverse("admin:login")).content.decode()
+    assert "/dj-static/brand/logo.png" in page and "নূরে সাদাকাহ ফাউন্ডেশন" in page
+    assert "background-image" not in page  # no hero photo yet: no photo panel
+
+    buffer = BytesIO()
+    Image.new("RGB", (40, 30), "green").save(buffer, format="PNG")
+    hero = HomeImage.objects.get_or_create(slot="hero", defaults={"alt_bn": "ছবি", "settings_id": 1})[0]
+    hero.image = SimpleUploadedFile("hero.png", buffer.getvalue(), content_type="image/png")
+    hero.save()
+    assert hero.image.url in client.get(reverse("admin:login")).content.decode()

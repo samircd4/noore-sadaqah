@@ -1,0 +1,30 @@
+{% extends 'unfold/layouts/skeleton.html' %}
+{% comment %}
+  Unfold's layout for the logged-out admin pages (login, password reset; django-unfold 0.110), changed so the photo
+  (UNFOLD["LOGIN"]["image"]: the website's hero image) fills the whole page behind the form, with an emerald tint,
+  and the form sits on a card. Without a photo the page is plain, as before. Styles: core/static/core/admin.css.
+{% endcomment %}
+{% load i18n static unfold %}
+
+{% block bodyclass %}{{ block.super }}bg-base-50 login dark:bg-base-900{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block title %}
+    {{ title }} | {{ site_title }}
+{% endblock %}
+
+{% block base %}
+    <div id="page" class="ns-login-page flex min-h-screen{% if login_image %} ns-login-photo{% else %} bg-white dark:bg-base-900{% endif %}"
+         {% if login_image %}style="background-image: url('{{ login_image }}')"{% endif %}>
+        <div class="flex grow items-center justify-center mx-auto px-4 relative">
+            <div class="ns-login-card w-full sm:w-96">
+                {% block content %}{% endblock %}
+            </div>
+
+            {% include "unfold/helpers/unauthenticated_header.html" %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% load i18n static %}
+{% comment %}
+  The heading of the admin's logged-out pages (login, password reset), replacing Unfold's: the foundation's logo and
+  name above the page title, so staff know where they are. Colors come from Unfold's theme (the emerald palette).
+{% endcomment %}
+<div class="ns-login-brand border-b border-base-200 mb-8 pb-6 flex flex-col items-center text-center dark:border-base-800">
+    <img src="{% static 'brand/logo.png' %}" alt="" width="88" height="88" class="ns-login-logo">
+    <p class="font-semibold text-primary-600 tracking-tight dark:text-primary-500" style="font-size: 1.25rem; margin-top: 0.75rem;">
+        নূরে সাদাকাহ ফাউন্ডেশন
+    </p>
+    <p class="text-subtle text-sm" style="margin-top: 0.125rem;">Noore Sadaqah Foundation · স্টাফ অ্যাডমিন</p>
+    <h1 class="font-semibold text-font-important-light dark:text-font-important-dark" style="margin-top: 1.25rem;">
+        {% if title == site_title %}
+            {# the login page: the name is already above, so just greet #}
+            <span class="block">আবার স্বাগতম · Welcome back</span>
+        {% else %}
+            {% if subtitle %}<span class="block text-sm text-subtle font-normal">{{ subtitle }}</span>{% endif %}
+            <span class="block">{{ title }}</span>
+        {% endif %}
+    </h1>
+</div>

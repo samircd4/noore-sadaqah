@@ -141,7 +141,17 @@ export default async function Footer({ site, locale }) {
               <li><Link href="/refund-policy" className="inline-flex min-h-11 min-w-11 items-center hover:text-gold-400">{t("refund")}</Link></li>
             </ul>
           </nav>
-          <p>{t("photoCredit")}</p>
+          <p>
+            {t("developedBy")}{" "}
+            <a
+              href="https://drpythonsolutions.com"
+              target="_blank"
+              rel="noopener"
+              className="inline-flex min-h-11 items-center font-medium underline-offset-2 hover:text-gold-400 hover:underline"
+            >
+              Dr Python Solutions
+            </a>
+          </p>
         </div>
       </div>
     </footer>

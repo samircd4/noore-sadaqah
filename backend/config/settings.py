@@ -272,6 +272,13 @@ def admin_link(model, icon, title=None):
     }
 
 
+def admin_login_image(request):
+    """Imported when called: the admin code can't load while settings are still being read."""
+    from core.admin_base import login_image
+
+    return login_image(request)
+
+
 # Django admin theme (ADMIN.md "Unfold theme"). Colors only from frontend/src/app/tokens.css: the emerald scale
 # has no 200–400 steps, so those reuse the nearest palette value.
 UNFOLD = {
@@ -284,6 +291,9 @@ UNFOLD = {
     "STYLES": [lambda request: static("core/admin.css")],
     "SCRIPTS": [lambda request: static("core/admin.js")],  # sidebar tooltips for the folded icon rail
     "DASHBOARD_CALLBACK": "core.dashboard.dashboard",  # the admin home page (ADMIN.md "Dashboard")
+    # Login page: the website's hero photo beside the form (templates/unfold/helpers/unauthenticated_title.html adds
+    # the logo above it).
+    "LOGIN": {"image": lambda request: admin_login_image(request)},
     "SHOW_VIEW_ON_SITE": False,
     "COLORS": {
         "primary": {
