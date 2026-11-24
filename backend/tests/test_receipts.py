@@ -6,7 +6,7 @@ import pytest
 from django.utils import timezone
 
 from content.models import Fund
-from core.models import SiteSetting
+from core.models import SiteSettings
 from donations.models import Donation, Status
 from donations.receipts import amount_in_words, receipt_html, receipt_url
 from donations.services import mark_paid
@@ -130,8 +130,8 @@ class TestContent:
         assert "sample" not in receipt_html(paid()).lower()
 
     def test_confirmed_registration_is_printed(self):
-        SiteSetting.objects.filter(key="registration").update(
-            value={"authority": {"en": "Department of Social Services"}, "number": "D-1234/2021"}
+        SiteSettings.objects.filter(pk=1).update(
+            reg_authority_en="Department of Social Services", reg_number="D-1234/2021"
         )
         assert "Registration: Department of Social Services D-1234/2021" in receipt_html(paid())
 

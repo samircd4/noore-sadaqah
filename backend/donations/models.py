@@ -134,6 +134,23 @@ class ReceiptCounter(models.Model):
         return f"{self.year}: {self.last}"
 
 
+class OfflineTotal(TimeStamped):
+    """Money a fund received in a year outside the website (before launch, cash, bank). /transparency/totals/
+    adds it to the PAID donations, so the yearly totals are complete. Entered by an Admin."""
+
+    year = models.PositiveSmallIntegerField()
+    fund = models.ForeignKey(Fund, on_delete=models.PROTECT, related_name="offline_totals")
+    total = models.PositiveIntegerField(help_text="Taka")
+    note = models.CharField(max_length=200, blank=True)
+
+    class Meta:
+        ordering = ["-year", "fund__sort_order"]
+        constraints = [models.UniqueConstraint(fields=["year", "fund"], name="one_offline_total_per_year_fund")]
+
+    def __str__(self):
+        return f"{self.year} {self.fund.slug}: {self.total}"
+
+
 # What the status endpoint shows donors for a failed or cancelled donation (fail_reason keys).
 FAIL_REASONS = {
     "declined": {"bn": "পেমেন্ট সম্পন্ন হয়নি।", "en": "The payment didn't go through."},

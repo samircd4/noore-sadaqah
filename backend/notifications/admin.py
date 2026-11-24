@@ -1,10 +1,12 @@
 from django.contrib import admin
 
+from core.admin_base import Admin
+
 from .models import OutboundMessage
 
 
 @admin.register(OutboundMessage)
-class OutboundMessageAdmin(admin.ModelAdmin):
+class OutboundMessageAdmin(Admin):
     """Read only: a record of what was sent (ADMIN.md: nobody may delete it)."""
 
     list_display = ("created_at", "channel", "template", "status", "donation", "error")

@@ -13,8 +13,9 @@ const remotePatterns = [
 
 /**
  * `next dev` only: stand in for Nginx (docs/ARCHITECTURE.md) by forwarding Django's paths to API_INTERNAL_URL's
- * server, so the gateway's callbacks and redirects work on http://localhost:3000 (or a tunnel to it).
- * Production never uses this: Nginx routes /api/, /admin/ and /r/ to Django.
+ * server, so the gateway's callbacks and redirects work on http://localhost:3000 (or a tunnel to it), and photos
+ * uploaded in the admin (/media/…) load. Production never uses this: Nginx routes /api/, /admin/ and /r/ to Django,
+ * and uploads are served from R2 (NEXT_PUBLIC_MEDIA_HOST).
  */
 const djangoOrigin =
   process.env.NODE_ENV !== "production" && process.env.API_INTERNAL_URL ? new URL(process.env.API_INTERNAL_URL).origin : null;
@@ -56,7 +57,7 @@ const nextConfig = {
         source: `/${prefix}/:path+`,
         destination: `${djangoOrigin}/${prefix}/:path+/`,
       })),
-      ...["r", "dj-static"].map((prefix) => ({
+      ...["r", "dj-static", "media"].map((prefix) => ({
         source: `/${prefix}/:path+`,
         destination: `${djangoOrigin}/${prefix}/:path+`,
       })),

@@ -20,10 +20,16 @@ def _clear_cache():
     cache.clear()
 
 
+@pytest.fixture(autouse=True)
+def _media_in_tmp(settings, tmp_path):
+    """Uploaded test images go to a temporary folder, never backend/media."""
+    settings.MEDIA_ROOT = tmp_path / "media"
+
+
 @pytest.fixture
 def seeded(db):
-    """Funds, campaigns and site settings from the frontend fixtures."""
-    call_command("seed", stdout=io.StringIO())
+    """All the content and site settings from the frontend fixtures (no photo downloads in tests)."""
+    call_command("seed", "--no-images", stdout=io.StringIO())
 
 
 @pytest.fixture

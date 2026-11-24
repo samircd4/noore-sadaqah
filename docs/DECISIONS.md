@@ -151,6 +151,22 @@ still embedded. The website, SMS and email keep following the donor's language.
 
 ---
 
+## D18. Settings and lists are real tables, not JSON (2026-11-24, Decided)
+
+**Decision:** Site settings are one `core.SiteSettings` row with plain fields (contact, social, quote, registration,
+about, nisab, fitra, payment switches) plus small row tables: `Stat`, `MobileBankingAccount`, `FitraRate`,
+`ContactFaq` and `HomeImage`. Lists inside content models are row tables as well: `FundBankAccount` and the
+program's `ProgramGoal`, `ProgramFaq` and `ProgramImpact`. Staff edit them in the admin as form fields and
+drag-to-sort table rows, never as raw JSON. Plain number lists (`preset_amounts`, `monthly_options`) stay
+`ArrayField`s, shown as a row of boxes.
+**Why:** The foundation's staff are not technical. A JSON textarea lets a missing comma break the home page, and a
+schema-driven JSON form still hides the data from filters, the audit log and database constraints.
+**Replaces:** `SiteSetting(key, value JSON)` with `core/schemas.py`, `Fund.bank_details`, `Program.goals_*`, `faq`
+and `impact` JSON fields (DATA_MODEL.md, ADMIN.md "Settings"). Migrations `core.0002` and `content.0002` copy the old
+data into the new tables. The `/site/` JSON in API.md is unchanged.
+
+---
+
 ## Open decisions (foundation must answer; don't guess)
 
 | # | Question | Blocks | Owner |

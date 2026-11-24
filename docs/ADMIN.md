@@ -67,10 +67,20 @@ Django's own `LogEntry` stays on as well. The audit admin is read-only.
 
 ## Admin screens (`ModelAdmin` specs)
 
-### Dashboard (Unfold `DASHBOARD_CALLBACK`)
-Cards: today / this month / this year PAID totals (Asia/Dhaka), split by fund, **zakat shown separately**;
-last 10 donations; PENDING older than 1 hour (count + link); subscriptions FAILED or `fail_count > 0`; unhandled
-messages and volunteers. Editors see only the totals.
+### Dashboard (Unfold `DASHBOARD_CALLBACK` → `core/dashboard.py`, template `templates/admin/index.html`)
+"ড্যাশবোর্ড" is the first sidebar link. Money counts only PAID donations, by Asia/Dhaka day; numbers refresh every minute.
+1. **Money cards:** today, this month (with ▲/▼ vs the same point last month), this year, and **zakat this year on its
+   own** (never added into the general totals).
+2. **Last 30 days:** bar chart of daily PAID taka, general funds and zakat as separate bars.
+3. **By fund this year:** count, taka and share per fund; zakat funds last.
+4. **Needs attention** (hidden when 0, each links to the filtered list): PENDING older than 1 hour, unhandled
+   messages, new volunteers, draft posts, content missing English, sample facts still in the settings.
+   Subscriptions FAILED or `fail_count > 0` join here with B4.
+5. **Latest 10 donations** with donor name (Admin, Accountant).
+6. **Active campaigns:** progress bars with raised / goal (same numbers as the website).
+
+Each section is shown only to staff with the matching view permission (`core/groups.py`): Editors see the totals,
+chart, campaigns and content to-dos, never donor names or pending donations.
 
 ### Donations
 - `list_display`: receipt_no, paid_at, donor_name, masked phone (for Editor), fund, amount (`৳` formatted), method, status badge, campaign
@@ -106,7 +116,8 @@ Inline: charge history (Donations). Actions: pause, resume, cancel (with reason)
 - Image fields with a preview; alt text required (Bengali). Uploads: JPG/PNG/WebP, max 5 MB, resized to max 2000 px
   wide on upload (Pillow), stored on R2.
 - `sort_order` editable in the list (`list_editable`); `is_active` / `is_featured` toggles.
-- Program: inline `ProgramImage`; `faq` and `impact` edited as repeatable rows (Unfold JSON widget or a small inline form), not raw JSON.
+- Fund: bank accounts as table rows (Admin only).
+- Program: tables for gallery images, goals, FAQ and impact numbers (drag to sort), never raw JSON.
 - Page (`privacy`, `terms`, `refund-policy`, `about`, `how-we-spend`): edit title and markdown body only; no add or delete (the set is fixed by `seed`). Policy pages are Admin-only (legal text); `about` and `how-we-spend` also Editor.
 - Post: "প্রকাশ করুন" action sets `published_at = now`. Changing the slug of a published post shows a warning that old links break.
 - Campaign: only one `is_featured` at a time (validated).
@@ -116,14 +127,22 @@ Inline: charge history (Donations). Actions: pause, resume, cancel (with reason)
 ### Messages, Volunteers, Subscribers
 List + "handled" toggle + filters. CSV export (Subscribers: Admin only).
 
-### Settings (SiteSetting)
-One admin form per key, rendered from its JSON schema (`core/schemas.py`), never a raw JSON textarea:
-- **Stats** `{value, suffix, label_bn, label_en}` rows; **Contact**; **Social**; **Quote**; **Registration**;
-  **Mobile banking** (merchant numbers only).
-- **Nisab** `{silver_price_per_gram, gold_price_per_gram, karat, source, updated_at}`, see ZAKAT_POLICY.md.
-  A weekly Celery task emails `ADMIN_ALERT_EMAIL` if `updated_at` is older than 30 days.
-- **Fitra** `{year, rates: [{item_bn, item_en, amount}], cutoff}`.
-- **Switches:** `zakat_enabled`, `recurring_modes`, `payment_methods` (Admin only, audited).
+### Settings (SiteSettings)
+One page, "সাইট সেটিংস" (the list link opens it directly; no add or delete). Plain form fields in tabs, plus
+drag-to-sort tables, never raw JSON (DECISIONS.md D18):
+- **Tabs:** যোগাযোগ (contact), সামাজিক (social links), উক্তি ও পরিচিতি (quote, mission, vision, promo video),
+  নিবন্ধন (registration + certificate), যাকাত ও ফিতরা (zakat switch, nisab prices, fitra year/open/cutoff),
+  পেমেন্ট (SSLCommerz / bKash switches and recurring modes).
+- **Tables:** Home stats, Home images (one row per slot), Contact FAQ, Mobile banking numbers (merchant numbers only),
+  Fitra rates.
+- **Nisab:** see ZAKAT_POLICY.md. A weekly Celery task emails `ADMIN_ALERT_EMAIL` if `nisab_updated_at` is older
+  than 30 days.
+- Editors change stats, quote, about, social, promo video, home images and contact FAQ; contact, registration,
+  zakat/fitra, payment switches, mobile banking and fitra rates are read only for them. Every save is audited.
+
+### Offline totals
+Money a fund received in a year outside the website (before launch, cash, bank): year, fund, total, note. Added to
+the totals on /transparency. Admin only, audited.
 
 ### Users & groups (Admin only)
 Create staff, assign one group, reset password, require 2FA. Donor accounts are visible (for support), read-only except `is_active`.

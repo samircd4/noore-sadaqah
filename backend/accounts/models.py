@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.db.models import Q
 
+from core.images import image_upload_validators
 from core.models import TimeStamped
 
 
@@ -39,6 +40,10 @@ class User(AbstractUser, TimeStamped):
     preferred_locale = models.CharField(max_length=2, default="bn")
     failed_logins = models.PositiveSmallIntegerField(default=0)
     locked_until = models.DateTimeField(null=True, blank=True)
+    photo = models.ImageField(
+        "profile photo", upload_to="staff/", blank=True, validators=image_upload_validators,
+        help_text="Staff only: shown beside your name in the admin.",
+    )  # fmt: skip
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -53,3 +58,14 @@ class User(AbstractUser, TimeStamped):
 
     def __str__(self):
         return self.email or self.phone or str(self.pk)
+
+    def get_full_name(self):
+        return self.name
+
+    def get_short_name(self):
+        return self.name.split()[0] if self.name else ""
+
+    @property
+    def avatar_url(self):
+        """The admin (Unfold) shows this photo in the user menu; without one it shows the first letter."""
+        return self.photo.url if self.photo else None

@@ -5,7 +5,11 @@ PostgreSQL through the Django ORM. One section per Django app (`backend/<app>/mo
 **Conventions**
 - Money is **integer taka**: `models.PositiveIntegerField`. Never `FloatField` or `DecimalField`.
 - Bilingual text uses `*_bn` (required) / `*_en` (optional; the API falls back to `*_bn`, see I18N.md).
-- Every image field has `*_alt_bn` (required) and `*_alt_en` (CLAUDE.md: images need Bengali alt text).
+- Every image field has `*_alt_bn` (required) and `*_alt_en` (CLAUDE.md: images need Bengali alt text), and stores its
+  own size in `*_width` / `*_height` (`width_field` / `height_field`), so the API returns `{url, alt, width, height}`
+  without opening the file. Uploads: JPG/PNG/WebP, max 5 MB, shrunk to 2000 px wide on save (`core/images.py`).
+- **No JSON for things staff edit** (DECISIONS.md D18): settings are plain fields, lists are small row tables with
+  `sort_order` (edited as drag-to-sort rows in the admin). JSON is only for machine data (gateway payloads, audit).
 - Every model inherits `TimeStamped` (`created_at`, `updated_at`).
 - Dates are stored in UTC (`USE_TZ = True`, `TIME_ZONE = "Asia/Dhaka"` for display and "which year" logic).
 - Choices use `models.TextChoices` so the values are readable in the DB and in CSV exports.
@@ -36,6 +40,7 @@ class User(AbstractUser, TimeStamped):
     preferred_locale = models.CharField(max_length=2, default="bn")      # bn | en, for SMS/email language
     failed_logins = models.PositiveSmallIntegerField(default=0)          # staff lockout (ADMIN.md)
     locked_until = models.DateTimeField(null=True, blank=True)
+    photo = models.ImageField(upload_to="staff/", blank=True)            # staff only: avatar in the admin user menu
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -63,30 +68,42 @@ class OtpCode(TimeStamped):
 ## core
 
 ```python
-class SiteSetting(TimeStamped):
-    key = models.CharField(max_length=40, primary_key=True)
-    value = models.JSONField()
+class SiteSettings(TimeStamped):        # exactly one row (pk=1); SiteSettings.load()
+    # contact
+    address_bn, address_en, hours_bn, hours_en = …CharField(200, blank=True)
+    phone, whatsapp = …CharField(20, blank=True); email = EmailField(blank=True); map_embed_url = URLField(500, blank=True)
+    # social
+    facebook, youtube, instagram, linkedin = …URLField(blank=True)
+    # quote band, about (/about), promo video
+    quote_text_bn/en, quote_source_bn/en = …CharField(blank=True)
+    mission_bn/en, vision_bn/en = …TextField(blank=True)
+    promo_youtube_id = CharField(20, blank=True)
+    # registration
+    reg_authority_bn/en, reg_number = …CharField(blank=True); reg_date = DateField(null=True)
+    reg_certificate = FileField(upload_to="registration/", blank=True)
+    # zakat and fitra (ZAKAT_POLICY.md; off until signed off)
+    zakat_enabled = BooleanField(default=False)
+    silver_price_per_gram, gold_price_per_gram = …PositiveIntegerField(default=0); karat = CharField(5, default="22K")
+    nisab_source = CharField(200, blank=True); nisab_updated_at = DateTimeField(null=True)
+    fitra_year = PositiveSmallIntegerField(null=True); fitra_open = BooleanField(default=False)
+    fitra_cutoff = DateTimeField(null=True)      # API "fitra.open" = zakat_enabled and fitra_open
+    # payment switches (Admin only, audited)
+    pay_sslcommerz, pay_bkash = …BooleanField(default=True)   # API "payment_methods" also drops methods without code
+    recurring_mode_sslcommerz, recurring_mode_bkash = …CharField(choices=["reminder", "auto"], default="reminder")
+
+# Row tables: each has settings = FK(SiteSettings, default=1) and sort_order.
+class Stat:                 value (int), suffix, label_bn, label_en              # home stats band
+class MobileBankingAccount: service (bkash|nagad|rocket), number, type (merchant|agent)  # merchant numbers only
+class FitraRate:            item_bn, item_en, amount (taka per person)
+class ContactFaq:           q_bn, q_en, a_bn, a_en                               # FAQ on /contact
+class HomeImage:            slot (hero|about_main|about_small|quote|volunteer|footer, unique), image + alt_bn/en
 ```
 
-| key | value shape | Edited by |
+| API `/site/` key | Comes from | Edited by |
 |---|---|---|
-| `stats` | `[{value, suffix, label_bn, label_en}]` | Admin, Editor |
-| `contact` | `{address_bn, address_en, phone, whatsapp, email, hours_bn, hours_en, map_embed_url}` | Admin |
-| `social` | `{facebook, youtube, instagram, linkedin}` | Admin, Editor |
-| `quote` | `{text_bn, text_en, source_bn, source_en}` | Admin, Editor |
-| `registration` | `{authority_bn, authority_en, number, date, certificate_url}` | Admin |
-| `mobile_banking` | `[{service, number, type}]` (merchant numbers only) | Admin |
-| `nisab` | `{silver_price_per_gram, gold_price_per_gram, karat, source, updated_at}` | Admin |
-| `fitra` | `{year, rates: [{item_bn, item_en, amount}], cutoff}` | Admin |
-| `promo_video` | `{youtube_id}` | Admin, Editor |
-| `zakat_enabled` | `true` / `false`: turns on the zakat calculator and fitra form after ZAKAT_POLICY sign-off | Admin |
-| `recurring_modes` | `{"bkash": "reminder", "sslcommerz": "reminder"}`: AUTO only once the gateway enables it (DONATION_FLOW.md) | Admin |
-| `payment_methods` | `["bkash", "sslcommerz"]`: online methods currently live | Admin |
-| `home_images` | `{hero, about_main, about_small, quote, volunteer, footer}`, each an image with `alt_bn`/`alt_en` | Admin, Editor |
-| `about` | `{mission_bn, mission_en, vision_bn, vision_en}` (shown on `/about`) | Admin, Editor |
-| `contact_faq` | `[{q_bn, q_en, a_bn, a_en}]` (FAQ on `/contact`) | Admin, Editor |
-
-Each key has a JSON schema validated in the admin form (`core/schemas.py`), so a typo can't break the site.
+| `stats` | `Stat` rows | Admin, Editor |
+| `contact`, `registration`, `mobile_banking`, `nisab`, `fitra`, `zakat_enabled`, `payment_methods` | fields / `MobileBankingAccount` / `FitraRate` rows | Admin |
+| `social`, `quote`, `promo_video`, `about`, `contact_faq`, `home_images` | fields / `ContactFaq` / `HomeImage` rows | Admin, Editor |
 
 ## content
 
@@ -103,9 +120,13 @@ class Fund(TimeStamped):
     is_zakat_eligible = models.BooleanField(default=False)
     is_fitra = models.BooleanField(default=False)          # form uses people × rate (ZAKAT_POLICY F2)
     allow_recurring = models.BooleanField(default=True)
-    bank_details = models.JSONField(default=list, blank=True)  # [{bank, account_name, branch, number, routing, swift}]
     sort_order = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)
+
+class FundBankAccount(models.Model):                       # shown as `bank_details` in the API
+    fund = models.ForeignKey(Fund, related_name="bank_accounts", on_delete=models.CASCADE)
+    bank, account_name, branch, number, routing, swift = …CharField
+    sort_order = models.PositiveIntegerField(default=0)
 
 class Program(TimeStamped):
     slug = models.SlugField(unique=True)                   # food, education, water, health, trees, mosque
@@ -114,21 +135,17 @@ class Program(TimeStamped):
     summary_bn, summary_en, body_bn, body_en = …TextField
     cover_image = models.ImageField(upload_to="programs/")
     cover_alt_bn, cover_alt_en = …CharField(200)
-    goals_bn = ArrayField(models.CharField(max_length=200), default=list)
-    goals_en = ArrayField(models.CharField(max_length=200), default=list, blank=True)
     beneficiary_bn, area_bn, duration_bn (+ _en) = …CharField(200, blank=True)
-    faq = models.JSONField(default=list, blank=True)       # [{q_bn, a_bn, q_en, a_en}]
-    impact = models.JSONField(default=list, blank=True)    # [{year, metric_bn, metric_en, value}]
     fund = models.ForeignKey(Fund, null=True, blank=True, on_delete=models.SET_NULL)
     is_featured = models.BooleanField(default=False)       # home page
     sort_order = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)
 
-class ProgramImage(TimeStamped):                          # gallery strip on /programs/[slug]
-    program = models.ForeignKey(Program, related_name="images", on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="programs/gallery/")
-    alt_bn, alt_en = …CharField(200)
-    sort_order = models.PositiveIntegerField(default=0)
+# A program's row tables: program = FK(Program), sort_order.
+class ProgramImage:  image + alt_bn/en                    # gallery strip on /programs/[slug]  (related_name "images")
+class ProgramGoal:   text_bn, text_en                      # API goals[]                        ("goals")
+class ProgramFaq:    q_bn, q_en, a_bn, a_en                # API faq[{q, a}]                    ("faqs")
+class ProgramImpact: year, metric_bn, metric_en, value     # API impact[{year, metric, value}]  ("impacts")
 
 class Campaign(TimeStamped):
     slug = models.SlugField(unique=True)
@@ -137,6 +154,8 @@ class Campaign(TimeStamped):
     body_bn, body_en = …TextField(blank=True)             # story body on /campaigns/[slug]
     cover_image + cover_alt_bn/en
     goal_amount = models.PositiveIntegerField()
+    offline_raised = models.PositiveIntegerField(default=0)   # raised outside the website; added to raised_amount
+    offline_donors = models.PositiveIntegerField(default=0)   # added to donor_count
     monthly_options = ArrayField(models.PositiveIntegerField(), default=default_monthly)  # [500, 1000, 2000]
     highlighted_option = models.PositiveIntegerField(null=True, blank=True)               # 1000
     starts_at = models.DateTimeField(default=timezone.now)
@@ -191,10 +210,12 @@ class Report(TimeStamped):                                # /transparency
     published_at = models.DateField()
 
 class Job(TimeStamped):                                   # careers tab on /get-involved
+    slug = models.SlugField(unique=True)
     title_bn, title_en, body_bn, body_en, location_bn, location_en
     apply_email = models.EmailField(blank=True); apply_url = models.URLField(blank=True)
     closes_at = models.DateField(null=True, blank=True)
     is_open = models.BooleanField(default=True)
+    sort_order = models.PositiveIntegerField(default=0)
 ```
 
 ## donations
@@ -279,6 +300,13 @@ class Donation(TimeStamped):
 class ReceiptCounter(models.Model):
     year = models.PositiveSmallIntegerField(primary_key=True)
     last = models.PositiveIntegerField(default=0)
+
+class OfflineTotal(TimeStamped):   # money received outside the website (before launch, cash, bank), by year and fund
+    year = models.PositiveSmallIntegerField()
+    fund = models.ForeignKey(Fund, on_delete=models.PROTECT)
+    total = models.PositiveIntegerField()
+    note = models.CharField(max_length=200, blank=True)
+    # unique (year, fund); /transparency/totals/ adds it to the PAID donations
 ```
 
 ### Marking a donation PAID (the only way)
@@ -422,5 +450,7 @@ Read-only in the admin: no add, change or delete permission for anyone.
 `python manage.py seed` (idempotent) creates the four funds, six programs, the featured campaign, sample posts and
 categories, and the `SiteSetting` rows by **loading the frontend mock fixtures** (`frontend/src/mocks/fixtures/*.json`,
 whose content comes from `HOME_PAGE.md` / `CONTENT.md`; `{bn, en}` values map to `*_bn` / `*_en` fields), the staff Groups with their permissions
-(`ADMIN.md`), and the first superuser from `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD`.
-Placeholder (🟡) content is marked so the launch check can find it: `SiteSetting("content_status")` lists unconfirmed items.
+(`ADMIN.md`, `core/groups.py`), and the first superuser from `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD`.
+The fixture photos are downloaded into media once (`--no-images` skips that; tests use it), and `--if-empty` does
+nothing when content exists (Docker runs it on every start). Re-running `seed` overwrites the seeded rows.
+Placeholder (🟡) content keeps its "(নমুনা)" / "sample" marks from the fixtures so the launch check can find it.

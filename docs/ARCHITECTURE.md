@@ -168,7 +168,7 @@ noore-sadaqah/
     ├── Dockerfile.dev              # dev image for the web and worker services (not used in production)
     ├── manage.py
     ├── config/                     # settings.py (one file, values from .env), urls.py, celery.py, wsgi.py
-    ├── core/                       # SiteSetting, health view, revalidate signal, format filters
+    ├── core/                       # SiteSettings + row tables, health view, revalidate hook, admin base, groups
     ├── accounts/                   # User, OtpCode, OTP + JWT views
     ├── content/                    # Fund, Program, ProgramImage, Campaign, Post, GalleryItem, Person, Report, Job
     ├── donations/                  # Donation, ReceiptCounter, receipt PDF, services.mark_paid()
@@ -238,7 +238,8 @@ REDIS_URL=redis://127.0.0.1:6379/0
 
 SITE_URL=https://nooresadaqah.org                 # used to build callback and redirect URLs
 FRONTEND_INTERNAL_URL=http://localhost:3000       # for the revalidate hook (localhost, see DEPLOYMENT.md)
-REVALIDATE_SECRET=
+REVALIDATE_SECRET=                                # same value as the frontend's; both empty = hook off
+MEDIA_URL=https://media.nooresadaqah.org/         # R2 public address of uploads; /media/ in development
 
 JWT_SIGNING_KEY=                                  # separate from DJANGO_SECRET_KEY
 RECEIPT_TOKEN_SECRET=                             # signs receipt links sent by SMS

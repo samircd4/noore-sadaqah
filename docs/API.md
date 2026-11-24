@@ -260,4 +260,5 @@ Another user's id → **404**, never 403 (don't reveal that it exists).
 | Endpoint | Notes |
 |---|---|
 | `GET /health/` | `200 {"db": "ok", "redis": "ok"}` or `503`. Public, for the uptime monitor; no version numbers. |
-| Next.js `POST /internal/revalidate` | Called by Django: header `X-Revalidate-Secret`, body `{"tags": ["programs"]}`. Not part of Django. |
+| Next.js `POST /internal/revalidate` | Called by Django: header `X-Revalidate-Secret`, body `{"tags": ["programs"]}`. Answers `{"revalidated": [...]}` (unknown tags are ignored) or `403`. Not part of Django. |
+| `GET /api/docs/` · `GET /api/schema/` | Browsable docs (Swagger UI) and the OpenAPI file, generated from the Django views (`drf-spectacular`). Outside `/api/v1/`. Open while `DJANGO_DEBUG=true`; on the server only for staff logged in to `/admin/`. This file stays the contract. |

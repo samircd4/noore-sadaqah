@@ -1,10 +1,12 @@
 from django.contrib import admin
 
-from .models import Donation
+from core.admin_base import Admin, AuditedAdmin
+
+from .models import Donation, OfflineTotal
 
 
 @admin.register(Donation)
-class DonationAdmin(admin.ModelAdmin):
+class DonationAdmin(Admin):
     """Read only for now. Offline entry, refunds, resend and CSV export come with the full admin (ADMIN.md)."""
 
     list_display = ("gateway_ref", "created_at", "amount", "fund", "method", "status", "receipt_no")
@@ -21,3 +23,12 @@ class DonationAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+
+@admin.register(OfflineTotal)
+class OfflineTotalAdmin(AuditedAdmin):
+    """Yearly money received outside the website, added to /transparency (Admin only by Group permissions)."""
+
+    list_display = ("year", "fund", "total", "note")
+    list_filter = ("year", "fund")
+    fields = (("year", "fund", "total"), "note")

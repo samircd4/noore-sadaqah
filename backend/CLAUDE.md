@@ -9,7 +9,7 @@ django-unfold · django-storages (R2) · WeasyPrint · pytest-django · ruff.
 
 Layout: a plain Django project. `config/` holds the one `settings.py` (every value from `.env`; `DJANGO_DEBUG=true`
 locally), `urls.py`, `celery.py` and `wsgi.py`. Apps sit next to `manage.py`: `core/`, `accounts/`, `content/`,
-`donations/`, `payments/`, `notifications/` (see `../docs/ARCHITECTURE.md`). Keep the code plain and easy to read: function views,
+`donations/`, `payments/`, `notifications/`, `engagement/`, `audit/` (see `../docs/ARCHITECTURE.md`). Keep the code plain and easy to read: function views,
 short functions with a comment saying what they do and why, no extra layers.
 
 ## Rules
@@ -49,7 +49,7 @@ Dependencies are managed with **uv**: `pyproject.toml` + `uv.lock` (no requireme
 docker compose -f docker-compose.dev.yml up -d      # Postgres 16 + Redis + Mailpit for local work and tests
 uv sync                                             # creates .venv from uv.lock
 cp .env.example .env                                # then fill in the secrets (never committed)
-uv run python manage.py migrate && uv run python manage.py seed
+uv run python manage.py migrate && uv run python manage.py seed   # fixtures + photos (--no-images: skip photos)
 uv run python manage.py runserver 8000
 uv run celery -A config worker -B -l info           # dev only (worker + beat in one process)
 uv run pytest
@@ -84,3 +84,11 @@ In Docker, requests from the Next.js dev server arrive from the Docker gateway I
 - Ubuntu: `apt install libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz0b`.
 
 Without it everything else works; only the receipt download fails, and its PDF test is skipped.
+
+**API docs:** http://127.0.0.1:8000/api/docs/ (Swagger UI, from `drf-spectacular`). Every DRF view needs an
+`@extend_schema(...)` above `@api_view` (content views take theirs from `content/docs.py`). Check with
+`uv run python manage.py spectacular --validate --fail-on-warn --file /dev/null`.
+
+**Admin:** every `ModelAdmin` extends `core.admin_base.Admin` (Unfold) or `AuditedAdmin` (writes the AuditLog).
+Lists inside a model are row tables edited as inlines (`SortedTabularInline`), never JSON fields (DECISIONS.md D18).
+Who may do what: `core/groups.py` (applied by `seed`) plus `get_readonly_fields` / `has_*_permission` in the admins.

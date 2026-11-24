@@ -115,13 +115,24 @@ Done early, as the base for SSLCommerz sandbox testing (branch `b2-sslcommerz-sa
 - [x] `core.SiteSetting`, `content.Fund` and `content.Campaign`; error format, `donation_create` throttle, client IP
 - [x] `manage.py seed` for funds, campaigns and site settings from the frontend fixtures
 
+Done (branch `b1-content-admin`):
+- [x] Apps `core`, `content`, `engagement`, `audit`; every DATA_MODEL.md model of these apps, settings and lists as
+      real tables (DECISIONS.md D18); Unfold admin with বাংলা / English tabs and drag-to-sort rows; Groups and
+      permissions (`core/groups.py`); AuditLog for funds, campaigns, settings, offline totals, users and groups
+- [x] Public content + form endpoints exactly as API.md, throttles, language resolution, sanitized markdown;
+      `payment_methods` lists only methods Django can take; `/transparency/totals/` with `OfflineTotal`
+- [x] `manage.py seed` from all the frontend fixtures (photos downloaded once; `--no-images`, `--if-empty`);
+      revalidate hook (Celery → Next.js `/internal/revalidate`)
+- [x] API docs at `/api/docs/` (drf-spectacular); contract test against the fixtures; pytest for every endpoint,
+      the admin permissions and the data migrations
+- [x] Docker: `API_LIVE_GROUPS=content,forms,donations` by default
+
 Still to do:
 
-- [ ] `backend/`: Django 5.2 project `config`, DRF, custom `accounts.User` **before the first migration**, Postgres, Redis, ruff, pytest, `GET /health/`
-- [ ] Apps `core`, `content`, `engagement`, `audit`; Unfold admin, Groups and permissions (ADMIN.md); R2 storage
-- [ ] Public content + form endpoints, error format, throttles, language resolution
-- [ ] `manage.py seed` **from the frontend fixtures**; revalidate hook
-- [ ] Run the site with `API_MODE=live` for these endpoints · QA §3, §9 (admin parts)
+- [ ] R2 storage for uploads (django-storages) with the deployment; uploads are local in development
+- [x] Admin dashboard (ADMIN.md "Dashboard"): money cards, 30-day chart, per-fund table, needs-attention cards, latest donations, campaigns
+- [ ] Admin in Bengali (`LANGUAGE_CODE = "bn"` + `django.po`); Editors' masked donation list (with the B2 admin item)
+- [ ] Run the site with `API_MODE=live` for these endpoints on a real device pass · QA §3, §9 (admin parts)
 
 > **Prompt:** "Create `backend/` as in `docs/ARCHITECTURE.md` and `backend/CLAUDE.md`, with the custom `accounts.User` from `docs/DATA_MODEL.md` before the first migration. Implement the `core`, `content`, `engagement` and `audit` apps, the public content and form endpoints exactly as in `docs/API.md`, and their Unfold admin as in `docs/ADMIN.md`, with media on R2. Write `manage.py seed` that loads `frontend/src/mocks/fixtures/*.json`. Add pytest tests for every endpoint and group permission, and a contract test that compares each response with its fixture's keys and types."
 
@@ -142,8 +153,8 @@ Still to do (donations are refused or limited until these land):
 - [ ] Receipt SMS (joins `send_receipt`; console provider first)
 - [x] `cleanup_pending` beat task (daily 03:00 Dhaka)
 - [ ] Real SMTP settings in the production `.env`
-- [ ] When `GET /site/` moves to Django (B1): `payment_methods` lists only the methods Django can take now, so
-      donors never see a method that will be refused
+- [x] `GET /site/` in Django: `payment_methods` lists only the methods Django can take now, so donors never see a
+      method that will be refused
 
 - [ ] `donations`, `payments`, `notifications` apps; `mark_paid()`; WeasyPrint receipts; Celery
 - [ ] SSLCommerz sandbox + IPN, bKash sandbox, SMS + email (console providers first)

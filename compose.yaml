@@ -10,8 +10,8 @@ include:
   - backend/docker-compose.dev.yml
 
 services:
-  # Next.js on http://localhost:3000. It forwards /api/, /admin/ and /r/ to Django (next.config.mjs), standing in
-  # for Nginx, so the donation flow and the SSLCommerz callbacks work on this one address.
+  # Next.js on http://localhost:3000. It forwards /api/, /admin/, /r/ and /media/ to Django (next.config.mjs),
+  # standing in for Nginx, so the donation flow, the SSLCommerz callbacks and uploaded photos work on this one address.
   frontend:
     build:
       context: frontend
@@ -22,9 +22,10 @@ services:
         required: false
     environment:
       API_MODE: ${API_MODE:-mock}                       # mock | static | live
-      API_LIVE_GROUPS: ${API_LIVE_GROUPS-donations}     # served by Django; the rest stays mocked
+      API_LIVE_GROUPS: ${API_LIVE_GROUPS-content,forms,donations}   # served by Django; login and /me stay mocked
       API_INTERNAL_URL: http://web:8000/api/v1          # Django's service name inside Docker
       NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      REVALIDATE_SECRET: local-docker-only              # same as the backend's (backend/docker-compose.dev.yml)
     volumes:
       - ./frontend:/app/frontend
       - frontend_node_modules:/app/frontend/node_modules   # the image's Linux node_modules, not the host's
