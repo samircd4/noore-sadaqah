@@ -46,7 +46,7 @@ Dependencies are managed with **uv**: `pyproject.toml` + `uv.lock` (no requireme
 `uv add <pkg>` (or `uv add --dev <pkg>`), then commit both files.
 
 ```bash
-docker compose -f docker-compose.dev.yml up -d      # Postgres 16 + Redis + Mailpit for local work and tests
+docker compose up -d db redis mailpit               # from the repo root: Postgres 16 + Redis + Mailpit
 uv sync                                             # creates .venv from uv.lock
 cp .env.example .env                                # then fill in the secrets (never committed)
 uv run python manage.py migrate && uv run python manage.py seed   # fixtures + photos (--no-images: skip photos)
@@ -56,24 +56,24 @@ uv run pytest
 uv run ruff check . && uv run ruff format .
 ```
 
-**The whole site (frontend too) in one command:** `docker compose up --build` from the repo root (root
-`compose.yaml`; guide in the root `README.md`). It includes this folder's compose file, so the commands below also
-work from the root without `-f docker-compose.dev.yml`.
-
-**Or run the whole backend in Docker** (dev only; production does not use Docker). `web` (Django on
-127.0.0.1:8000, runs `migrate` on start) and `worker` (Celery + beat) use `Dockerfile.dev`, read `.env`, and get
-`DB_HOST=db` / `REDIS_URL=redis://redis:6379/0` from compose. The code is mounted, so runserver reloads; the worker
-does not (restart it). Pango is in the image, so receipt PDFs work without MSYS2. Every email sent in development
-lands in Mailpit: open http://127.0.0.1:8025 (nothing reaches a real inbox).
+**Or run everything in Docker:** one compose file at the repo root, `compose.yaml` (guide in the root `README.md`).
+`web` (Django on 127.0.0.1:8000, runs `migrate` and `seed --if-empty` on start) and `worker` (Celery + beat) use
+`Dockerfile.dev`, read `backend/.env`, and get `DB_HOST=db` / `REDIS_URL=redis://redis:6379/0` from compose. The code
+is mounted, so runserver reloads; the worker does not (restart it). Pango is in the image, so receipt PDFs work
+without MSYS2. Every email sent in development lands in Mailpit: open http://127.0.0.1:8025 (nothing reaches a real
+inbox). Run these from the repo root:
 
 ```bash
-docker compose -f docker-compose.dev.yml up -d --build          # Postgres, Redis, Mailpit, Django, Celery
-docker compose -f docker-compose.dev.yml exec web uv run python manage.py seed
-docker compose -f docker-compose.dev.yml exec web uv run pytest
-docker compose -f docker-compose.dev.yml restart worker         # after changing task code
-docker compose -f docker-compose.dev.yml logs -f web worker
-docker compose -f docker-compose.dev.yml up -d db redis mailpit # only the services, to run Django with uv
+docker compose up -d --build                     # Postgres, Redis, Mailpit, Django, Celery, Next.js
+docker compose exec web uv run python manage.py seed
+docker compose exec web uv run pytest
+docker compose restart worker                    # after changing task code
+docker compose logs -f web worker
 ```
+
+**Production** uses the other image, `Dockerfile` (gunicorn, no dev tools), through the root `compose.prod.yaml` on
+the VPS (`../docs/DEPLOYMENT.md`). A new Python package that production needs goes in the main dependencies, not
+`--dev`: the production image installs only those.
 
 In Docker, requests from the Next.js dev server arrive from the Docker gateway IP, not 127.0.0.1, so
 `client_ip()` ignores `X-Forwarded-For` and every local visitor shares one rate-limit bucket. Fine for development.

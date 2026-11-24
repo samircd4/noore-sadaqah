@@ -43,3 +43,7 @@ Thumbs.db
 .playwright-mcp/
 PROPOSAL.md
 PROPOSAL.pdf
+
+# VPS (deploy/deploy.sh, deploy/backup.sh): server-side files, never committed. deploy/.env is covered by ".env" above.
+deploy/backups/
+deploy/releases.log

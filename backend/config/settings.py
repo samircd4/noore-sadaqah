@@ -8,6 +8,7 @@ import secrets
 import sys
 from pathlib import Path
 
+import dj_database_url
 from celery.schedules import crontab
 from django.templatetags.static import static
 from django.urls import reverse, reverse_lazy
@@ -69,6 +70,11 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# On the server, WhiteNoise serves the admin's CSS/JS from staticfiles/ (collected in the Dockerfile) when no Nginx
+# is in front (SnapDeploy). Development and tests use Django's own static serving instead.
+if not DEBUG and not TESTING:
+    MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+
 ROOT_URLCONF = "config.urls"
 WSGI_APPLICATION = "config.wsgi.application"
 
@@ -87,7 +93,8 @@ TEMPLATES = [
     },
 ]
 
-# Local Postgres and Redis come from docker-compose.dev.yml.
+# Local Postgres and Redis come from the root compose.yaml. A hosting add-on may give DATABASE_URL instead
+# (SnapDeploy, DEPLOYMENT.md); it wins over the DB_* values.
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -98,6 +105,8 @@ DATABASES = {
         "PORT": os.getenv("DB_PORT", "5432"),
     }
 }
+if os.getenv("DATABASE_URL"):
+    DATABASES["default"] = dj_database_url.parse(os.environ["DATABASE_URL"], conn_max_age=60, conn_health_checks=True)
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
@@ -131,6 +140,37 @@ MEDIA_URL = os.getenv("MEDIA_URL", "/media/")
 MEDIA_ROOT = BASE_DIR / "media"
 FILE_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024
 
+# Where uploads are kept. "local": MEDIA_ROOT on this machine's disk (development, or a VPS with a backup).
+# "s3": Cloudflare R2 or any S3-compatible bucket. Needed on hosts without a lasting disk, such as SnapDeploy,
+# where files on the container's disk are lost at every deploy.
+MEDIA_STORAGE = os.getenv("MEDIA_STORAGE", "local")
+if MEDIA_STORAGE not in ("local", "s3"):
+    raise RuntimeError("MEDIA_STORAGE must be local or s3.")
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    # Hashed, compressed static files on the server; plain files in development and tests (no collectstatic there).
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+        if not DEBUG and not TESTING
+        else "django.contrib.staticfiles.storage.StaticFilesStorage"
+    },
+}
+if MEDIA_STORAGE == "s3":
+    STORAGES["default"] = {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "bucket_name": os.environ["MEDIA_BUCKET"],
+            "endpoint_url": os.environ["MEDIA_ENDPOINT_URL"],  # R2: https://<account id>.r2.cloudflarestorage.com
+            "access_key": os.environ["MEDIA_ACCESS_KEY_ID"],
+            "secret_key": os.environ["MEDIA_SECRET_ACCESS_KEY"],
+            "region_name": os.getenv("MEDIA_REGION", "auto"),
+            "custom_domain": os.environ["MEDIA_PUBLIC_HOST"],  # media.nooresadaqah.org (R2 public bucket domain)
+            "querystring_auth": False,  # public files: plain URLs that Next.js and browsers can cache
+            "file_overwrite": False,
+            "default_acl": None,
+        },
+    }
+
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
     "DEFAULT_PARSER_CLASSES": ["rest_framework.parsers.JSONParser"],
@@ -158,7 +198,11 @@ SPECTACULAR_SETTINGS = {
 }
 
 # Only the Next.js server (on this machine) may tell us the visitor's IP with X-Forwarded-For.
-TRUSTED_PROXY_IPS = ["127.0.0.1", "::1"]
+# On a host where Next.js reaches Django over a private network, add that network's proxy addresses here.
+TRUSTED_PROXY_IPS = env_list("TRUSTED_PROXY_IPS", "127.0.0.1,::1")
+# When Next.js runs on another machine (SnapDeploy), it proves itself with this shared secret instead (core/utils.py).
+# Empty = off. The same value goes into the frontend's API_PROXY_SECRET.
+API_PROXY_SECRET = os.getenv("API_PROXY_SECRET", "")
 
 # The public website. Gateway callback URLs and the redirects back to /bn/donate/... are built from it.
 SITE_URL = os.getenv("SITE_URL", "http://localhost:3000").rstrip("/")
@@ -185,7 +229,7 @@ SEED_ADMIN_EMAIL = os.getenv("SEED_ADMIN_EMAIL", "")
 SEED_ADMIN_PASSWORD = os.getenv("SEED_ADMIN_PASSWORD", "")
 
 # Email (docs/NOTIFICATIONS.md). EMAIL_PROVIDER=smtp sends through EMAIL_HOST: Mailpit in development
-# (docker-compose.dev.yml; inbox at http://127.0.0.1:8025), the real mail server in production. console prints them.
+# (root compose.yaml; inbox at http://127.0.0.1:8025), the real mail server in production. console prints them.
 EMAIL_PROVIDER = os.getenv("EMAIL_PROVIDER", "smtp")
 EMAIL_BACKENDS = {
     "smtp": "django.core.mail.backends.smtp.EmailBackend",

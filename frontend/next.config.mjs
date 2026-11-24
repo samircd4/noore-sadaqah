@@ -12,13 +12,21 @@ const remotePatterns = [
 ];
 
 /**
- * `next dev` only: stand in for Nginx (docs/ARCHITECTURE.md) by forwarding Django's paths to API_INTERNAL_URL's
- * server, so the gateway's callbacks and redirects work on http://localhost:3000 (or a tunnel to it), and photos
- * uploaded in the admin (/media/…) load. Production never uses this: Nginx routes /api/, /admin/ and /r/ to Django,
- * and uploads are served from R2 (NEXT_PUBLIC_MEDIA_HOST).
+ * Stand in for Nginx (docs/ARCHITECTURE.md) by forwarding Django's paths to Django's server, so the gateway's
+ * callbacks and redirects, the admin and uploaded photos (/media/…) all work on the website's own address.
+ * - `next dev`: Django is API_INTERNAL_URL's server (http://localhost:3000 or a tunnel to it).
+ * - Production on a host without Nginx (SnapDeploy, DEPLOYMENT.md): NEXT_PUBLIC_DJANGO_ORIGIN, the backend app's
+ *   address. It must be known when the site is built (rewrites are fixed at build time), hence NEXT_PUBLIC_.
+ * - Production on the VPS: neither is set; Nginx routes /api/, /admin/ and /r/ to Django.
  */
 const djangoOrigin =
-  process.env.NODE_ENV !== "production" && process.env.API_INTERNAL_URL ? new URL(process.env.API_INTERNAL_URL).origin : null;
+  process.env.NODE_ENV !== "production"
+    ? process.env.API_INTERNAL_URL
+      ? new URL(process.env.API_INTERNAL_URL).origin
+      : null
+    : process.env.NEXT_PUBLIC_DJANGO_ORIGIN
+      ? new URL(process.env.NEXT_PUBLIC_DJANGO_ORIGIN).origin
+      : null;
 
 /** Baseline security headers. The full CSP comes later (docs/SECURITY.md §8). */
 const securityHeaders = [

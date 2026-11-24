@@ -1,5 +1,5 @@
-# Local development image for Django and Celery, used by docker-compose.dev.yml.
-# Production does not use Docker (DEPLOYMENT.md). The code is not copied in: compose mounts backend/ at
+# Local development image for Django and Celery, used by the root compose.yaml.
+# Production uses Dockerfile (compose.prod.yaml, DEPLOYMENT.md). The code is not copied in: compose mounts backend/ at
 # /app/backend, so edits on the host show up at once (runserver reloads; restart the worker by hand).
 FROM python:3.14-slim
 

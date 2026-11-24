@@ -1,7 +1,7 @@
 # Deployment & Operations (Hostinger VPS)
 
-Decided: one Hostinger VPS for everything (DECISIONS.md D7). Day-to-day procedures (restore, disputes, key rotation):
-`RUNBOOK.md`. Config files live in `deploy/` in the repo.
+Decided: one Hostinger VPS for everything (DECISIONS.md D7), run with Docker Compose (D19). Day-to-day procedures
+(restore, disputes, key rotation): `RUNBOOK.md`. Config files live in `deploy/` in the repo.
 
 ## What to buy (nothing is bought yet)
 
@@ -30,102 +30,93 @@ Track each item in CONTENT.md §16.
 - Gateway callback URLs must be public HTTPS. For local tests, use `cloudflared tunnel` and set `SITE_URL` to the tunnel URL (TESTING.md).
 - Production and staging never share a database, Redis DB number, R2 bucket prefix or gateway keys.
 
-## Server layout
+## Server layout (Docker Compose, DECISIONS.md D19)
+
+The VPS runs the whole site with Docker Compose from one git checkout: `compose.prod.yaml` at the repo root.
+All settings are in **one file, `deploy/.env`** (copy `deploy/.env.example`; `chmod 600`; never committed).
 
 ```
-/srv/noore/
-├── app/                 # git checkout (frontend/ and backend/)
-├── venv/                # Python virtualenv for backend
-├── env/backend.env      # root:noore 0640 — production secrets
-├── env/frontend.env
-└── releases.log
-Users: `noore` (runs the services, no sudo), `deploy` (SSH key login, can restart the services)
+/srv/noore/app/            # git checkout (owner: deploy)
+├── compose.prod.yaml
+├── deploy/.env            # production secrets (chmod 600)
+├── deploy/Caddyfile       # HTTPS + routing
+├── deploy/deploy.sh       # build + start, in the right order
+├── deploy/backup.sh       # nightly database + uploads backup
+└── deploy/backups/        # last 14 days of backups (not in git)
 ```
 
-| Service (systemd unit in `deploy/systemd/`) | Command | Listens |
-|---|---|---|
-| `noore-web` | `node frontend/.next/standalone/frontend/server.js` (`output: "standalone"`), with `HOSTNAME=localhost PORT=3000` | localhost:3000 |
-| `noore-api` | `gunicorn config.wsgi -w 3 --timeout 30` | 127.0.0.1:8000 |
-| `noore-worker` | `celery -A config worker -l info --concurrency 2` | — |
-| `noore-beat` | `celery -A config beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler` | — (**exactly one** beat process) |
-| `postgresql` | PostgreSQL 16 | 127.0.0.1:5432 |
-| `redis-server` | Redis 7, `requirepass`, bound to localhost | 127.0.0.1:6379 |
-| `nginx` | reverse proxy + TLS | :80, :443 |
+| Service | Image | What it does | Reachable from |
+|---|---|---|---|
+| `caddy` | `caddy:2-alpine` | HTTPS (Let's Encrypt, renews itself), routing, serves `/media/` | internet: 80, 443 |
+| `frontend` | `frontend/Dockerfile` | Next.js standalone server | Docker network |
+| `web` | `backend/Dockerfile` | Django (gunicorn); runs `migrate` on every start | Docker network, and 127.0.0.1:8000 on the VPS (for the frontend build) |
+| `worker` | same image | Celery worker: receipts, cache refreshes | — |
+| `beat` | same image | django-celery-beat scheduler (**exactly one**) | — |
+| `db` | `postgres:16-alpine` | PostgreSQL, volume `pgdata` | Docker network only |
+| `redis` | `redis:7-alpine` | Celery broker + cache, password, volume `redisdata` | Docker network only |
 
-All units: `Restart=always`, `User=noore`, `EnvironmentFile=/srv/noore/env/…`.
+Volumes (kept across deploys): `pgdata`, `redisdata`, `media` (uploads), `caddy_data` (certificates).
+Every service has `restart: unless-stopped`, so the site comes back after a reboot. Logs rotate (5 × 20 MB each).
 
-## Nginx (`deploy/nginx/nooresadaqah.conf`, sketch)
+## Routing (`deploy/Caddyfile`)
 
-```nginx
-server {
-  listen 443 ssl http2;  server_name nooresadaqah.org;
-  # certbot manages ssl_certificate lines
-  client_max_body_size 10m;
-  gzip on;
-  add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+| Path | Goes to |
+|---|---|
+| `/api/v1/payments/*`, `/api/v1/receipts/*`, `/api/v1/health/`, `/r/*` | Django (gateway callbacks, receipts, uptime check) |
+| `/admin/*`, `/dj-static/*`, `/api/docs/`, `/api/schema/` | Django (admin and its files; API docs are staff only) |
+| `/media/*` | files from the `media` volume (Caddy) |
+| other `/api/*`, `/internal/*` | **404**: internal only (Next.js calls Django and Django calls the revalidate hook over the Docker network) |
+| everything else | Next.js |
+| `www.<domain>` | redirect to `<domain>` |
 
-  proxy_set_header Host $host;
-  proxy_set_header X-Forwarded-Proto $scheme;
-  proxy_set_header X-Forwarded-For $remote_addr;      # overwrite, never append (SECURITY.md)
+Caddy has a fixed address on the Docker network (`172.30.0.10`, `TRUSTED_PROXY_IPS`), so Django believes the visitor
+IP it forwards; Next.js proves the IPs it forwards with `API_PROXY_SECRET` (API.md "Client IP").
+If Cloudflare proxies the domain (orange cloud), keep the gateways' callback paths free of WAF challenges.
 
-  location /api/v1/payments/  { proxy_pass http://127.0.0.1:8000; }
-  location /api/v1/receipts/  { proxy_pass http://127.0.0.1:8000; }
-  location /r/                { proxy_pass http://127.0.0.1:8000; }   # short receipt links
-  location = /api/v1/health/  { proxy_pass http://127.0.0.1:8000; }
-  location /api/              { return 404; }        # everything else is internal (Next → Django)
-  location /admin/            { proxy_pass http://127.0.0.1:8000; limit_req zone=admin burst=20; }
-  location /dj-static/        { alias /srv/noore/app/backend/staticfiles/; expires 30d; }
-  location /internal/         { return 404; }        # Next revalidate hook: localhost only
-  location /                  { proxy_pass http://localhost:3000; }   # localhost, not 127.0.0.1: see below
-}
-server { listen 80; server_name nooresadaqah.org www.nooresadaqah.org; return 301 https://nooresadaqah.org$request_uri; }
-```
-**Run Next.js with `HOSTNAME=localhost`, never `127.0.0.1`.** Next normalises `127.0.0.1` to `localhost` in request
-URLs; if the server itself is bound to `127.0.0.1`, the locale rewrite from `src/proxy.js` looks like a different
-origin and Next tries to proxy it as an external URL, which ends in a redirect loop or a 500. Found while testing F0
-(Next.js 16.4.5). On Ubuntu `localhost` resolves to `127.0.0.1`, so Nginx can still reach it. `deploy.sh` checks it.
+## First-time server setup (Hostinger VPS)
 
-`limit_req zone=admin` needs `limit_req_zone $binary_remote_addr zone=admin:10m rate=10r/s;` in the `http {}` block
-(`/etc/nginx/conf.d/limits.conf`). With `output: "standalone"`, the build step must copy `.next/static` to
-`.next/standalone/.next/static` and `public/` to `.next/standalone/public` (do it in `npm run build:standalone`).
-
-If Cloudflare proxies the domain (orange cloud), use `set_real_ip_from` for Cloudflare ranges + `real_ip_header CF-Connecting-IP`
-so `$remote_addr` is the visitor. Gateways must still reach the callback URLs: don't put WAF challenges on `/api/v1/payments/`.
-
-## First-time server setup (checklist)
-
-1. Ubuntu 24.04 updates; `unattended-upgrades` on; timezone `Asia/Dhaka`.
-2. SSH: key login only, no root login, no passwords; `fail2ban`.
-3. UFW: allow 22, 80, 443 only.
-4. Install Node 22 LTS, Python 3.14 (uv), PostgreSQL 16, Redis 7, Nginx, certbot, and WeasyPrint system libs (`libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz0b`).
-5. Create users, `/srv/noore`, Postgres role + DB with a strong password, Redis password.
-6. Write `env/backend.env` and `env/frontend.env` from the `.env.example` files.
-7. Install systemd units and the Nginx site; `certbot --nginx -d nooresadaqah.org -d www.nooresadaqah.org`.
-8. First deploy (below), then `manage.py seed`.
-9. Backups (below) and a **test restore**.
+1. Hostinger panel: VPS with **Ubuntu 24.04** (or the "Ubuntu 24.04 with Docker" template), datacenter in Asia.
+2. As root: updates, `unattended-upgrades`, `timedatectl set-timezone Asia/Dhaka`.
+3. SSH: create user `deploy` with your SSH key; key login only, no root login, no passwords; `fail2ban`.
+4. Firewall (UFW, and the Hostinger panel firewall if it's on): allow **22, 80, 443** only.
+5. Docker Engine + Compose plugin (skip if the template has them): `curl -fsSL https://get.docker.com | sh`, then
+   `usermod -aG docker deploy`.
+6. DNS: `A` record for the domain (and `www`) → the VPS IP. Wait until it resolves: Caddy needs it for the certificate.
+7. As `deploy`: `git clone <repo> /srv/noore/app`, then `cp deploy/.env.example deploy/.env`, fill it in,
+   `chmod 600 deploy/.env`. For the first deploy set `SEED_ON_START=true` and `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD`.
+8. `sh deploy/deploy.sh`. Then set `SEED_ON_START=false` again.
+9. Backups: root crontab `0 2 * * * sh /srv/noore/app/deploy/backup.sh >> /var/log/noore-backup.log 2>&1`, plus
+   `rclone config` with a remote named `r2` for off-site copies. **Test a restore.**
 10. Uptime monitor and Sentry.
 
 ## Deploy (`deploy/deploy.sh`, run as `deploy`)
 
 ```bash
-set -euo pipefail
-cd /srv/noore/app && git fetch && git checkout --detach "${1:-origin/master}"
-# backend
-/srv/noore/venv/bin/pip install -r backend/requirements.lock
-/srv/noore/venv/bin/python backend/manage.py migrate --noinput
-/srv/noore/venv/bin/python backend/manage.py collectstatic --noinput
-/srv/noore/venv/bin/python backend/manage.py check --deploy
-# frontend
-cd frontend && npm ci && npm run build:standalone && cd ..
-sudo systemctl restart noore-api noore-worker noore-beat noore-web
-curl -fsS -o /dev/null http://localhost:3000/bn && curl -fsS -o /dev/null http://localhost:3000/en   # both languages render (/ only redirects)
-curl -fsSL --max-redirs 3 -o /dev/null http://localhost:3000/   # / redirects to /bn without a loop
-curl -fsS https://nooresadaqah.org/api/v1/health/ && echo "$(date -Is) $(git rev-parse --short HEAD)" >> ../releases.log
+sh deploy/deploy.sh                 # deploys origin/master
+sh deploy/deploy.sh <commit or tag> # a specific version (also the rollback)
 ```
-- Migrations must be backward compatible with the running code for the few seconds of a restart (add columns first, remove them in a later release).
-- After changing a `NEXT_PUBLIC_*` value, rebuild the frontend.
+
+It fetches the code, builds the backend image, starts Postgres, Redis, Django, worker and beat (Django runs its
+migrations on start), waits for `/api/v1/health/`, runs `check --deploy`, **then** builds the frontend (its build
+reads Django's live content through 127.0.0.1:8000) and starts everything, checks `/bn`, `/en` and the health URL over
+HTTPS, and logs the release in `deploy/releases.log`.
+
+Everyday commands (from `/srv/noore/app`):
+
+```bash
+C="docker compose -f compose.prod.yaml --env-file deploy/.env"
+$C ps                                   # what is running
+$C logs -f web worker                   # logs
+$C exec web python manage.py createsuperuser
+$C exec web python manage.py seed       # reload the fixtures (overwrites edited content!)
+$C restart worker beat
+```
+
+- Migrations must be backward compatible with the running code for the few seconds of a restart (add columns first,
+  remove them in a later release).
+- After changing a `NEXT_PUBLIC_*` value or the domain, run `deploy.sh` again (the frontend is rebuilt).
 - Rollback: `deploy.sh <previous commit>` (only if no irreversible migration happened in between).
-- Later: GitHub Actions runs tests, then SSHes in and runs `deploy.sh` for `master` (TESTING.md).
+- Later: GitHub Actions runs the tests, then SSHes in and runs `deploy.sh` for `master` (TESTING.md).
 
 ## Scheduled jobs (django-celery-beat, times Asia/Dhaka)
 
@@ -143,10 +134,12 @@ Every task is **safe to run twice** (locks or unique keys, see DATA_MODEL.md). C
 ## Database & backups
 
 - Migrations: `makemigrations` locally and commit them; production only runs `migrate`. Never edit a migration that has been deployed.
-- **Backups:** `deploy/backup.sh` via root crontab at 02:00: `pg_dump -Fc` → encrypt (`age` or `gpg`) → upload to R2
-  `noore-backups/` with `rclone`. Keep 30 daily + 12 monthly. Also keep the last 3 on the VPS.
+- **Backups:** `deploy/backup.sh` via root crontab at 02:00: `pg_dump -Fc` of the database and a tar of the uploads
+  into `deploy/backups/` (14 days), copied to R2 `noore-backups/` with `rclone` when a remote named `r2` exists.
+  Later: encrypt before upload (`age`), keep 30 daily + 12 monthly in R2.
 - **Test a restore before launch and every 3 months** (RUNBOOK.md). A backup that was never restored doesn't count.
-- Media is already on R2; turn on R2 object versioning or a weekly copy of `noore-media` to the backup bucket.
+- Uploads live in the `media` volume (backed up by `backup.sh`), or on R2 when `MEDIA_STORAGE=s3`; then turn on R2
+  object versioning.
 - Donation, subscription, gateway-event and audit tables are never hard-deleted.
 
 ## Monitoring
@@ -155,7 +148,7 @@ Every task is **safe to run twice** (locks or unique keys, see DATA_MODEL.md). C
 - Sentry in both apps; `send_default_pii=False` and a `before_send` that strips phone/email/token fields (SECURITY.md).
 - Every gateway callback is stored as a `GatewayEvent` (no secrets) so disputes can be traced.
 - Disk space alert at 80% (Better Stack agent or a small cron script).
-- Logs: `journalctl -u noore-*`; keep 14 days (`SystemMaxUse=1G`).
+- Logs: `docker compose -f compose.prod.yaml --env-file deploy/.env logs <service>`; each service keeps 5 × 20 MB.
 
 ## Domain & email DNS
 
@@ -164,17 +157,45 @@ Every task is **safe to run twice** (locks or unique keys, see DATA_MODEL.md). C
 
 ## Pre-launch site (frontend only, `API_MODE=static`)
 
-If a gateway wants to see a live site before the backend exists (ROADMAP "pre-launch site"):
-1. Server setup steps 1–4 and 7 (Node + Nginx + certbot only; no Postgres, Redis or Django yet).
-2. `frontend.env`: `API_MODE=static`, real content in the fixtures, reviewed policy pages, real contact details.
-3. Run only `noore-web`. In the Nginx site keep `location /` and the security headers; `location /api/` returns 404 for now.
-4. Later, adding Django means installing the other services and enabling the `/api/v1/…`, `/r/` and `/admin/` blocks;
-   the `location /` block doesn't change. Then switch to `API_MODE=live` and rebuild.
+If a gateway wants to see a live site before the backend is ready (ROADMAP "pre-launch site"): build the frontend
+image without `BUILD_API_URL` (it then builds from the fixtures, read only) and run it with `API_MODE=static` behind
+Caddy. Real content in the fixtures, reviewed policy pages, real contact details. Switching to the full site later is
+just `deploy.sh` with the complete `compose.prod.yaml`.
+
+## SnapDeploy (container hosting, alternative to the VPS)
+
+SnapDeploy builds each app from a Dockerfile, gives it `PORT`, and injects `DATABASE_URL` / `REDIS_URL` from its
+add-ons. The repo has two apps, so create **two SnapDeploy apps from the same GitHub repo**. That's why the
+"No Build Files at Root" message appears: each app needs its **Root Directory** set (Advanced Options).
+
+| | Backend app | Frontend app |
+|---|---|---|
+| Root Directory | `backend/` | `frontend/` |
+| Dockerfile | `backend/Dockerfile` (gunicorn + Celery worker + beat, `start.sh`) | `frontend/Dockerfile` (Next standalone) |
+| Add-ons | PostgreSQL, Redis | — |
+| Build variables | — | `NEXT_PUBLIC_DJANGO_ORIGIN` = backend app's https address; `NEXT_PUBLIC_SITE_URL`; `NEXT_PUBLIC_MEDIA_HOST` |
+| Run variables | `DJANGO_DEBUG=false`, `DJANGO_SECRET_KEY`, `RECEIPT_TOKEN_SECRET`, `DJANGO_ALLOWED_HOSTS` (backend host), `DJANGO_CSRF_TRUSTED_ORIGINS` (`https://<site>`), `SITE_URL` (`https://<site>`), SSLCommerz, email, `FRONTEND_INTERNAL_URL` (`https://<site>`), `REVALIDATE_SECRET`, `API_PROXY_SECRET`, `MEDIA_STORAGE=s3` + `MEDIA_*`, `SEED_ON_START=true` (first deploy) | `API_MODE=live`, `API_INTERNAL_URL` (`<backend>/api/v1`), `REVALIDATE_SECRET`, `API_PROXY_SECRET` |
+
+Order: deploy the **backend first** (with its add-ons), then the frontend: its build reads Django's content.
+Without `NEXT_PUBLIC_DJANGO_ORIGIN` the frontend builds as the read-only pre-launch site from the fixtures.
+
+Visitors, the admin (`/admin/`) and SSLCommerz callbacks all use the **frontend's** address; Next.js forwards
+`/api/`, `/admin/`, `/r/` and `/media/` to the backend (next.config.mjs), standing in for Nginx.
+
+Before real donations on SnapDeploy:
+- **Uploads need R2** (`MEDIA_STORAGE=s3`): SnapDeploy has no lasting disk, so files saved in the container are lost
+  at the next deploy.
+- **Always-on plan**: the free tier sleeps after 15 idle minutes (the Celery worker and the receipt emails sleep too)
+  and has 512 MB, tight for gunicorn + Celery + WeasyPrint. Custom domains need a paid tier.
+- The Celery worker shares the web container: if it crashes it isn't restarted until the next deploy. Watch the logs.
+- `/internal/revalidate` is reachable on the public address here (no Nginx to block it); it relies on
+  `REVALIDATE_SECRET` alone, so make it long and random.
+- Images run on ARM64; both Dockerfiles use multi-arch base images.
 
 ## Launch day
 
 1. QA_CHECKLIST.md fully passed on staging with sandbox keys.
-2. Production env: `SSLCOMMERZ_SANDBOX=false`, `BKASH_SANDBOX=false`, live keys; restart services.
+2. Production env (`deploy/.env`): `SSLCOMMERZ_SANDBOX=false`, `BKASH_SANDBOX=false`, live keys; run `deploy.sh`.
 3. Set the live IPN/callback URLs in both merchant panels.
 4. Make one real ৳10 donation with each method, check SMS, email and PDF receipt, then refund it from the merchant panel and mark it refunded in the admin.
 5. Remove `noindex`; submit the sitemap in Google Search Console.

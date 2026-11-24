@@ -61,6 +61,9 @@ async function send({ method, path, query = null, body, locale, token = null, ip
     if (body !== undefined) requestHeaders["Content-Type"] = "application/json";
     if (token) requestHeaders.Authorization = `Bearer ${token}`;
     if (ip) requestHeaders["X-Forwarded-For"] = ip;
+    // When Django is on another machine (SnapDeploy), this shared secret is how it knows the IP really comes from
+    // us (docs/API.md "Client IP"). Server-only variable; never NEXT_PUBLIC_.
+    if (ip && process.env.API_PROXY_SECRET) requestHeaders["X-Proxy-Secret"] = process.env.API_PROXY_SECRET;
 
     let response;
     try {

@@ -1,1 +1,5 @@
 *.pdf binary
+# Files that run inside Linux containers or on the VPS keep Linux line endings, even on a Windows checkout.
+*.sh text eol=lf
+Caddyfile text eol=lf
+Dockerfile* text eol=lf

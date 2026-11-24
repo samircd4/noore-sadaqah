@@ -148,7 +148,7 @@ Use the SSLCommerz sandbox test cards and mobile banking test accounts from thei
 
 - [ ] Backup ran last night, is encrypted and is on R2
 - [ ] **Restore tested** on a scratch database; row counts match (RUNBOOK.md)
-- [ ] Killing `noore-worker` and starting it again: queued SMS still go out
+- [ ] Stopping the `worker` service and starting it again: queued SMS still go out
 - [ ] Rebooting the VPS: all services come back on their own
 - [ ] Uptime monitor alerts the right person when `/api/v1/health/` fails
 

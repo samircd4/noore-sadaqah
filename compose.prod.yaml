@@ -1,0 +1,151 @@
+# Production on the Hostinger VPS (docs/DEPLOYMENT.md, DECISIONS.md D19). Development uses compose.yaml.
+#
+# Every setting comes from deploy/.env (copy deploy/.env.example; never committed). Always run with both files:
+#   docker compose -f compose.prod.yaml --env-file deploy/.env <command>
+# Deploys go through deploy/deploy.sh, which builds and starts things in the right order.
+#
+# Only Caddy is reachable from the internet (ports 80/443, automatic HTTPS). Everything else talks on the private
+# Docker network; Postgres and Redis have no published ports. Django is also on 127.0.0.1:8000 of the VPS, so the
+# frontend build can read its content (see the frontend service).
+name: noore-prod
+
+x-backend-env: &backend-env
+  DJANGO_DEBUG: "false"
+  DJANGO_ALLOWED_HOSTS: ${DOMAIN},web,localhost,127.0.0.1
+  DJANGO_CSRF_TRUSTED_ORIGINS: https://${DOMAIN}
+  SITE_URL: https://${DOMAIN}
+  DB_HOST: db
+  DB_PORT: "5432"
+  REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+  FRONTEND_INTERNAL_URL: http://frontend:3000
+  # Caddy's fixed address on the Docker network: Django believes the visitor IP it forwards (core/utils.py).
+  TRUSTED_PROXY_IPS: 172.30.0.10
+  # Uploads are served by Caddy from the media volume, unless deploy/.env switches them to R2 (MEDIA_STORAGE=s3).
+  MEDIA_URL: ${MEDIA_URL:-https://${DOMAIN}/media/}
+
+x-backend: &backend
+  build:
+    context: ./backend
+  image: noore-backend:latest
+  env_file: ./deploy/.env
+  volumes:
+    - media:/app/backend/media
+  restart: unless-stopped
+  depends_on:
+    db:
+      condition: service_healthy
+    redis:
+      condition: service_started
+  logging: &logging
+    driver: json-file
+    options: { max-size: "20m", max-file: "5" }
+
+services:
+  # HTTPS and routing, standing in for Nginx (deploy/Caddyfile). Certificates come from Let's Encrypt by themselves.
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - media:/srv/media:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      default:
+        ipv4_address: 172.30.0.10
+    depends_on:
+      - web
+      - frontend
+    logging: *logging
+
+  # Django (gunicorn). Runs the migrations on every start (start.sh); the Celery worker is its own service here.
+  web:
+    <<: *backend
+    environment:
+      <<: *backend-env
+      RUN_WORKER: "false"
+      SEED_ON_START: ${SEED_ON_START:-false}
+      WEB_CONCURRENCY: ${WEB_CONCURRENCY:-3}
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - media:/app/backend/media
+      # SEED_ON_START reads the frontend's fixtures and the sample files they link to, from the server's checkout
+      - ./frontend/src/mocks/fixtures:/app/frontend/src/mocks/fixtures:ro
+      - ./frontend/public:/app/frontend/public:ro
+
+  # Receipt emails, cache refreshes and the other background jobs.
+  worker:
+    <<: *backend
+    environment: *backend-env
+    command: celery -A config worker --loglevel info --concurrency ${CELERY_CONCURRENCY:-2}
+
+  # The schedule (nightly cleanup …), read from the database by django-celery-beat. Exactly one beat process.
+  beat:
+    <<: *backend
+    environment: *backend-env
+    command: celery -A config beat --loglevel info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+
+  # Next.js (standalone server). Its build reads Django's live content through 127.0.0.1:8000 on the VPS, which is
+  # why it builds on the host network and why deploy.sh starts Django before building it.
+  frontend:
+    build:
+      context: ./frontend
+      network: host
+      args:
+        BUILD_API_URL: http://127.0.0.1:8000/api/v1
+        NEXT_PUBLIC_SITE_URL: https://${DOMAIN}
+        NEXT_PUBLIC_MEDIA_HOST: ${MEDIA_HOST:-${DOMAIN}}
+    image: noore-frontend:latest
+    restart: unless-stopped
+    environment:
+      API_MODE: live
+      API_INTERNAL_URL: http://web:8000/api/v1
+      REVALIDATE_SECRET: ${REVALIDATE_SECRET}
+      API_PROXY_SECRET: ${API_PROXY_SECRET}
+    depends_on:
+      - web
+    logging: *logging
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      retries: 10
+    logging: *logging
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD} --appendonly yes
+    volumes:
+      - redisdata:/data
+    logging: *logging
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+
+volumes:
+  pgdata:
+  redisdata:
+  media:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,50 @@
+# Caddy in front of the site on the VPS (compose.prod.yaml). It does what the Nginx sketch in DEPLOYMENT.md did:
+# HTTPS (Let's Encrypt, renewed by itself), and only the Django paths the internet needs reach Django. The rest of
+# /api/ is internal (Next.js → Django on the Docker network), and /internal/ (the revalidate hook) never leaves it.
+{
+	email {$ACME_EMAIL}
+}
+
+{$DOMAIN} {
+	encode zstd gzip
+
+	request_body {
+		max_size 10MB
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		-Server
+	}
+
+	route {
+		# Photos and PDFs uploaded in the admin (the media volume, read only).
+		handle /media/* {
+			root * /srv
+			header Cache-Control "public, max-age=2592000"
+			header X-Content-Type-Options "nosniff"
+			file_server
+		}
+
+		# Django: gateway callbacks, receipts, health check, admin and its files, API docs (staff only).
+		@django path /api/v1/payments/* /api/v1/receipts/* /api/v1/health/ /r/* /admin /admin/* /dj-static/* /api/docs/ /api/schema/
+		handle @django {
+			reverse_proxy web:8000
+		}
+
+		# Internal only: the content API (Next.js calls it directly) and the revalidate hook.
+		@internal path /api/* /internal/*
+		handle @internal {
+			respond 404
+		}
+
+		# Everything else is the website.
+		handle {
+			reverse_proxy frontend:3000
+		}
+	}
+}
+
+www.{$DOMAIN} {
+	redir https://{$DOMAIN}{uri} permanent
+}

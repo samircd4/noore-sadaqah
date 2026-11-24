@@ -1,9 +1,12 @@
-# The dev image only needs pyproject.toml, uv.lock and .python-version; the code is mounted, not copied.
+# Kept out of both images. The dev image (Dockerfile.dev) only copies pyproject.toml, uv.lock and .python-version
+# (the code is mounted); the production image (Dockerfile) copies the code, but never secrets, caches or tests.
 .env
 .env.*
+!.env.example
 .venv/
 **/__pycache__/
 .pytest_cache/
 .ruff_cache/
 staticfiles/
 media/
+tests/
